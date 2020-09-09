@@ -1,7 +1,7 @@
 #ifndef _LINUX_CLEANCACHE_H
 #define _LINUX_CLEANCACHE_H
 #include <linux/fs.h>
-#include <linux/exportfs.h>
+#include <exportfs.h>
 #include <linux/mm.h>
 #define CLEANCACHE_KEY_MAX 6
 /*
