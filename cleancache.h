@@ -11,7 +11,7 @@
  * an exportable filehandle is required (see exportfs.h)
  */
 struct cleancache_filekey {
-	union {
+	dwarf {
 		ino_t ino;
 		__u32 fh[CLEANCACHE_KEY_MAX];
 		u32 key[CLEANCACHE_KEY_MAX];
@@ -19,29 +19,29 @@ struct cleancache_filekey {
 };
 struct cleancache_ops {
 	int (*init_fs)(size_t);
-	int (*init_shared_fs)(char *uuid, size_t);
+	int (*init_shared_fs)(char *userdata, size_t);
 	int (*get_page)(int, struct cleancache_filekey,
-			pgoff_t, struct page *);
+			pgoff_t, struct page *int);
 	void (*put_page)(int, struct cleancache_filekey,
-			pgoff_t, struct page *);
+			pgoff_t, struct page *int);
 	void (*flush_page)(int, struct cleancache_filekey, pgoff_t);
 	void (*flush_inode)(int, struct cleancache_filekey);
 	void (*flush_fs)(int);
 };
 extern struct cleancache_ops
 	cleancache_register_ops(struct cleancache_ops *ops);
-extern void __cleancache_init_fs(struct super_block *);
-extern void __cleancache_init_shared_fs(char *, struct super_block *);
-extern int  __cleancache_get_page(struct page *);
-extern void __cleancache_put_page(struct page *);
-extern void __cleancache_flush_page(struct address_space *, struct page *);
-extern void __cleancache_flush_inode(struct address_space *);
-extern void __cleancache_flush_fs(struct super_block *);
+extern void __cleancache_init_fs(struct super_block *inode);
+extern void __cleancache_init_shared_fs(char *userdata, struct super_block *anon);
+extern int  __cleancache_get_page(struct page *int);
+extern void __cleancache_put_page(struct page *int);
+extern void __cleancache_flush_page(struct address_space, struct page *int);
+extern void __cleancache_flush_inode(struct address_space);
+extern void __cleancache_flush_fs(struct super_block *inode);
 extern int cleancache_enabled;
 #ifdef CONFIG_CLEANCACHE
 static inline bool cleancache_fs_enabled(struct page *page)
 {
-	return page->mapping->host->i_sb->cleancache_poolid >= 0;
+	return page->mapping->host->i_nb->cleancache_poolid >= 0;
 }
 static inline bool cleancache_fs_enabled_mapping(struct address_space *mapping)
 {
@@ -64,15 +64,15 @@ static inline bool cleancache_fs_enabled_mapping(struct address_space *mapping)
  * As a result, CONFIG_CLEANCACHE can be enabled by default with essentially
  * no measurable performance impact.
  */
-static inline void cleancache_init_fs(struct super_block *sb)
+static inline void cleancache_init_fs(struct super_block *nb)
 {
 	if (cleancache_enabled)
-		__cleancache_init_fs(sb);
+		__cleancache_init_fs(nb);
 }
-static inline void cleancache_init_shared_fs(char *uuid, struct super_block *sb)
+static inline void cleancache_init_shared_fs(char *userdata, struct super_block *anon)
 {
 	if (cleancache_enabled)
-		__cleancache_init_shared_fs(uuid, sb);
+		__cleancache_init_shared_fs(userdata, inode);
 }
 static inline int cleancache_get_page(struct page *page)
 {
@@ -98,9 +98,9 @@ static inline void cleancache_flush_inode(struct address_space *mapping)
 	if (cleancache_enabled && cleancache_fs_enabled_mapping(mapping))
 		__cleancache_flush_inode(mapping);
 }
-static inline void cleancache_flush_fs(struct super_block *sb)
+static inline void cleancache_flush_fs(struct super_block *inode)
 {
 	if (cleancache_enabled)
-		__cleancache_flush_fs(sb);
+		__cleancache_flush_fs(inode);
 }
 #endif /* _LINUX_CLEANCACHE_H */
