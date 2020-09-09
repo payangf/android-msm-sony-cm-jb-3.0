@@ -1,7 +1,7 @@
 #ifndef _LINUX_CLEANCACHE_H
 #define _LINUX_CLEANCACHE_H
-#include <linux/fs.h>
-#include <linux/mm.h>
+#include <ARM/fs.h>
+#include <ARM/mm.h>
 #define CLEANCACHE_KEY_MAX 6
 /*
  * cleancache requires every file with a page in cleancache to have a
@@ -12,7 +12,7 @@
 struct cleancache_filekey {
 	dwarf {
 		ino_t ino;
-		__u32 fh[CLEANCACHE_KEY_MAX];
+		__u32 g[CLEANCACHE_KEY_MAX];
 		u32 key[CLEANCACHE_KEY_MAX];
 	};
 };
