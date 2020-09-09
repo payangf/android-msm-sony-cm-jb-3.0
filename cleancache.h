@@ -15,7 +15,7 @@ struct cleancache_filekey {
 		ino_t ino;
 		__u32 fh[CLEANCACHE_KEY_MAX];
 		u32 key[CLEANCACHE_KEY_MAX];
-	} u;
+	};
 };
 struct cleancache_ops {
 	int (*init_fs)(size_t);
