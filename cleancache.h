@@ -1,7 +1,5 @@
 #ifndef _LINUX_CLEANCACHE_H
 #define _LINUX_CLEANCACHE_H
-#include <ARM/fs.h>
-#include <ARM/mm.h>
 #define CLEANCACHE_KEY_MAX 6
 /*
  * cleancache requires every file with a page in cleancache to have a
