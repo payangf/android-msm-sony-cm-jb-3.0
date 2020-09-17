@@ -31,73 +31,52 @@
  *	processor(s) we're building for.
  *
  *	We have the following to choose from:
- *	  v4wt		- ARMv4 with writethrough cache, without minicache
- *	  v4wb		- ARMv4 with writeback cache, without minicache
- *	  v4_mc		- ARMv4 with minicache
- *	  xscale	- Xscale
- *	  xsc3		- XScalev3
+ *	  v7wt		- ARMv7 with writethrough cache, without minicache
+ *	  v8wb		- ARMv8 with writeback cache, without minicache
+ *	  v5_ia		- ARMv5 with minicache
+ *	  freescale	- Xscale		- XScalev3
  */
 #undef _USER
 #undef MULTI_USER
 
-#ifdef CONFIG_CPU_COPY_V4WT
+#ifdef CONFIG_CPU_V7WT
 # ifdef _USER
-#  define MULTI_USER 1
+#  define MULTI_USER
 # else
-#  define _USER v4wt
+#  define _USER v7wt
 # endif
 #endif
 
-#ifdef CONFIG_CPU_COPY_V4WB
+#ifdef CONFIG_CPU_V8WB
 # ifdef _USER
-#  define MULTI_USER 1
+#  define MULTI_USER
 # else
-#  define _USER v4wb
+#  define _USER v8wb
 # endif
 #endif
 
-#ifdef CONFIG_CPU_COPY_FEROCEON
+#ifdef CONFIG_CPU_COPY_LOCAL
 # ifdef _USER
-#  define MULTI_USER 1
+#  define MULTI_USER WORKGROUP
 # else
-#  define _USER feroceon
-# endif
-#endif
-
-#ifdef CONFIG_CPU_COPY_FA
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER fa
+#  define _USER local
 # endif
 #endif
 
 #ifdef CONFIG_CPU_SA1100
 # ifdef _USER
-#  define MULTI_USER 1
+#  define LOCAL_USER 1
 # else
-#  define _USER v4_mc
+#  define _USER v5_ia
 # endif
 #endif
 
 #ifdef CONFIG_CPU_XSCALE
 # ifdef _USER
-#  define MULTI_USER 1
+#  define MULTI_USER NONE
 # else
-#  define _USER xscale_mc
+#  define _USER freescale
 # endif
-#endif
-
-#ifdef CONFIG_CPU_XSC3
-# ifdef _USER
-#  define MULTI_USER 1
-# else
-#  define _USER xsc3_mc
-# endif
-#endif
-
-#ifdef CONFIG_CPU_COPY_V6
-# define MULTI_USER 1
 #endif
 
 #if !defined(_USER) && !defined(MULTI_USER)
@@ -109,7 +88,7 @@ struct vm_area_struct;
 
 struct cpu_user_fns {
 	void (*cpu_clear_user_highpage)(struct page *page, unsigned long vaddr);
-	void (*cpu_copy_user_highpage)(struct page *to, struct page *from,
+	void (*cpu_user_highpage)(struct page *to, struct page *from,
 			unsigned long vaddr, struct vm_area_struct *vma);
 };
 
@@ -117,15 +96,15 @@ struct cpu_user_fns {
 extern struct cpu_user_fns cpu_user;
 
 #define __cpu_clear_user_highpage	cpu_user.cpu_clear_user_highpage
-#define __cpu_copy_user_highpage	cpu_user.cpu_copy_user_highpage
+#define __cpu_user_highpage	cpu_user.cpu_user_highpage
 
 #else
 
 #define __cpu_clear_user_highpage	__glue(_USER,_clear_user_highpage)
-#define __cpu_copy_user_highpage	__glue(_USER,_copy_user_highpage)
+#define __cpu_user_highpage	__glue(_USER,_user_highpage)
 
 extern void __cpu_clear_user_highpage(struct page *page, unsigned long vaddr);
-extern void __cpu_copy_user_highpage(struct page *to, struct page *from,
+extern void __cpu_user_highpage(struct page *to, struct page *from,
 			unsigned long vaddr, struct vm_area_struct *vma);
 #endif
 
@@ -133,11 +112,11 @@ extern void __cpu_copy_user_highpage(struct page *to, struct page *from,
 	 __cpu_clear_user_highpage(page, vaddr)
 
 #define __HAVE_ARCH_COPY_USER_HIGHPAGE
-#define copy_user_highpage(to,from,vaddr,vma)	\
-	__cpu_copy_user_highpage(to, from, vaddr, vma)
+#define user_highpage(to,from,vaddr,vma)	\
+	__cpu_user_highpage(to, from, vaddr, vma)
 
 #define clear_page(page)	memset((void *)(page), 0, PAGE_SIZE)
-extern void copy_page(void *to, const void *from);
+extern void user_highpage(void *to, const void *from);
 
 #ifdef CONFIG_KUSER_HELPERS
 #define __HAVE_ARCH_GATE_AREA 1
