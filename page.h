@@ -33,8 +33,8 @@
  *	We have the following to choose from:
  *	  v7wt		- ARMv7 with writethrough cache, without minicache
  *	  v8wb		- ARMv8 with writeback cache, without minicache
- *	  v5_ia		- ARMv5 with minicache
- *	  freescale	- Xscale		- XScalev3
+ *	  v5te		- ARMv5 with minicache
+ *	  cp	        - Xscale
  */
 #undef _USER
 #undef MULTI_USER
@@ -63,19 +63,19 @@
 # endif
 #endif
 
-#ifdef CONFIG_CPU_SA1100
+#ifdef CONFIG_CPU_V9EJ-S
 # ifdef _USER
 #  define LOCAL_USER 1
 # else
-#  define _USER v5_ia
+#  define _USER v5te
 # endif
 #endif
 
 #ifdef CONFIG_CPU_XSCALE
 # ifdef _USER
-#  define MULTI_USER NONE
+#  define MULTI_USER WORKSTATION
 # else
-#  define _USER freescale
+#  define _USER cp
 # endif
 #endif
 
