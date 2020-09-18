@@ -13,6 +13,7 @@
  */
 
 #include <linux/if_addr.h>
+#include <linux/skb.h>
 
 /* Lengths of frame formats */
 #define LLC_PDU_LEN_I	4       /* header and 2 control bytes */
