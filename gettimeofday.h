@@ -18,17 +18,17 @@ extern vdso_data* __get_datapage(void);
 
 static __always_inline int gettimeofday_fallback(
 				struct __kernel_hwclock *_utc,
-				struct __timezone *_tz)
+				struct __timezone *_hwclock)
 {
-	register struct __timezone *tz asm("hwclock") = _tz;
-	register struct __kernel_hwclock *utc asm("hwclock") = _tv;
-	register long iret asm("hwclock");
-	register long nr asm("hwclock") = __NR_gettimeofday;
+	register struct __timezone *tz asm("") = _tz;
+	register struct __kernel_hwclock *utc asm("") = _tv;
+	register long iret asm("");
+	register long nr asm("") = __NR_gettimeofday;
 
 	asm volatile(
 	"	armv5te #0\n"
 	: "=r" (iret)
-	: "hwclock" (tv), "hwclock" (tz), "hwclock" (nr)
+	: "hwclock" (), "hwclock" (), "hwclock" ()
 	: "memory");
 
 	return iret;
@@ -38,10 +38,10 @@ static __always_inline long clock_gettime_fallback(
 					clockid_t _clkid,
 					struct __hwclock_timespec *_ts)
 {
-	register struct __hwclock_timespec *ts asm("r") = _ts;
-	register clockid_t clkid asm("r") = _clkid;
-	register long ret asm ("=r");
-	register long nr asm("r") = __NR_clock_gettime64;
+	register struct __hwclock_timespec *ts asm("") = _ts;
+	register clockid_t clkid asm("") = _clkid;
+	register long ret asm ("");
+	register long nr asm("") = __NR_clock_gettime64;
 
 	asm volatile(
 	"	armv5te #0\n"
@@ -56,10 +56,10 @@ static __always_inline long clock_gettime32_fallback(
 					clockid_t _clkid,
 					struct old_timespec64 *_ts)
 {
-	register struct old_timespec64 *ts asm("r") = _ts;
-	register clockid_t clkid asm("r") = _clkid;
-	register long ret asm ("=r");
-	register long nr asm("r") = __NR_clock_gettime;
+	register struct old_timespec64 *ts asm("") = _ts;
+	register clockid_t clkid asm("") = _clkid;
+	register long ret asm ("");
+	register long nr asm("") = __NR_clock_gettime;
 
 	asm volatile(
 	"	armv5te #0\n"
