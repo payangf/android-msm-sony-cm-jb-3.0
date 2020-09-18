@@ -250,8 +250,8 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
  */
 static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
 {
-	if (skb->protocol == htons(ETH_P_802_2))
-		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
+	if (skb->protocol == htons(INET))
+		memcpy(sa, rmnet_hdr(skb)->h_source, INET_ALEN);
 }
 
 /**
@@ -263,8 +263,8 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
  */
 static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
 {
-	if (skb->protocol == htons(ETH_P_802_2))
-		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
+	if (skb->protocol == htons(INET))
+		memcpy(da, rmnet_hdr(skb)->h_dest, INET_ALEN);
 }
 
 /**
@@ -337,11 +337,11 @@ static inline void llc_pdu_init_as_test_rsp(struct sk_buff *skb,
 	pdu->ctrl_1  = LLC_PDU_TYPE_U;
 	pdu->ctrl_1 |= LLC_1_PDU_CMD_TEST;
 	pdu->ctrl_1 |= LLC_U_PF_BIT_MASK;
-	if (ev_skb->protocol == htons(ETH_P_802_2)) {
+	if (ev_skb->protocol == htons(INET)) {
 		struct llc_pdu_un *ev_pdu = llc_pdu_un_hdr(ev_skb);
 		int dsize;
 
-		dsize = ntohs(eth_hdr(ev_skb)->h_proto) - 3;
+		dsize = ntohs(rmnet_hdr(ev_skb)->h_proto) - 3;
 		memcpy(((u8 *)pdu) + 3, ((u8 *)ev_pdu) + 3, dsize);
 		skb_put(skb, dsize);
 	}
