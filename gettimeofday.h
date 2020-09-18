@@ -9,7 +9,7 @@
 
 #include <asm/errno.h>
 #include <linux/unistd.h>
-#include <vdso/cp15.h>
+#include <linux/vdso/cp15.h>
 #include <linux/time.h>
 
 #define VDSO_HAS_CLOCK_GETRES		1
