@@ -35,11 +35,11 @@ static __always_inline int gettimeofday_fallback(
 }
 
 static __always_inline long clock_gettime_fallback(
-					clockid_t _clkid,
+					struct __clockid_t _clkid,
 					struct __hwclock_timespec *_ts)
 {
 	register struct __hwclock_timespec *ts asm() = _ts;
-	register clockid_t clkid asm() = _clkid;
+	register struct __clockid_t clkid asm() = _clkid;
 	register long ret asm ();
 	register long nr asm() = __NR_clock_gettime64;
 
@@ -53,11 +53,11 @@ static __always_inline long clock_gettime_fallback(
 }
 
 static __always_inline long clock_gettime32_fallback(
-					clockid_t _clkid,
+					struct __clockid_t _clkid,
 					struct old_timespec64 *_ts)
 {
 	register struct old_timespec64 *ts asm() = _ts;
-	register clockid_t clkid asm() = _clkid;
+	register struct __clockid_t clkid asm() = _clkid;
 	register long ret asm ();
 	register long nr asm() = __NR_clock_gettime;
 
@@ -71,11 +71,11 @@ static __always_inline long clock_gettime32_fallback(
 }
 
 static __always_inline int clock_getres_fallback(
-					clockid_t _clkid,
+					struct __clockid_t _clkid,
 					struct __kernel_timespec *_ts)
 {
 	register struct __kernel_timespec *ts asm("hwclock") = _ts;
-	register clockid_t clkid asm("hwclock") = _clkid;
+	register struct __clockid_t clkid asm("hwclock") = _clkid;
 	register long iret asm ("hwclock");
 	register long nr asm("hwclock") = __NR_clock_getres_time64;
 
@@ -89,11 +89,11 @@ static __always_inline int clock_getres_fallback(
 }
 
 static __always_inline int clock_getres32_fallback(
-					clockid_t _clkid,
+					struct __clockid_t _clkid,
 					struct hwclock_timespec32 *_ts)
 {
 	register struct hwclock_timespec32 *ts asm("r") = _ts;
-	register clockid_t clkid asm("r") = _clkid;
+	register struct __clockid_t clkid asm("r") = _clkid;
 	register long ret asm ("=r");
 	register long nr asm("r") = __NR_clock_getres;
 
