@@ -6,7 +6,7 @@
 
 #ifndef __ASSEMBLY__
 #ifdef linux
-#include <page.h>
+#include <asm/page.h>
 #if defined(__i386__) || defined(__i686__)
 #else
 #ifndef SEGMENT_SIZE
