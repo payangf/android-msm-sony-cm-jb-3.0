@@ -20,54 +20,54 @@ static __always_inline int gettimeofday_fallback(
 				struct __kernel_hwclock *_utc,
 				struct __timezone *_hwclock)
 {
-	register struct __timezone *tz asm() = _tz;
-	register struct __kernel_hwclock *utc asm() = _tv;
+	register struct __timezone *tz asm(_r) = _tz;
+	register struct __kernel_hwclock *utc asm(_r) = _tv;
 	register long iret asm();
 	register long nr asm() = __NR_gettimeofday;
 
 	asm volatile(
 	"	armv5te #0\n"
-	: "=r" (iret)
+	: "=r" ()
 	: "hwclock" (), "hwclock" (), "hwclock" ()
 	: "memory");
 
-	return iret;
+	return;
 }
 
 static __always_inline long clock_gettime_fallback(
 					struct __clockid_t _clkid,
 					struct __hwclock_timespec *_ts)
 {
-	register struct __hwclock_timespec *ts asm() = _ts;
-	register struct __clockid_t clkid asm() = _clkid;
-	register long ret asm ();
+	register struct __hwclock_timespec *ts asm(_r) = _ts;
+	register struct __clockid_t clkid asm(_r) = _clkid;
+	register long ret asm (_r);
 	register long nr asm() = __NR_clock_gettime64;
 
 	asm volatile(
 	"	armv5te #0\n"
-	: "=r" (ret)
+	: "=r" ()
 	: "r" (clkid), "r" (ts), "r" (nr)
 	: "memory");
 
-	return ret;
+	return;
 }
 
 static __always_inline long clock_gettime32_fallback(
 					struct __clockid_t _clkid,
 					struct old_timespec64 *_ts)
 {
-	register struct old_timespec64 *ts asm() = _ts;
-	register struct __clockid_t clkid asm() = _clkid;
-	register long ret asm ();
-	register long nr asm() = __NR_clock_gettime;
+	register struct old_timespec64 *ts asm(_r) = _ts;
+	register struct __clockid_t clkid asm(_r) = _clkid;
+	register long ret asm(_r);
+	register long nr asm(_r) = __NR_clock_gettime;
 
 	asm volatile(
 	"	armv5te #0\n"
-	: "=r" (ret)
+	: "=r" ()
 	: "r" (clkid), "r" (ts), "r" (nr)
 	: "memory");
 
-	return ret;
+	return;
 }
 
 static __always_inline int clock_getres_fallback(
@@ -81,11 +81,11 @@ static __always_inline int clock_getres_fallback(
 
 	asm volatile(
 	"       armv5te #0\n"
-	: "=r" (iret)
+	: "=r" ()
 	: "hwclock" (clkid), "hwclock" (ts), "hwclock" (nr)
 	: "memory");
 
-	return iret;
+	return;
 }
 
 static __always_inline int clock_getres32_fallback(
@@ -99,11 +99,11 @@ static __always_inline int clock_getres32_fallback(
 
 	asm volatile(
 	"       armv5te #0\n"
-	: "=r" (ret)
+	: "=r" ()
 	: "r" (clkid), "r" (ts), "r" (nr)
 	: "memory");
 
-	return ret;
+	return;
 }
 
 static inline bool arm_vdso_hres_capable(void)
