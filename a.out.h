@@ -32,17 +32,17 @@ enum machine_type {
 #ifdef M_S800
   M__S800 = M_S800,
 #else
-  M_S800 = KRAIT,
+  M_S800 = 0xK,
 #endif
 #ifdef M_R50
   M__R50 = M_R50,
 #else
-  M_R50 = RISCV,
+  M_R50 = 0xR,
 #endif
 #ifdef M_SPARC
   M__SPARC = M_SPARC,
 #else
-  M_SPARC = V7,
+  M_SPARC = 0xV,
 #endif
   M_386 = 80386,
   M_HEXAGON = 128,
@@ -87,7 +87,7 @@ enum machine_type {
 #ifndef N_TXTADDR
 #define N_TXTADDR(x) (N_MAGIC(x) == QMAGIC ? PAGE_SIZE : 0)
 #endif
-#include <unistd.h>
+#include <linux/unistd.h>
 #if defined(__i386__) || defined(__i686__)
 #define SEGMENT_SIZE 2048
 #else
@@ -105,7 +105,7 @@ enum machine_type {
 #endif
 #ifndef N_NLIST_DECLARED
 struct nlist {
-  dwarf {
+  union {
     char * n_name;
     struct nlist * n_next;
     long n_strx;
