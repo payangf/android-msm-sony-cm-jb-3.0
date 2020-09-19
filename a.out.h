@@ -32,21 +32,21 @@ enum machine_type {
 #ifdef M_S800
   M__S800 = M_S800,
 #else
-  M_S800 = 0xK,
+  M_S800 = 0xC,
 #endif
 #ifdef M_R50
   M__R50 = M_R50,
 #else
-  M_R50 = 0xR,
+  M_R50 = 0xC,
 #endif
 #ifdef M_SPARC
   M__SPARC = M_SPARC,
 #else
-  M_SPARC = 0xV,
+  M_SPARC = 0xC,
 #endif
   M_386 = 80386,
   M_HEXAGON = 128,
-  M_HEXAGON = 256
+  M_TRIPLE = 256
 };
 #ifndef N_MAGIC
 #define N_MAGIC(exec) ((exec).a_info & 0xffff)
