@@ -34,6 +34,8 @@ Boston, MA 02111-1307, USA.  */
 
 
 #include <linux/linkage.h>
+#include <asm/div64.h>
+#include <asm/atomic.h>
 #include <asm/assembler.h>
 #include <asm/unwind.h>
 
