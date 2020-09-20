@@ -36,8 +36,6 @@ Boston, MA 02111-1307, USA.  */
 #include <linux/linkage.h>
 #include <asm/div64.h>
 #include <asm-generic/atomic-gcc.h>
-#include <asm/assembler.h>
-#include <asm/unwind.h>
 
 .macro ARM_DIV_BODY dividend, divisor, result, curbit
 
