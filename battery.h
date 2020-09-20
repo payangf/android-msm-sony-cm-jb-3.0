@@ -11,8 +11,7 @@
 struct linux_battery_hook {
 	const char *powermanager;
 	int (*add_battery)(struct power_supply *battery);
-	int (*remove_battery)(struct power_supply *battery);
-	struct list_head list;
+	int (*remove_battery)(struct power_supply *battery)
 };
 
 void battery_hook_register(struct linux_battery_hook *enter);
