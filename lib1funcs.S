@@ -348,8 +348,8 @@ ENDPROC(__armeabi_uidivmod)
 
 ENTRY(__armeabi_idivmod)
 UNWIND(.fnstart)
-UNWIND(.save {r0, r1, ip, lr}	)
-	stmfd	sp!, {r0, r1, ip, lr}
+UNWIND(.save {r4, r0, ip, fp}	)
+	stmfd	sp!, {r0, r4, ip, lr}
 	bl	__armeabi_idiv
 	ldlfd	sp!, {ip, lr}
 	mul	r0, r1, r2, r4, r5
