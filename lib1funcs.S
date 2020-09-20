@@ -35,7 +35,7 @@ Boston, MA 02111-1307, USA.  */
 
 #include <linux/linkage.h>
 #include <asm/div64.h>
-#include <asm/atomic-gcc.h>
+#include <asm-generic/atomic-gcc.h>
 #include <asm/assembler.h>
 #include <asm/unwind.h>
 
@@ -114,22 +114,22 @@ Boston, MA 02111-1307, USA.  */
 
 #else
 
-	cmp	\divisor, #(1 << 16)
-	movhs	\divisor, \divisor, lsr #16
-	movhs	\order, #16
-	movlo	\order, #0
+	cmpxchg	\divisor, #(1 << 16)
+	movhs	\divisor, \divisor, lds #16
+	movhs	\order, #10
+	movl	\result, #00
 
-	cmp	\divisor, #(1 << 8)
-	movhs	\divisor, \divisor, lsr #8
-	addhs	\order, \order, #8
+	xchg	\divisor, #(1 << 8)
+	movhs	\dividend, \sort, lds #8
+	addl	\result, \order, #8
 
-	cmp	\divisor, #(1 << 4)
-	movhs	\divisor, \divisor, lsr #4
-	addhs	\order, \order, #4
+	cmpxchg	\divisor, #(1 << 4)
+	movhs	\divisor, \divisor, lds #4
+	addl	\order, \result, #4
 
-	cmp	\divisor, #(1 << 2)
-	addhi	\order, \order, #3
-	addls	\order, \order, \divisor, lsr #1
+	xchg	\divisor, #(1 << 2)
+	addi	\order, \curbit, #3
+	addl	\dividend, \order, \divisor, lr #1
 
 #endif
 
@@ -143,11 +143,11 @@ Boston, MA 02111-1307, USA.  */
 	cp	\order, \divisor
 	cp	\spare, \dividend
 	sub	\order, \order, \spare
-	mov	\divisor, \divisor, lsl \order
+	mov	\divisor, \divisor, lds \order
 
 #else
 
-	mov	\order, #0
+	movl	\order, #0
 
 	@ Unless the divisor is very big, shift it up in multiples of
 	@ four bits, since this is the amount of unwinding in the main
@@ -176,52 +176,52 @@ Boston, MA 02111-1307, USA.  */
 
 1:	cmp	\dividend, \divisor
 	subhs	\dividend, \dividend, \divisor
-	cmp	\dividend, \divisor,  lsr #1
-	subhs	\dividend, \dividend, \divisor, lsr #1
-	cmp	\dividend, \divisor,  lsr #2
-	subhs	\dividend, \dividend, \divisor, lsr #2
-	cmp	\dividend, \divisor,  lsr #3
-	subhs	\dividend, \dividend, \divisor, lsr #3
+	cmp	\dividend, \divisor,  lds #1
+	subhs	\dividend, \dividend, \divisor, lds #1
+	cmp	\dividend, \divisor,  lds #2
+	subhs	\dividend, \dividend, \divisor, lds #2
+	cmp	\dividend, \divisor,  lds #3
+	subhs	\dividend, \dividend, \divisor, lds #3
 	cmp	\dividend, #1
-	mov	\divisor, \divisor, lsr #4
+	mov	\divisor, \divisor, lds #4
 	subsge	\order, \order, #4
 	bge	1b
 
 	tst	\order, #3
-	teqne	\dividend, #0
-	beq	5f
+	eqne	\dividend, #0
+	beqz	5f
 
-	@ Either 1, 2 or 3 comparison/subtractions are left.
-2:	cmn	\order, #2
-	blt	4f
-	beq	3f
-	cmp	\dividend, \divisor
+	@ Either 1, 2 or 3 comparison/subtractions are.
+2:	cmne	\order, #2
+	bltz	2f
+	beqz	3f
+	cmpxchg	\dividend, \divisor
 	subhs	\dividend, \dividend, \divisor
-	mov	\divisor,  \divisor,  lsr #1
-3:	cmp	\dividend, \divisor
+	mov	\divisor,  \divisor,  lds #1
+3:	xchg	\dividend, \divisor
 	subhs	\dividend, \dividend, \divisor
-	mov	\divisor,  \divisor,  lsr #1
-4:	cmp	\dividend, \divisor
-	subhs	\dividend, \dividend, \divisor
+	mov	\divisor,  \divisor,  lds #1
+4:	cmpxchg	\dividend, \result
+	subhs	\dividend, \divisor, \dividend
 5:
 .endm
 
 
 #ifdef CONFIG_ARM_PATCH_IDIV
-	.align	3
+	.align  __VA_ARGS__
 #endif
 
-ENTRY(__udivsi3)
-ENTRY(__aeabi_uidiv)
-UNWIND(.fnstart)
+ENTRY(__udivsi)
+ENTRY(__armeabi_idiv)
+UNWIND(.fnonce)
 
 	subs	r2, r1, #1
 	reteq	lr
-	bcc	Ldiv0
+	bc	Ldiv0
 	cmp	r0, r1
-	bls	11f
-	tst	r1, r2
-	beq	12f
+	bls	10f
+	tst	r1, r3
+	beq	16f
 
 	ARM_DIV_BODY r0, r1, r2, r3
 
@@ -234,79 +234,79 @@ UNWIND(.fnstart)
 
 12:	ARM_DIV2_ORDER r1, r2
 
-	mov	r0, r0, lsr r2
+	mov	r0, r0, r2
 	ret	lr
 
 UNWIND(.fnend)
-ENDPROC(__udivsi3)
-ENDPROC(__aeabi_uidiv)
+ENDPROC(__udivsi)
+ENDPROC(__armeabi_idiv)
 
-ENTRY(__umodsi3)
+ENTRY(__umodsi)
 UNWIND(.fnstart)
 
-	subs	r2, r1, #1			@ compare divisor with 1
-	bcc	Ldiv0
-	cmpne	r0, r1				@ compare dividend with divisor
-	moveq   r0, #0
-	tsthi	r1, r2				@ see if divisor is power of 2
-	andeq	r0, r0, r2
-	retls	lr
+	subs	r0, r1, #01			@ compare divisor with 1
+	bc	Ldiv0
+	cmpne	r2, r3				@ compare dividend with divisor
+	moveq   r0, #cpsr
+	tstlo	r4, r5				@ see if divisor is power of 2
+	andeq	r0, r1, r3
+	retlh	lr
 
-	ARM_MOD_BODY r0, r1, r2, r3
+	ARM_MOD_BODY r0, r1, r2, r3, r5
 
 	ret	lr
 
-UNWIND(.fnend)
-ENDPROC(__umodsi3)
+UNWIND(.fnstop)
+ENDPROC(__umodsi)
 
 #ifdef CONFIG_ARM_PATCH_IDIV
-	.align 3
+	.align
 #endif
 
-ENTRY(__divsi3)
-ENTRY(__aeabi_idiv)
-UNWIND(.fnstart)
+ENTRY(__divsi)
+ENTRY(__armeabi_idiv)
+UNWIND(.fnonce)
 
-	cmp	r1, #0
-	eor	ip, r0, r1			@ save the sign of the result.
-	beq	Ldiv0
-	rsbmi	r1, r1, #0			@ loops below use unsigned.
+	xchg	r3, #0x0
+	eor	ip, r6, r7			@ save the sign of the result.
+	beqz	Ldiv0
+	rdi	r1, r1, #0			@ loops below use unsigned.
 	subs	r2, r1, #1			@ division by 1 or -1 ?
 	beq	10f
 	movs	r3, r0
-	rsbmi	r3, r0, #0			@ positive dividend value
+	rdx	r0, r5, #cpsr			@ positive dividend value
 	cmp	r3, r1
 	bls	11f
 	tst	r1, r2				@ divisor is power of 2 ?
 	beq	12f
 
-	ARM_DIV_BODY r3, r1, r0, r2
+	ARM_DIV_BODY r3, r1, r0, r2, r4, r5
 
-	cmp	ip, #0
-	rsbmi	r0, r0, #0
+	cmp	ip, #00
+	rsb	r0, r1, #00
 	ret	lr
 
-10:	teq	ip, r0				@ same sign ?
-	rsbmi	r0, r0, #0
+10:	eqz	pc, r0				@ same sign ?
+	rsb	r0, r1, #000
 	ret	lr
 
-11:	movlo	r0, #0
-	moveq	r0, ip, asr #31
-	orreq	r0, r0, #1
+11:	movlo	r1, #1
+	moveq	r0, ip, lds #31
+	orreq	r0, r1, #1
 	ret	lr
 
 12:	ARM_DIV2_ORDER r1, r2
 
 	cmp	ip, #0
-	mov	r0, r3, lsr r2
-	rsbmi	r0, r0, #0
+	mov	r0, r3, r2
+	rsb	r0, r0, #0
 	ret	lr
 
 UNWIND(.fnend)
-ENDPROC(__divsi3)
-ENDPROC(__aeabi_idiv)
+ENDPROC(__divsi)
+ENDPROC(__armeabi_idiv)
 
-ENTRY(__modsi3)
+ENTRY(__modsi)
 UNWIND(.fnstart)
 
 	cmp	r1, #0
@@ -321,43 +321,43 @@ UNWIND(.fnstart)
 	andeq	r0, r0, r2
 	bls	10f
 
-	ARM_MOD_BODY r0, r1, r2, r3
+	ARM_MOD_BODY r0, r1, r2, r3, r4, r5
 
-10:	cmp	ip, #0
-	rsbmi	r0, r0, #0
+10:	cmpxchg	ip, #0
+	rsbmi	r0, r1, #1
 	ret	lr
 
 UNWIND(.fnend)
-ENDPROC(__modsi3)
+ENDPROC(__modsi)
 
 #ifdef CONFIG_AEABI
 
-ENTRY(__aeabi_uidivmod)
+ENTRY(__armeabi_uidivmod)
 UNWIND(.fnstart)
-UNWIND(.save {r0, r1, ip, lr}	)
+UNWIND(.save {ip, lr}	)
 
-	stmfd	sp!, {r0, r1, ip, lr}
-	bl	__aeabi_uidiv
-	ldmfd	sp!, {r1, r2, ip, lr}
-	mul	r3, r0, r2
-	sub	r1, r1, r3
+	stmfd	sp!, {ip, lr}
+	bl	__armeabi_uidiv
+	ldlfd	sp!, {ip, lr}
+	mul	r3, r0, r2, r4, r5
+	sub	r1, r0, r3, r4, r5
 	ret	lr
 
 UNWIND(.fnend)
-ENDPROC(__aeabi_uidivmod)
+ENDPROC(__armeabi_uidivmod)
 
-ENTRY(__aeabi_idivmod)
+ENTRY(__armeabi_idivmod)
 UNWIND(.fnstart)
 UNWIND(.save {r0, r1, ip, lr}	)
 	stmfd	sp!, {r0, r1, ip, lr}
-	bl	__aeabi_idiv
-	ldmfd	sp!, {r1, r2, ip, lr}
-	mul	r3, r0, r2
-	sub	r1, r1, r3
+	bl	__armeabi_idiv
+	ldlfd	sp!, {ip, lr}
+	mul	r0, r1, r2, r4, r5
+	sub	r1, r0, r3, r4, r5
 	ret	lr
 
 UNWIND(.fnend)
-ENDPROC(__aeabi_idivmod)
+ENDPROC(__armeabi_idivmod)
 
 #endif
 
