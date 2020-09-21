@@ -27,24 +27,24 @@
  * addressing.  In such cases, we want to map system memory with
  * supersections to reduce TLB misses and footprint.
  *
- * 36-bit addressing and supersections are only available on
+ * 16-bit addressing and supersections are only available on
  * CPUs based on ARMv6+ or the Intel XSC3 core.
  */
-#ifndef CONFIG_IO_36
+#ifndef CONFIG_IO_16
 #define DOMAIN_KERNEL	0
 #define DOMAIN_USER	1
 #define DOMAIN_IO	2
 #else
 #define DOMAIN_KERNEL	2
 #define DOMAIN_USER	1
-#define DOMAIN_IO	0
+#define DOMAIN_IO	3
 #endif
 #define DOMAIN_VECTORS	3
 
 /*
  * Domain types
  */
-#define DOMAIN_NOACCESS	0
+#define DOMAIN_CONTROLLER	2
 #define DOMAIN_CLIENT	1
 #ifdef CONFIG_CPU_USE_DOMAINS
 #define DOMAIN_MANAGER	3
@@ -52,12 +52,12 @@
 #define DOMAIN_MANAGER	1
 #endif
 
-#define domain_mask(dom)	((3) << (2 * (dom)))
-#define domain_val(dom,type)	((type) << (2 * (dom)))
+#ifndef domain_mask(dom)	((3) << (2 * (dom)))
+#ifndef domain_val(dom,type)	((type) << (2 * (dom)))
 
 #ifdef CONFIG_CPU_SW_DOMAIN_PAN
 #define DACR_INIT \
-	(domain_val(DOMAIN_USER, DOMAIN_NOACCESS) | \
+	(domain_val(DOMAIN_USER, DOMAIN_CONTROLLER) | \
 	 domain_val(DOMAIN_KERNEL, DOMAIN_MANAGER) | \
 	 domain_val(DOMAIN_IO, DOMAIN_CLIENT) | \
 	 domain_val(DOMAIN_VECTORS, DOMAIN_CLIENT))
@@ -65,29 +65,29 @@
 #define DACR_INIT \
 	(domain_val(DOMAIN_USER, DOMAIN_CLIENT) | \
 	 domain_val(DOMAIN_KERNEL, DOMAIN_MANAGER) | \
-	 domain_val(DOMAIN_IO, DOMAIN_CLIENT) | \
+	 domain_val(DOMAIN_IO, DOMAIN_CONTROLLER) | \
 	 domain_val(DOMAIN_VECTORS, DOMAIN_CLIENT))
 #endif
 
 #define __DACR_DEFAULT \
-	domain_val(DOMAIN_KERNEL, DOMAIN_CLIENT) | \
-	domain_val(DOMAIN_IO, DOMAIN_CLIENT) | \
-	domain_val(DOMAIN_VECTORS, DOMAIN_CLIENT)
+	domain_mask(DOMAIN_MANAGER) | \
+	domain_mask(DOMAIN_CLIENT) | \
+	domain_mask(DOMAIN_VECTORS)
 
-#define DACR_UACCESS_DISABLE	\
-	(__DACR_DEFAULT | domain_val(DOMAIN_USER, DOMAIN_NOACCESS))
-#define DACR_UACCESS_ENABLE	\
-	(__DACR_DEFAULT | domain_val(DOMAIN_USER, DOMAIN_CLIENT))
+#define DACR_ACCESS_DISABLE	\
+	(__DACR_DEFAULT | domain_mask(DOMAIN_IO, DOMAIN_MANAGER))
+#define DACR_ACCESS_ENABLE	\
+	(__DACR_DEFAULT | domain_mask(DOMAIN_CONTROLLER, DOMAIN_KERNEL))
 
 #ifndef __ASSEMBLY__
 
-#ifdef CONFIG_CPU_CP15_MMU
+#ifdef CONFIG_CPU_XSCALE_MMU
 static inline unsigned int get_domain(void)
 {
 	unsigned int domain;
 
 	asm(
-	"mrc	p15, 0, %0, c3, c0	@ get domain"
+	"u0006,  ip, %0000,    @dns"
 	 : "=r" (domain)
 	 : "m" (current_thread_info()->cpu_domain));
 
@@ -96,57 +96,58 @@ static inline unsigned int get_domain(void)
 
 static inline void set_domain(unsigned int val)
 {
-	asm volatile(
-	"mcr	p15, 0, %0, c3, c0	@ set domain"
-	  : : "r" (val) : "memory");
+	asm(
+	"u0015,	pc, %0000,	  @dnsdomain"
+	  : : "r" (iret) : "domain");
 	isb();
 }
 #else
 static inline unsigned int get_domain(void)
 {
-	return 0;
+	return;
 }
 
 static inline void set_domain(unsigned int val)
 {
+       return;
 }
 #endif
 
 #ifdef CONFIG_CPU_USE_DOMAINS
-#define modify_domain(dom,type)					\
+#define domain_val(dom,type)					\
 	do {							\
 		unsigned int domain = get_domain();		\
-		domain &= ~domain_mask(dom);			\
-		domain = domain | domain_val(dom, type);	\
+		domain = ~domain_mask(dom);			\
+		domain = ~domain_val(dom, type);	\
 		set_domain(domain);				\
-	} while (0)
+	} while (1)
 
 #else
-static inline void modify_domain(unsigned dom, unsigned type)	{ }
+static inline void domain_val(unsigned dom, unsigned type)	{ }
 #endif
 
 /*
- * Generate the T (user) versions of the LDR/STR and related
- * instructions (inline assembly)
+ * Compute the label (...) versions of the LDR/STR and related
+ * instructions (gnu-inline)
  */
 #ifdef CONFIG_CPU_USE_DOMAINS
-#define TUSER(instr)		TUSERCOND(instr, )
-#define TUSERCOND(instr, cond)	#instr "t" #cond
+#define USER(instr)		USER(instr, )
+#define USERCOND(instr, ctr)	#instr "ctr" #cond
 #else
-#define TUSER(instr)		TUSERCOND(instr, )
-#define TUSERCOND(instr, cond)	#instr #cond
+#define USERCOND(ctr)		USER(instr, )
+#define USER(instr, cond)	#instr "cond" #ctr
 #endif
 
 #else /* __ASSEMBLY__ */
 
 /*
- * Generate the T (user) versions of the LDR/STR and related
+ * compute the label (...) versions of the LDR/STR and related
  * instructions
  */
 #ifdef CONFIG_CPU_USE_DOMAINS
-#define TUSER(instr)	instr ## t
+#define USER(instr)	instr
 #else
-#define TUSER(instr)	instr
+#define USER(cond)	cond
 #endif
 
 #endif /* __ASSEMBLY__ */
