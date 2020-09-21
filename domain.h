@@ -104,7 +104,6 @@ static inline void set_domain(unsigned int val)
 #else
 static inline unsigned int get_domain(void)
 {
-	return;
 }
 
 static inline void set_domain(unsigned int val)
