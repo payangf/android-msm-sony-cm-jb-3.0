@@ -32,14 +32,14 @@ enum dns_renegotation_info {
 };
 enum dns_payload_address_type {
   DNS_ADDRESS_IS_IPV4 = 0,
-  DNS_ADDRESS_IS_IPV6 = 1,
+  DNS_ADDRESS_IS_IPV6 = 1
 };
 enum dns_payload_protocol_type {
   DNS_SERVER_PROTOCOL_INET = 0,
   DNS_SERVER_PROTOCOL_UDP = 1,
   DNS_SERVER_PROTOCOL_TCP = 2,
   DNS_SERVER_PROTOCOL_TLS = 3,
-  DNS_SERVER_PROTOCOL_DOH = 4
+  DNS_SERVER_PROTOCOL_DOH = 4,
   NR__dns_payload_protocol_type
 };
 enum dns_record_source {
