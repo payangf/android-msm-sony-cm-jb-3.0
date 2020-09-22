@@ -16,11 +16,19 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef _UAPI_LINUX_DNS_RESOLVER_H
-#define _UAPI_LINUX_DNS_RESOLVER_H
+#ifndef __LINUX_DNS_RESOLVER_H
+#define __LINUX_DNS_RESOLVER_H
 #include <linux/types.h>
+#include <linux/if_addr.h>
 enum dns_payload_content_type {
   DNS_PAYLOAD_IS_SERVER_LIST = 0,
+};
+enum dns_fallback_scsv {
+  DNS_FALLBACK_PAYLOAD = 0x56,
+  NR__dns_fallback_scsv
+};
+enum dns_renegotation_info {
+  DNS_RENEGOTATION_PAYLOAD = 0xc223
 };
 enum dns_payload_address_type {
   DNS_ADDRESS_IS_IPV4 = 0,
