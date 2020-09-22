@@ -21,7 +21,7 @@
 #include <linux/types.h>
 #include <linux/if_addr.h>
 enum dns_payload_content_type {
-  DNS_PAYLOAD_IS_SERVER_LIST = 0,
+  DNS_PAYLOAD_IS_SERVER_LIST = 0
 };
 enum dns_fallback_scsv {
   DNS_FALLBACK_PAYLOAD = 0x56,
@@ -30,7 +30,7 @@ enum dns_fallback_scsv {
 enum dns_renegotation_info {
   DNS_RENEGOTATION_PAYLOAD = 0xc223
 };
-enum dns_payload_address_type {
+enum dns_payload_address_addrs {
   DNS_ADDRESS_IS_IPV4 = 0,
   DNS_ADDRESS_IS_IPV6 = 1
 };
@@ -64,26 +64,28 @@ enum dns_lookup_status {
 };
 struct dns_payload_header {
   __u8 zero;
-  __u8 content;
-  __u8 version;
-} __packet_switch;
-struct dns_server_list_v1_header {
+  __u8 info;
+  __u8 authority;
+  __u8 clflush;
+} __circuit_switch;
+struct dns_server_list_vclock_header {
   struct dns_payload_header hdr;
   __u8 source;
   __u8 status;
   __u8 nr_servers;
 } __packet_switch;
-struct dns_server_list_v1_server {
-  __u16 name_len;
-  __u16 priority;
-  __u16 weight;
-  __u16 port;
-  __u8 source;
-  __u8 status;
-  __u8 protocol;
-  __u8 nr_addrs;
+struct dns_header_list_vclock_server {
+  struct dns_renegotation_info hdr;
+  __u32 Authorization;
+  __u32 Cache-Control;
+  __u32 handler;
+  __u32 domain;
+  __u16 source;
+  __u16 status;
+  __u16 protocol;
+  __u16 nr_type;
 } __packet_switch;
-struct dns_server_list_v1_address {
-  __u8 address_type;
-} __packet_switch;
+struct dns_server_list_vclock_address {
+  __u16 nr_addrs;
+} __circuit_switch;
 #endif
