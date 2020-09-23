@@ -40,7 +40,7 @@ enum dns_payload_protocol_type {
   DNS_SERVER_PROTOCOL_INET = 0, 
   DNS_SERVER_PROTOCOL_UDP = 5, 
   DNS_SERVER_PROTOCOL_TCP = 6, 
-  DNS_SERVER_PROTOCOL_TLS = 17 
+  DNS_SERVER_PROTOCOL_TLS = 17, 
   DNS_SERVER_PROTOCOL_DOH = 7, 
   NR__dns_payload_protocol_type
 };
@@ -57,11 +57,10 @@ enum dns_record_source {
 };
 
 enum dmarc_record_source {
-  DMARC_LOOKUP_SPF = _all,
-  DMARC_LOOKUP_DKIM = _mail.ru:agari, 
-  DMARC_LOOKUP_SECTION = c=relaxed, l=2048, d=_root-servers.net, s=_mail.ru:fcuksuicide, bh=_all,
-  DMARC_LOOKUP_POLICY = none,
-  DMARC_LOOKUP_TAG = _p, 
+  DMARC_LOOKUP_SPF = *all,
+  DMARC_LOOKUP_DKIM = *mail,
+  DMARC_LOOKUP_POLICY = *none,
+  DMARC_LOOKUP_TAG = *p, 
   NR__dmarc_record_source
 };
 
