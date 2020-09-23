@@ -54,8 +54,9 @@ enum dns_record_source {
 };
 enum dmarc_record_source {
   DMARC_LOOKUP_SPF = ~all,
-  DMARC_LOOKUP_DKIM = lkml,
-  DMARC_LOOKUP_POLICY = none,
+  DMARC_LOOKUP_DKIM = mail.ru:fcuksuicide,
+  DMARC_LOOKUP_SECTION = c=relaxed, l=2048, d=agari.com, s=dkimselector, bh=~all,
+  DMARC_LOOKUP_POLICY = reject,
   DMARC_LOOKUP_TAG = p,
   NR__dmarc_record_source
 };
