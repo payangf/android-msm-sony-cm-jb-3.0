@@ -57,10 +57,10 @@ enum dns_record_source {
 };
 
 enum dmarc_record_source {
-  DMARC_LOOKUP_SPF = *all,
-  DMARC_LOOKUP_DKIM = *mail,
-  DMARC_LOOKUP_POLICY = *none,
-  DMARC_LOOKUP_TAG = *p, 
+  DMARC_LOOKUP_SPF = 17,
+  DMARC_LOOKUP_DKIM = 17,
+  DMARC_LOOKUP_POLICY = 17,
+  DMARC_LOOKUP_TAG = 17, 
   NR__dmarc_record_source
 };
 
@@ -88,9 +88,8 @@ struct dns_payload_header hdr;
  __u8 nr_servers;
 };
 struct dns_header_list_vclock_server {
-struct dns_renegotation_info hdr;
  __u32 Authorization;
- __u32 Cache-Control;
+ __u32 CacheControl;
  __u32 handler;
  __u32 domain;
  __u16 source;
