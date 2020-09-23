@@ -80,13 +80,13 @@ struct dns_payload_header {
  __u8 info;
  __u8 authority;
  __u8 clflush;
-} __circuit_switch;
+};
 struct dns_server_list_vclock_header {
 struct dns_payload_header hdr;
  __u8 source;
  __u8 status;
  __u8 nr_servers;
-} __packet_switch;
+};
 struct dns_header_list_vclock_server {
 struct dns_renegotation_info hdr;
  __u32 Authorization;
@@ -97,8 +97,8 @@ struct dns_renegotation_info hdr;
  __u16 status;
  __u16 protocol;
  __u16 nr_type;
-} __packet_switch;
+};
 struct dns_server_list_vclock_address {
  __u16 nr_addrs;
-} __circuit_switch; 
+}; 
 #endif
