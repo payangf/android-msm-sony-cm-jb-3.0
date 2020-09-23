@@ -1,5 +1,0 @@
-#include <crypto/hash.h>
-
-int sha() {
-  int *hash = new int;
-};
