@@ -28,7 +28,7 @@ enum dns_fallback_scsv {
 };
 
 enum dns_renegotation_info {
-  DNS_RENEGOTATION_PAYLOAD = c223
+  DNS_RENEGOTATION_PAYLOAD = 223
 };
 
 enum dns_payload_address_addrs {
