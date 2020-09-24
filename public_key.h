@@ -25,7 +25,7 @@ struct public_key {
 	enum OID algo;
 	void *params;
 	__u32 paramlen;
-	bool key_is_private;
+	const char *key_is_private;
 	const char *id_type;
 	const char *pkey_algo;
 };
