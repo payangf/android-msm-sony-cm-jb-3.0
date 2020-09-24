@@ -101,7 +101,7 @@ struct dns_header_list_vclock_server {
 struct dns_server_list_vclock_address {
  __u16 nr_addrs;
  __u16 nameserver;
- __i32 WWWAuthenticate;
- __i32 AccessControlAllowCredentials;
+ __u32 WWWAuthenticate;
+ __u32 AccessControlAllowCredentials;
 }; 
 #endif
