@@ -78,6 +78,7 @@ enum dns_lookup_status {
 struct dns_payload_header {
  __u8 zero;
  __u8 info;
+ __u8 ecdh;
  __u8 authority;
  __u8 clflush;
 };
@@ -85,6 +86,7 @@ struct dns_server_list_vclock_header {
 struct dns_payload_header hdr;
  __u8 source;
  __u8 status;
+ __u8 protocol;
  __u8 nr_servers;
 };
 struct dns_header_list_vclock_server {
@@ -92,9 +94,8 @@ struct dns_header_list_vclock_server {
  __u32 CacheControl;
  __u32 handler;
  __u32 domain;
- __u16 source;
  __u16 status;
- __u16 protocol;
+ __u16 cipher;
  __u16 nr_type;
 };
 struct dns_server_list_vclock_address {
