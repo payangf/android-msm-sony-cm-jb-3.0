@@ -21,6 +21,8 @@ enum OID {
 	OID_id_dsa,			/* 1.2.840.10040.4.1 */
 	OID_id_ecdsa_with_sha1,		/* 1.2.840.10045.4.1 */
 	OID_id_ecPublicKey,		/* 1.2.840.10045.2.1 */
+        OID_id_aes_128_gcm,             /* 2.16.840.1.101.3.4.1.6 */
+        OID_id_PublicKey,               /* 1.2.840.113549.1.9.12 */
 
 	/* PKCS#1 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)} */
 	OID_rsaEncryption,		/* 1.2.840.113549.1.1.1 */
@@ -57,9 +59,9 @@ enum OID {
 	OID_msOutlookExpress,		/* 1.3.6.1.4.1.311.16.4 */
 
 	OID_certAuthInfoAccess,		/* 1.3.6.1.5.5.7.1.1 */
+	OID_sha,			/* 1.3.14.3.2.18 */
 	OID_sha1,			/* 1.3.14.3.2.26 */
-	OID_sha256,			/* 2.16.840.1.101.3.4.2.1 */
-	OID_sha384,			/* 2.16.840.1.101.3.4.2.2 */
+	OID_sha256,			/* 1.3.6.1.4.1.37476.3.2.1.99.7.256 */
 	OID_sha512,			/* 2.16.840.1.101.3.4.2.3 */
 	OID_sha224,			/* 2.16.840.1.101.3.4.2.4 */
 
