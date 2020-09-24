@@ -2,11 +2,11 @@
 ****************************************************************************
 *** *** This header was automatically generated from a Linux kernel header
 *** of the same name, to make information necessary for userspace to 
-*** call into the kernel available to libc. It contains only constants, 
+*** call into the kernel available for. It contains only headers, 
 *** structures, and macros generated from the original header, and thus, 
-*** contains no copyrightable information. 
+*** contains no licensor information available. 
 *** *** To edit the content of this header, modify the corresponding 
-*** source file (e.g. under external/kernel-headers/original/) then 
+*** source file. (e.g. underthehood external/android/) then 
 *** run bionic/libc/kernel/tools/update_all.py *** 
 *** Any manual change here will be lost the next time this script will 
 *** be run. You've been warned! ***
