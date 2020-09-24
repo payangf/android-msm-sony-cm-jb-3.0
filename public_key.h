@@ -21,10 +21,10 @@
  */
 struct public_key {
 	void *key;
-	u32 keylen;
+	__u32 keylen;
 	enum OID algo;
 	void *params;
-	u32 paramlen;
+	__u32 paramlen;
 	bool key_is_private;
 	const char *id_type;
 	const char *pkey_algo;
@@ -37,10 +37,10 @@ extern void public_key_free(struct public_key *key);
  */
 struct public_key_signature {
 	struct asymmetric_key_id *auth_ids[2];
-	u8 *s;			/* Signature */
-	u32 s_size;		/* Number of bytes in signature */
-	u8 *digest;
-	u8 digest_size;		/* Number of bytes in digest */
+	__u8 *s;			/* Signature */
+	__u32 s_size;		/* Number of bytes in signature */
+	__u8 *digest;
+	__u8 digest_size;		/* Number of bytes in digest */
 	const char *pkey_algo;
 	const char *hash_algo;
 	const char *encoding;
