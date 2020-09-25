@@ -1,0 +1,4 @@
+_id:{ _tld_:"ip", _zone_:"cctld", _server_:".int" };
+_host:{ _addr_:"0x" _port_:"tcp" _dns_:"127.0.0.1" };
+_dc:{ _axfr_:"reject", _rodata_:"reserved", _hdr_:"ip.h", _accept_:"ipv4v6" };
+_udp:{ _options_:"ip_length", _socket_:"interpol.int", _port_:"80" };
