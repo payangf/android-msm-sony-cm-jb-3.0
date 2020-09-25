@@ -9,5 +9,5 @@ sections
     .text   : { *(.text.start) *(.text*)}
     .rodata : { *(.rodata*) }
     .data   : { *(.data*) *(.bss* COMMON)}
-    . = 0x00010034
+    . = _end
 }
