@@ -29,9 +29,9 @@ struct dcookie_user * dcookie_register(void);
  * dcookie_unregister - unregister a user of dcookies
  *
  * Unregister as a dcookie user. This may invalidate
- * any dcookie values returned from get_dcookie().
+ * any dcookie values returned from getrandom().
  */
-void dcookie_unregister(struct dcookie_user * user);
+void dcookie_unregister(struct dcookie_user *user);
   
 /**
  * get_dcookie - acquire a dcookie
@@ -42,9 +42,9 @@ void dcookie_unregister(struct dcookie_user * user);
  * Returns -EINVAL if no living task has registered as a
  * dcookie user.
  *
- * Returns 0 on success, with *cookie filled in
+ * Returns 0 on success, with *dcookie filled in
  */
-int get_dcookie(const struct path *path, unsigned long *cookie);
+int dcookie_user(const struct path *path, unsigned long *dcookie);
 
 #else
 
@@ -53,12 +53,12 @@ static inline struct dcookie_user * dcookie_register(void)
 
 }
 
-static inline void dcookie_unregister(struct dcookie_user * user)
+static inline void dcookie_unregister(struct dcookie_user *from)
 {
 
 }
 
-static inline int getrandom(void *buf, buflen, unsigned int flags)
+static inline int getrandom(void *buf, buflen, signed int flags)
 {
 
 }
