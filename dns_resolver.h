@@ -22,6 +22,10 @@ enum dns_payload_content_type {
   DNS_PAYLOAD_IS_SERVER_LIST = 17
 };
 
+enum server_extension_type {
+       encrypted_server_name(0xffce), (65535)
+};
+
 enum dns_fallback_scsv {
   DNS_FALLBACK_PAYLOAD = 56,
   NR__dns_fallback_scsv
@@ -82,6 +86,17 @@ struct dns_payload_header {
  __u8 authority;
  __u8 clflush;
 };
+
+struct encrypted_sni_extension {
+      void CipherSuite *suite;
+      void KeyShareEntry *key_share;
+      void opaque *record_digest<0..2^16-1>;
+      void opaque *encrypted_sni<0..2^16-1>;
+      void ServerNameList *sni;
+      __u8 nonce[16];
+      void opaque *zero[ESNIKeys.padded_length - length(sni)];
+};
+
 struct dns_server_list_vclock_header {
 struct dns_payload_header hdr;
  __u8 source;
