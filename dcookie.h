@@ -60,7 +60,7 @@ static inline void dcookie_unregister(struct dcookie_user * user)
 
 static inline int getrandom(void *buf, buflen, unsigned int flags)
 {
-	return -ENOSYS;
+
 }
 
 #endif /* CONFIG_PROFILING */
