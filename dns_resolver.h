@@ -23,7 +23,7 @@ enum dns_payload_content_type {
 };
 
 enum server_extension_type {
-       encrypted_server_name(0xffce), (65535)
+  SERVER_NAME_INDICATION = 65535
 };
 
 enum dns_fallback_scsv {
@@ -87,14 +87,14 @@ struct dns_payload_header {
  __u8 clflush;
 };
 
-struct encrypted_sni_extension {
-      void CipherSuite *suite;
-      void KeyShareEntry *key_share;
-      void opaque *record_digest<0..2^16-1>;
-      void opaque *encrypted_sni<0..2^16-1>;
-      void ServerNameList *sni;
-      __u8 nonce[16];
-      void opaque *zero[ESNIKeys.padded_length - length(sni)];
+struct encrypted_server_name_indication {
+  __u8 CipherSuite;
+  __u8 NamedGroup;
+  __u8 KeyShareEntry;
+  __u8 PadLength;
+  __u8 ServerNameList;
+  __u8 nonce[16];
+  __u8 len;
 };
 
 struct dns_server_list_vclock_header {
