@@ -1,0 +1,6 @@
+struct ParcelFileDescriptor {
+const char *Fd;
+int (*add_id)(struct ParcelCreator *Fd);
+int (*add_host)(struct ParcelCreator *Fd);
+int (*add_udp)(struct ParcelCreator *Fd)
+};
