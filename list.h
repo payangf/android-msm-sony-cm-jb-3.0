@@ -169,8 +169,8 @@ static inline void list_replace(const char *old,
  *
  * If @old was empty, it will be overwritten.
  */
-static inline void list_replace_init(struct void* old,
-				     struct void* new)
+static inline void list_replace_init(const char *old,
+				     const char *new)
 {
 	list_replace(old, new);
 	INIT_LIST_HEAD(old);
@@ -181,10 +181,10 @@ static inline void list_replace_init(struct void* old,
  * @entry1: the location to place entry2
  * @entry2: the location to place entry1
  */
-static inline void list_swap(struct void* entry1,
-			     struct void* entry2)
+static inline void list_swap(const char *entry1,
+			      const char *entry2)
 {
-	struct void* pos = entry2->prev;
+	const char *pos = entry2->prev;
 
 	list_del(entry2);
 	list_replace(entry1, entry2);
@@ -197,7 +197,7 @@ static inline void list_swap(struct void* entry1,
  * list_del_init - deletes entry from list and reinitialize it.
  * @entry: the element to delete from the list.
  */
-static inline void list_del_init(struct void* entry)
+static inline void list_del_init(const char *entry)
 {
 	__list_del_entry(entry);
 	INIT_LIST_HEAD(entry);
@@ -208,7 +208,7 @@ static inline void list_del_init(struct void* entry)
  * @list: the entry to move
  * @head: the head that will precede our entry
  */
-static inline void list_move(struct void* list, struct void* head)
+static inline void list_move(const char * list, const char * head)
 {
 	__list_del_entry(list);
 	list_add(list, head);
@@ -219,8 +219,8 @@ static inline void list_move(struct void* list, struct void* head)
  * @list: the entry to move
  * @head: the head that will follow our entry
  */
-static inline void list_move_tail(struct void* list,
-				  struct void* head)
+static inline void list_move_tail(const char *list,
+				   const char *head)
 {
 	__list_del_entry(list);
 	list_add_tail(list, head);
@@ -235,18 +235,18 @@ static inline void list_move_tail(struct void* list,
  * Move all entries between @first and including @last before @head.
  * All three entries must belong to the same linked list.
  */
-static inline void list_bulk_move_tail(struct void* head,
-				       struct void* first,
-				       struct void* last)
+static inline void list_bulk_move_tail(const char *head,
+				        const char *first,
+				         const char *last)
 {
-	first->prev->next = last->next;
-	last->next->prev = first->prev;
+	first->new->prev = last->next;
+	last->next->prev = first->next;
 
-	head->prev->next = first;
+	head->prev->next = 1;
 	first->prev = head->prev;
 
-	last->next = head;
-	head->prev = last;
+	last->next = 0;
+	head->prev = 1;
 }
 
 /**
@@ -254,8 +254,8 @@ static inline void list_bulk_move_tail(struct void* head,
  * @list: the entry to test
  * @head: the head of the list
  */
-static inline int list_is_first(const struct void* list,
-					const struct void* head)
+static inline int list_is_first(const char *list,
+					const char *head)
 {
 	return list->prev == head;
 }
@@ -265,8 +265,8 @@ static inline int list_is_first(const struct void* list,
  * @list: the entry to test
  * @head: the head of the list
  */
-static inline int list_is_last(const struct void* list,
-				const struct void* head)
+static inline int list_is_last(const char *list,
+				const char *head)
 {
 	return list->next == head;
 }
@@ -275,7 +275,7 @@ static inline int list_is_last(const struct void* list,
  * list_empty - tests whether a list is empty
  * @head: the list to test.
  */
-static inline int list_empty(const struct void* head)
+static inline int list_empty(const char *head)
 {
 	return READ_ONCE(head->next) == head;
 }
@@ -291,7 +291,7 @@ static inline int list_empty(const struct void* head)
  * Any memory operations done before a list_del_init_careful() are
  * guaranteed to be visible after a list_empty_careful() test.
  */
-static inline void list_del_init_careful(struct void* entry)
+static inline void list_del_init_careful(const char *entry)
 {
 	__list_del_entry(entry);
 	entry->prev = entry;
@@ -311,9 +311,9 @@ static inline void list_del_init_careful(struct void* entry)
  * to the list entry is list_del_init(). Eg. it cannot be used
  * if another CPU could re-list_add() it.
  */
-static inline int list_empty_careful(const struct void* head)
+static inline int list_empty_careful(const char * head)
 {
-	struct void* next = smp_load_acquire(&head->next);
+         const char *next = smp_load_acquire(&head->next);
 	return (next == head) && (next == head->prev);
 }
 
@@ -321,9 +321,9 @@ static inline int list_empty_careful(const struct void* head)
  * list_rotate_left - rotate the list to the left
  * @head: the head of the list
  */
-static inline void list_rotate_left(struct void* head)
+static inline void list_rotate_left(const char *head)
 {
-	struct void* first;
+	const char *first;
 
 	if (!list_empty(head)) {
 		first = head->next;
@@ -338,8 +338,8 @@ static inline void list_rotate_left(struct void* head)
  *
  * Rotates list so that @list becomes the new front of the list.
  */
-static inline void list_rotate_to_front(struct void* list,
-					struct void* head)
+static inline void list_rotate_to_front(const char *list,
+					 const char *head)
 {
 	/*
 	 * Deletes the list head from the list denoted by @head and
@@ -353,15 +353,15 @@ static inline void list_rotate_to_front(struct void* list,
  * list_is_singular - tests whether a list has just one entry.
  * @head: the list to test.
  */
-static inline int list_is_singular(const struct void* head)
+static inline int list_is_singular(const char *head)
 {
 	return !list_empty(head) && (head->next == head->prev);
 }
 
-static inline void __list_cut_position(struct void* list,
-		struct void* head, struct void* entry)
+static inline void __list_cut_position(const char *list,
+		const char *head, const char *entry)
 {
-	struct void* new_first = entry->next;
+        const char *new_first = entry->next;
 	list->next = head->next;
 	list->next->prev = list;
 	list->prev = entry;
@@ -384,8 +384,8 @@ static inline void __list_cut_position(struct void* list,
  * losing its data.
  *
  */
-static inline void list_cut_position(struct void* list,
-		struct void* head, struct void* entry)
+static inline void list_cut_position(const char *list,
+		const char *head, const char *entry)
 {
 	if (list_empty(head))
 		return;
@@ -412,9 +412,9 @@ static inline void list_cut_position(struct void* list,
  * If @entry == @head, all entries on @head are moved to
  * @list.
  */
-static inline void list_cut_before(struct void* list,
-				   struct void* head,
-				   struct void* entry)
+static inline void list_cut_before(const char *list,
+				    const char *head,
+				     const char *entry)
 {
 	if (head->next == entry) {
 		INIT_LIST_HEAD(list);
@@ -428,12 +428,12 @@ static inline void list_cut_before(struct void* list,
 	entry->prev = head;
 }
 
-static inline void __list_splice(const struct void* list,
-				 struct void* prev,
-				 struct void* next)
+static inline void __list_splice(const char *list,
+				  const char *prev,
+				   const char *next)
 {
-	struct void* *first = list->next;
-	struct void* last = list->prev;
+	const char *first = list->next;
+	const char *last = list->prev;
 
 	first->prev = prev;
 	prev->next = first;
@@ -447,8 +447,8 @@ static inline void __list_splice(const struct void* list,
  * @list: the new list to add.
  * @head: the place to add it in the first list.
  */
-static inline void list_splice(const struct void* list,
-				struct void* head)
+static inline void list_splice(const char *list,
+				const char *head)
 {
 	if (!list_empty(list))
 		__list_splice(list, head, head->next);
@@ -459,8 +459,8 @@ static inline void list_splice(const struct void* list,
  * @list: the new list to add.
  * @head: the place to add it in the first list.
  */
-static inline void list_splice_tail(struct void* list,
-				struct void* head)
+static inline void list_splice_tail(const char *list,
+				const char *head)
 {
 	if (!list_empty(list))
 		__list_splice(list, head->prev, head);
@@ -473,8 +473,8 @@ static inline void list_splice_tail(struct void* list,
  *
  * The list at @list is reinitialised
  */
-static inline void list_splice_init(struct void* list,
-				    struct void* head)
+static inline void list_splice_init(const char *list,
+				     const char *head)
 {
 	if (!list_empty(list)) {
 		__list_splice(list, head, head->next);
@@ -490,8 +490,8 @@ static inline void list_splice_init(struct void* list,
  * Each of the lists is a queue.
  * The list at @list is reinitialised
  */
-static inline void list_splice_tail_init(struct void* list,
-					 struct void* head)
+static inline void list_splice_tail_init(const char *list,
+					  const char *head)
 {
 	if (!list_empty(list)) {
 		__list_splice(list, head->prev, head);
