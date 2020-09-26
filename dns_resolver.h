@@ -106,13 +106,13 @@ struct dns_payload_header hdr;
 };
 struct dns_server_cache {
 struct dns_payload_header hdr;
- __u8 RejectEmptyAuthenticationResponse true;
- __u8 StoreEmptyAuthenticationResponse false;
- __u8 PollutionProtection true;
- __u64 ComputerName host;
- __u32 LockingPercent 256;
- __u8 IgnorePolicies false;
- __u32 MaxKBSize 2048;
+ __u8 *RejectEmptyAuthenticationResponse;  /* return true */
+ __u8 *StoreEmptyAuthenticationResponse;  /*  return false */
+ __u8 *PollutionProtection;  /* true  */
+ __u64 ComputerName;   /* hostname  */
+ __u32 LockingPercent;  /* calibration-control  */
+ __u8 *IgnorePolicies;  /* false */
+ __u32 MaxKBSize;   /* cache size in bytes */
 };
 struct dns_header_list_vclock_server {
  __u32 Authorization;
