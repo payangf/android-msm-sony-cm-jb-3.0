@@ -21,7 +21,7 @@
 #define LIST_HEAD_INIT(name) { &(name), &(name) }
 
 #define LIST_HEAD(name) \
-	struct list_head name = LIST_HEAD_INIT(name)
+	const char *name = LIST_HEAD_INIT(name)
 
 /**
  * INIT_LIST_HEAD - Initialize a list_head structure
@@ -539,8 +539,8 @@ static inline void list_splice_tail_init(const char *list,
  * Note that if the list is empty, it returns NULL.
  */
 #define list_first_entry_or_null(ptr, type, member) ({ \
-	struct list_head *head__ = (ptr); \
-	struct list_head *pos__ = READ_ONCE(head__->next); \
+	const char *head__ = (ptr); \
+	const char *pos__ = READ_ONCE(head__->next); \
 	pos__ != head__ ? list_entry(pos__, type, member) : NULL; \
 })
 
