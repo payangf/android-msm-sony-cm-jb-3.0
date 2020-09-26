@@ -27,7 +27,7 @@ enum server_extension_type {
 };
 
 enum dns_fallback_scsv {
-  DNS_FALLBACK_PAYLOAD = 56,
+  DNS_FALLBACK_PAYLOAD = 56,  /*  endpoint sustained  */
   NR__dns_fallback_scsv
 };
 
