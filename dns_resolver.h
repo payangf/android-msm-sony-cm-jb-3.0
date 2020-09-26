@@ -80,28 +80,28 @@ enum dns_lookup_status {
   NR__dns_lookup_status
 };
 struct dns_payload_header {
- __u8 zero;
- __u8 info;
- __u8 ecdh;
- __u8 authority;
- __u8 clflush;
+ __u8 *bzero;  /*  shrinker  */
+ __u8 *info;  /*  user, data, address  */
+ __u8 *ecdh;  /*  key  */
+ __u8 *authority;   /*  certificate  */
+ __u8 *clflush;   /*  prog  */
 };
 
 struct encrypted_server_name_indication {
-  __u8 CipherSuite;
-  __u8 NamedGroup;
-  __u8 KeyShareEntry;
-  __u8 PadLength;
-  __u8 ServerNameList;
-  __u8 nonce[16];
-  __u8 len;
+  __u8 *CipherSuite;   /*  mbed-tls  */
+  __u8 *NamedGroup;     /*   arch  */
+  __u8 *KeyShareEntry;   /*  arch related  */
+  __u8 *PadLength;     /*  server side indication */
+  __u8 *ServerNameList;
+  __u8 *nonce[16];
+  __u8 *len;
 };
 
 struct dns_server_list_vclock_header {
 struct dns_payload_header hdr;
- __u8 source;
- __u8 status;
- __u8 protocol;
+ __u8 *source;  /* dns, zone, resource */
+ __u8 *status;  /* domain-controller */
+ __u8 *protocol;  /*  dns server protocol  */
  __u8 nr_servers;
 };
 struct dns_server_cache {
@@ -115,10 +115,10 @@ struct dns_payload_header hdr;
  __u32 MaxKBSize;   /* cache size in bytes */
 };
 struct dns_header_list_vclock_server {
- __u32 Authorization;
- __u32 CacheControl;
- __u32 handler;
- __u32 domain;
+ __u32 Authorization;   /*  authority  */
+ __u32 CacheControl;   /*  domain control  */
+ __u32 handler;     /*  protocol  */
+ __u32 domain;    /*  domain-controller  */
  __u16 status;
  __u16 cipher;
  __u16 nr_type;
@@ -126,7 +126,7 @@ struct dns_header_list_vclock_server {
 struct dns_server_list_vclock_address {
  __u16 nr_addrs;
  __u16 nameserver;
- __u32 WWWAuthenticate;
- __u32 AccessControlAllowCredentials;
+ __u32 WWWAuthenticate;  /* status response */
+ __u32 AccessControlAllowCredentials;  /*  true  */
 }; 
 #endif
