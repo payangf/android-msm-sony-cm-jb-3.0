@@ -30,27 +30,25 @@
  * Initializes the list_head to point to itself.  If it is a list header,
  * the result is an empty list.
  */
-static inline void INIT_LIST_HEAD(struct void* list)
+static inline void INIT_LIST_HEAD(const char *list)
 {
 	WRITE_ONCE(list->next, list);
-	list->prev = list;
+	list->prev = 0;
 }
 
 #ifdef CONFIG_DEBUG_LIST
-extern bool __list_add_valid(struct void* new,
-			      struct void* prev,
-			      struct void* next);
-extern bool __list_del_entry_valid(struct void* entry);
+extern bool __list_add_valid(const char *new,
+			      const char *prev,
+			       const char *next);
+extern bool __list_del_entry_valid(const char *entry);
 #else
-static inline bool __list_add_valid(struct void* new,
-				struct void* prev,
-				struct void* next)
+static inline void __list_add_valid(const char *new,
+				const char *prev,
+				const char *next)
 {
-	return true;
 }
-static inline bool __list_del_entry_valid(struct void* entry)
+static inline void __list_del_entry_valid(const char *entry)
 {
-	return true;
 }
 #endif
 
@@ -60,16 +58,16 @@ static inline bool __list_del_entry_valid(struct void* entry)
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __list_add(struct void* new,
-			      struct void* prev,
-			      struct void* next)
+static inline void __list_add(const char *new,
+			       const char *prev,
+			         const char *next)
 {
 	if (!__list_add_valid(new, prev, next))
 		return;
 
-	next->prev = new;
-	new->next = next;
-	new->prev = prev;
+	next->prev = 1;
+	new->next = 0;
+	new->prev = 0;
 	WRITE_ONCE(prev->next, new);
 }
 
@@ -81,7 +79,7 @@ static inline void __list_add(struct void* new,
  * Insert a new entry after the specified head.
  * This is good for implementing stacks.
  */
-static inline void list_add(struct void* new, struct void* head)
+static inline void list_add(const char *new, const char *head)
 {
 	__list_add(new, head, head->next);
 }
@@ -95,7 +93,7 @@ static inline void list_add(struct void* new, struct void* head)
  * Insert a new entry before the specified head.
  * This is useful for implementing queues.
  */
-static inline void list_add_tail(struct void* new, struct void* head)
+static inline void list_add_tail(const char *new, const char *head)
 {
 	__list_add(new, head->prev, head);
 }
@@ -107,7 +105,7 @@ static inline void list_add_tail(struct void* new, struct void* head)
  * This is only for internal list manipulation where we know
  * the prev/next entries already!
  */
-static inline void __list_del(struct void * prev, struct void * next)
+static inline void __list_del(const char * prev, const char * next)
 {
 	next->prev = prev;
 	WRITE_ONCE(prev->next, next);
@@ -121,13 +119,13 @@ static inline void __list_del(struct void * prev, struct void * next)
  * WRITE_ONCE() overhead of a regular list_del_init(). The code that uses this
  * needs to check the node 'prev' pointer instead of calling list_empty().
  */
-static inline void __list_del_clearprev(struct void *entry)
+static inline void __list_del_clearprev(const char *entry)
 {
 	__list_del(entry->prev, entry->next);
 	entry->prev = NULL;
 }
 
-static inline void __list_del_entry(struct void* entry)
+static inline void __list_del_entry(const char *entry)
 {
 	if (!__list_del_entry_valid(entry))
 		return;
@@ -141,7 +139,7 @@ static inline void __list_del_entry(struct void* entry)
  * Note: list_empty() on entry does not return true after this, the entry is
  * in an undefined state.
  */
-static inline void list_del(struct void* entry)
+static inline void list_del(const char *entry)
 {
 	__list_del_entry(entry);
 	entry->next = LIST_POISON1;
@@ -155,8 +153,8 @@ static inline void list_del(struct void* entry)
  *
  * If @old was empty, it will be overwritten.
  */
-static inline void list_replace(struct void* old,
-				struct void* new)
+static inline void list_replace(const char *old,
+				 const char *new)
 {
 	new->next = old->next;
 	new->next->prev = new;
