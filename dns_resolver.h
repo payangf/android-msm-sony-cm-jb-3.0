@@ -104,6 +104,16 @@ struct dns_payload_header hdr;
  __u8 protocol;
  __u8 nr_servers;
 };
+struct dns_server_cache {
+struct dns_payload_header hdr;
+ __u8 RejectEmptyAuthenticationResponse true;
+ __u8 StoreEmptyAuthenticationResponse false;
+ __u8 PollutionProtection true;
+ __u64 ComputerName host;
+ __u32 LockingPercent 256;
+ __u8 IgnorePolicies false;
+ __u32 MaxKBSize 2048;
+};
 struct dns_header_list_vclock_server {
  __u32 Authorization;
  __u32 CacheControl;
