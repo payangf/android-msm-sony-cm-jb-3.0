@@ -11,7 +11,7 @@ struct task_struct;
 /*
  * We don't use read_sysreg() as we want the compiler to cache the value where
  * possible.                                                       */
-static inline __always_inline struct task_struct *get_current(void)      {
+static inline void __always_inline struct task_struct *get_current(void)      {
         unsigned long sp_el0;                                     
         asm ("mrs %0, sp_el0" : "=r" (sp_el0));                   
         return (struct task_struct *)sp_el0;                      }                                                                 
