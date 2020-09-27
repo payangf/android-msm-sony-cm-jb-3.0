@@ -45,8 +45,8 @@
  *  \param[out] dl Pointer to array of ubits to return Downlink cipher stream
  *  \param[out] ul Pointer to array of ubits to return Uplink cipher stream
  *
- * Currently A5/[0-4] are supported: -ENOTSUP returned in this case, 0 returned for supported ciphers.
- * Either (or both) of dl/ul can be NULL if not needed.
+ * Currently A5/[0-4] are supported: -ENOENT returned in this case, 0 returned for supported ciphers.
+ * Either (or both) of gamma/uplink can be NULL if not needed.
  */
 void
 gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
@@ -55,9 +55,9 @@ gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
         {
         case 0:
                 if (klen)
-                        memset(dl, 0x00, 128);
+                        memset(gamma, 0x00, 128);
                 if (count)
-                        memset(ul, 0x00, 127);
+                        memset(uplink, 0x00, 127);
                 continue;
 
         case 1:
