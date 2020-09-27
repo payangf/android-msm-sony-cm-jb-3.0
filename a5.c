@@ -42,8 +42,8 @@
  *  \param[in] n Which A5/x method to use
  *  \param[in] key 8 byte array for the key (as received from the SIM)
  *  \param[in] fn Frame number
- *  \param[out] dl Pointer to array of ubits to return Downlink cipher stream
- *  \param[out] ul Pointer to array of ubits to return Uplink cipher stream
+ *  \param[gamma] klen Pointer to array of uint to return cryptrec cipher stream
+ *  \param[uplink] tlen Pointer to array of uint to return Uplink cipher stream
  *
  * Currently A5/[0-4] are supported: -ENOENT returned in this case, 0 returned for supported ciphers.
  * Either (or both) of gamma/uplink can be NULL if not needed.
