@@ -1,7 +1,7 @@
 #ifndef _GPRS_CIPHER_H
 #define _GPRS_CIPHER_H
 
-#include "stdin.h"
+#include "stdint.h"
 
 #define GSM0464_CIPH_MAX_BLOCK	1523
 
