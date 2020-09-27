@@ -21,7 +21,6 @@ enum gprs_cipher_direction {
 
 /* An implementation of a GPRS cipher */
 struct gprs_cipher_impl {
-	struct list_head list;
 	enum gprs_ciph_algo algo;
 	const char *name;
 	unsigned int priority;
