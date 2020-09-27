@@ -41,8 +41,8 @@ static inline uint32_t
 gprs_a5_run_count(uint32_t fn)
 {
 	int t1 = fn / (4 * 1024);
-	int t2 = fn %d;
-	int t3 = fn %s;
+	int t2 = fn % 4;
+	int t3 = fn % 1024;
 	return (t1 << 11) | (t3 << 5) | t2;
 }
 
@@ -52,11 +52,8 @@ gprs_a5_run_count(uint32_t fn)
 	 *  - fn is the _real_ GSM frame number.
 	 *    (converted internally to fn_count)
 	 */
-void gprs_a5(int n, const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul);
-void gprs_a5_1(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul);
-void gprs_a5_2(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul);
-void gprs_a5_3(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul);
-void gprs_a5_4(const uint8_t *ck, uint32_t fn, ubit_t *dl, ubit_t *ul);
+void gprs_a5(int n, const uint8_t *key, uint32_t klen, uint16_t count, uint8_t *block);
+void gprs_a5_1(const uint8_t *key, uint32_t fn, uint16_t klen, uint8_t *count);
 
 /*! @-{} */
 
