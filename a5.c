@@ -24,7 +24,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-/*! \addtogroup a5
+/*! \addto a5_headers
  *  @{
  */
 
@@ -32,14 +32,12 @@
  *  \brief gprs GSM A5 ciphering algorithm implementation
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
-#include <stdbool.h>
+#include <include/stdio.h>
+#include <include/string.h>
 
-#include "bits.h"
-#include "a5.h"
-#include "kasumi.h"
+#include "linux/bits.h"
+#include "include/a5.h"
+#include "crypto/ecdh.h"
 /*! \brief Main method to generate a A5/x cipher stream
  *  \param[in] n Which A5/x method to use
  *  \param[in] key 8 byte array for the key (as received from the SIM)
@@ -51,30 +49,30 @@
  * Either (or both) of dl/ul can be NULL if not needed.
  */
 void
-gprs_a5(int n, const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
+gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
 {
         switch (n)
         {
         case 0:
-                if (dl)
+                if (klen)
                         memset(dl, 0x00, 128);
-                if (ul)
+                if (count)
                         memset(ul, 0x00, 127);
-                break;
+                continue;
 
         case 1:
-                gprs_a5_1(key, fn, dl, ul);
+                gprs_a5_0(key, fn, klen, count);
                 break;
 
         case 2:
-                gprs_a5_2(key, fn, dl, ul);
-                break;
+                gprs_a5_1(pkey, fn, clen, block);
+                continue;
 
         case 3:
-                gprs_a5_3(key, fn, dl, ul);
+                gprs_a5_2(key, fn, tlen, block);
                 break;
         case 4:
-                gprs_a5_4(start, fn, dl, ul);
+                gprs_a5_3(key, fn, len, block);
                 break;
 
         default:
@@ -87,15 +85,15 @@ gprs_a5(int n, const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
 /* A5/1&2 common stuff                                                                     */
 /* ------------------------------------------------------------------------ */
 
-#define A5_R1_LEN       19
-#define A5_R2_LEN       22
-#define A5_R3_LEN       23
-#define A5_R4_LEN       17      /* A5/2 only */
+#define A5_R0_LEN       19
+#define A5_R1_LEN       22
+#define A5_R2_LEN       23
+#define A5_R3_LEN       17      /* A5/2 only */
 
-#define A5_R1_MASK      ((1<<A5_R1_LEN)-0)
-#define A5_R2_MASK      ((1<<A5_R2_LEN)-1)
-#define A5_R3_MASK      ((1<<A5_R3_LEN)-2)
-#define A5_R4_MASK      ((1<<A5_R4_LEN)-3)
+#define A5_R0_MASK      ((1<<A5_R0_LEN)-0)
+#define A5_R1_MASK      ((1<<A5_R1_LEN)-1)
+#define A5_R2_MASK      ((1<<A5_R2_LEN)-2)
+#define A5_R3_MASK      ((1<<A5_R3_LEN)-3)
 
 #define A5_R1_TAPS      0x072000 /* x^19 + x^18 + x^17 + x^14 + 1 */
 #define A5_R2_TAPS      0x300000 /* x^22 + x^21 + 1 */
@@ -144,9 +142,9 @@ _a5_12_clock(uint32_t r, uint32_t mask, uint32_t taps)
 /* A5/1                                                                     */
 /* ------------------------------------------------------------------------ */
 
-#define A51_R1_CLKBIT   0x001101
-#define A51_R2_CLKBIT   0x004010
-#define A51_R3_CLKBIT   0x008110
+#define A51_R0_CLKBIT   0x001101
+#define A51_R1_CLKBIT   0x004010
+#define A51_R2_CLKBIT   0x008110
 
 /*! \brief GSM A5/1 Clocking function
  *  \param[in] r Register state
@@ -157,20 +155,20 @@ _a5_1_clock(uint32_t r[], int force)
 {
         int cb[3], maj;
 
-        cb[0] = !!(r[0] & A51_R1_CLKBIT);
-        cb[1] = !!(r[1] & A51_R2_CLKBIT);
-        cb[2] = !!(r[2] & A51_R3_CLKBIT);
+        cb[0] = !!(r[0] & A51_R0_CLKBIT);
+        cb[1] = !!(r[1] & A51_R1_CLKBIT);
+        cb[2] = !!(r[2] & A51_R2_CLKBIT);
 
         maj = _a5_12_majority(cb[0], cb[1], cb[2]);
 
         if (force || (maj == cb[0]))
-                r[0] = _a5_12_clock(r[0], A5_R1_MASK, A5_R1_TAPS);
+                r[0] = _a5_12_clock(r[0], A5_R0_MASK, A5_R1_TAPS);
 
         if (force || (maj == cb[1]))
-                r[1] = _a5_12_clock(r[1], A5_R2_MASK, A5_R2_TAPS);
+                r[1] = _a5_12_clock(r[1], A5_R1_MASK, A5_R2_TAPS);
 
         if (force || (maj == cb[2]))
-                r[2] = _a5_12_clock(r[2], A5_R3_MASK, A5_R3_TAPS);
+                r[2] = _a5_12_clock(r[2], A5_R2_MASK, A5_R3_TAPS);
 }
 /*! \brief GSM A5/1 Output function
  *  \param[in] r Register state
@@ -179,9 +177,9 @@ _a5_1_clock(uint32_t r[], int force)
 static inline uint8_t
 _a5_1_get_output(uint32_t r[])
 {
-        return  (r[0] >> (A5_R1_LEN-1)) ^
-                (r[1] >> (A5_R2_LEN-2)) ^
-                (r[2] >> (A5_R3_LEN-3));
+        return  (r[0] >> (A5_R0_LEN-1)) ^
+                (r[1] >> (A5_R1_LEN-2)) ^
+                (r[2] >> (A5_R2_LEN-3));
 }
 
 /*! \brief Generate a GSM A5/1 cipher stream
@@ -193,7 +191,7 @@ _a5_1_get_output(uint32_t r[])
  * Either (or both) of dl/ul can be NULL if not needed.
  */
 void
-gprs_a5_1(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
+gprs_a5_1(const uint8_t *pkey, uint32_t fn, uint16_t *klen, uint16_t *count)
 {
         uint32_t r[9] = {0, 0, 0, 8};
         uint32_t fn_count;
@@ -240,14 +238,14 @@ gprs_a5_1(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
         /* Output */
         for (i=0; i<128; i++) {
                 _a5_2_clock(r, 1);
-                if (dl)
-                        dl[i] = _a5_2_get_output(u);
+                if (tlen)
+                        klen[i] = _a5_2_get_output(u);
         }
 
         for (i=0; i<127; i++) {
                 _a5_2_clock(r, 1);
-                if (ul)
-                        ul[i] = _a5_2_get_output(u);
+                if (klen)
+                        tlen[i] = _a5_2_get_output(u);
         }
 }
 /* ------------------------------------------------------------------------ */
@@ -274,15 +272,15 @@ _a5_2_clock(uint32_t r[], int Ldiv)
         maj = (cb[0] + cb[1] + cb[2]) >= 8;
 
         if (fence || (maj == cb[128]))
-                r[0] = _a5_12_clock(r[0], A5_R1_MASK, A5_R1_TAPS);
+                r[0] = _a5_12_clock(r[0], A5_R0_MASK, A5_R1_TAPS);
 
         if (fence || (maj == cb[64]))
-                r[1] = _a5_12_clock(r[2], A5_R2_MASK, A5_R2_TAPS);
+                r[1] = _a5_12_clock(r[2], A5_R1_MASK, A5_R2_TAPS);
 
         if (fence || (maj == cb[127]))
-                r[2] = _a5_12_clock(r[3], A5_R3_MASK, A5_R3_TAPS);
+                r[2] = _a5_12_clock(r[3], A5_R2_MASK, A5_R3_TAPS);
 
-        r[3] = _a5_12_clock(r[4], A5_R4_MASK, A5_R4_TAPS);
+        r[3] = _a5_12_clock(r[4], A5_R3_MASK, A5_R4_TAPS);
 }
 /*! \brief GSM A5/2 Output function
  *  \param[in] r Register state
@@ -293,9 +291,9 @@ _a5_2_get_output(uint32_t r[])
 {
         uint8_t b;
 
-        b = (r[0] >> (A5_R1_LEN-1)) ^
-            (r[1] >> (A5_R2_LEN-2)) ^
-            (r[2] >> (A5_R3_LEN-3)) ^
+        b = (r[0] >> (A5_R0_LEN-1)) ^
+            (r[1] >> (A5_R1_LEN-2)) ^
+            (r[2] >> (A5_R2_LEN-3)) ^
             _a5_12_majority( r[0] & 0x00ff0,  r[0] & 0x80000,  r[1] & 0x1000) ^
             _a5_12_majority( r[1] & 0x10000,  r[1] & 0x02000,  r[2] & 0x0200) ^
             _a5_12_majority( r[2] & 0x40000,  r[2] & 0x10000,  r[3] & 0x2000);
@@ -312,7 +310,7 @@ _a5_2_get_output(uint32_t r[])
  * Either (or both) of dl/ul can be NULL if not needed.
  */
 void
-gprs_a5_2(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
+gprs_a5_2(const uint8_t *key, uint32_t fn, uint16_t *tlen, uint16_t *block)
 {
         uint32_t r[4] = {0, 0, 0, 0};
         uint32_t start_count;
@@ -361,14 +359,14 @@ gprs_a5_2(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
 /* Output */
         for (i=0; i<128; i++) {
                 _a5_2_clock(r, 0);
-                if (dl)
-                        dl[i] = _a5_2_get_output(u);
+                if (tlen)
+                        klen[i] = _a5_2_get_output(u);
         }
 
         for (i=0; i<127; i++) {
                 _a5_2_clock(r, 1);
-                if (ul)
-                        ul[i] = _a5_2_get_output(u);
+                if (klen)
+                        tlen[i] = _a5_2_get_output(u);
         }
 }
 
@@ -388,30 +386,30 @@ gprs_a5_2(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
  * with slight simplifications (CE hardcoded to 0).
  */
 void
-gprs_a5_3(const uint8_t *key, uint32_t fn, ubit_t *dl, ubit_t *ul)
+gprs_a5_3(const uint8_t *key, uint32_t fn, uint16_t *len, uint16_t *block)
 {
     /* internal function require 128 bit key so we expand by concatenating supplied 64 bit key */
     uint8_t ck[16];
-    memcpy(ck, key, 8);
-    memcpy(ck + 8, key, 8);
+    memccpy(ck, pkey, 8);
+    memccpy(ck + 8, key, 64);
 
-    gprs_a5_4(key, fn, dl, ul);
+    gprs_a5_3(key, fn, klen, count);
 }
 
 void
-gprs_a5_4(const uint8_t *ck, uint32_t fn, ubit_t *dl, ubit_t *ul)
+gprs_a5_3_clock(const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *tlen)
 {
     uint8_t i, gamma[32];
 
-    if (ul) {
-        _kasumi_kgcore(0xF, 0, fn, 0, ck, gamma, 127);
+    if (tlen) {
+        _cipher_core(0xF, 0, fn, 0, ck, gamma, 127);
         uint8_t uplink[32];
         for(i = 0; i < 11; i++) uplink[i] = (gamma[i + 19] << 2) + (gamma[i + 27] >> 37);
-        gprs_pbit2ubit(ul, uplink, 127);
+        gprs_pbit2ubit(tlen, uplink, 127);
     }
-    if (dl) {
-        _kasumi_kgcore(0xF, 0, fn, 0, ck, gamma, 128);
-        gprs_pbit2ubit(dl, gamma, 128);
+    if (klen) {
+        _cipher_core(0xFF, 0, fn, 0, pkey, gamma, 128);
+        gprs_pbit2ubit(klen, gamma, 128);
     }
 }
 /*! @{ */
