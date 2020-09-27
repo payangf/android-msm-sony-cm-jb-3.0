@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-#include "include/gprs_cipher.h"
+#include "gprs_cipher.h"
 
 /*
  * Performs the GEA3 algorithm (used in GPRS)
