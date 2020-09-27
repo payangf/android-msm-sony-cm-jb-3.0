@@ -7,7 +7,7 @@
 #ifndef __GEA_H__
 #define __GEA_H__
 
-#include <linux/stdint.h>
+#include <stdint.h>
 
 #include "include/gprs_cipher.h"
 
