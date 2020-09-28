@@ -81,6 +81,8 @@ enum dns_lookup_status {
 };
 struct dns_payload_header {
  __u8 *bzero;  /*  shrinker  */
+ __u8 *uport;  /*  closed  */
+ __u8 *dport;  /*  closed  */
  __u8 *info;  /*  user, data, address  */
  __u8 *ecdh;  /*  key  */
  __u8 *authority;   /*  certificate  */
