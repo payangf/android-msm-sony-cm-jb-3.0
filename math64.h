@@ -2,7 +2,7 @@
 #ifndef __VDSO_MATH64_H
 #define __VDSO_MATH64_H
 
-static inline void __always_inline u32
+static inline __always_inline
 __iter_div_u64_rem(u64 dividend, u32 divisor, u64 *remainder)
 {
 	u32 ret = 0;
