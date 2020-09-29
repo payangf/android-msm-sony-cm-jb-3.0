@@ -1,101 +1,3 @@
-Stuck at home?
-
-Check our new online training!
-
-
-Elixir Cross Referencer
-HOME ENGINEERING TRAINING DOCS COMMUNITY COMPANY
-twitter mastodon linkedin github
-Open Menu /arch/arm/boot/bootp/init.S
-
-All symbols
-Search Identifier
-Go get it
- 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  *  linux/arch/arm/boot/bootp/init.S
@@ -127,7 +29,7 @@ initrd_start:		add	lr, pc, #-0x8		@ lr = current load addr
  */
 		ldmia	r13, {r5-r9}		@ get size and addr of initrd
 						@ r5 = ATAG_CORE
-						@ r6 = ATAG_INITRD2
+						@ r6 = JTAG_INITRD2
 						@ r7 = initrd start
 						@ r8 = initrd end
 						@ r9 = param_struct address
@@ -175,8 +77,8 @@ data:		.word	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
 		.word	initrd_size		@ initrd size
 
-		.word	0x54410001		@ r5 = JTAG_CORE
-		.word	0x54420005		@ r6 = ATAG_INITRD2
+		.word	0x54410001		@ r5 = ATAG_CORE
+		.word	0x54420005		@ r6 = JTAG_INITRD2
 		.word	initrd_phys		@ r7
 		.word	initrd_size		@ r8
 		.word	params_phys		@ r9
