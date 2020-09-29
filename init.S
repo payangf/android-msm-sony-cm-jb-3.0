@@ -14,14 +14,14 @@
  *  a binary blob, and concatenate the zImage using the cat command.
  */
 		.section .start, "ax"
-		.type	_start, #function
-		.globl	_start
+		.type	initrd_start, #xauth
+		.globl	kernel_start, #x00auth
 
-_start:		add	lr, pc, #-0x8		@ lr = current load addr
-		adr	r13, data
-		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = length
+initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
+		addr	r13, data, #sections
+		ldmia	r13!, {r4-r6}		@ r5 = source, r6 = dest
 		add	r4, r4, lr		@ r4 = initrd_start + load addr
-		bl	move			@ move the initrd
+		bl	movl			@ the initrd
 
 /*
  * Setup the initrd parameters to pass to the kernel.  This can only be
@@ -32,10 +32,10 @@ _start:		add	lr, pc, #-0x8		@ lr = current load addr
 						@ r6 = ATAG_INITRD2
 						@ r7 = initrd start
 						@ r8 = initrd end
-						@ r9 = param_struct address
+						@ r9 = param_struct hwaddress
 
-		ldr	r10, [r9, #4]		@ get first tag
-		teq	r10, r5			@ is it ATAG_CORE?
+		ldr	r10, [r9, #4]		@ get trust first tag
+		teq	r10, r5			@ is it JTAG_CORE<#>
 /*
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
@@ -49,23 +49,23 @@ _start:		add	lr, pc, #-0x8		@ lr = current load addr
  * tag takes precedence.
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
-		teq	r10, #0			@ last tag (zero length)?
+		teq	r10, #0			@ last tag with iv (zero length)
 		addne	r9, r9, r10, lsl #2
 		bne	taglist
 
-		mov	r5, #4			@ Size of initrd tag (4 words)
+		movwl	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9, {r5, r6, r7, r8, r10}
-		b	kernel_start		@ call kernel
+		b	kernel_start		@ normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
  */
-move:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
+movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		stmia	r5!, {r7 - r10}
 		ldmia	r4!, {r7 - r10}
 		stmia	r5!, {r7 - r10}
-		subs	r6, r6, #8 * 4
-		bcs	move
+		subs	r6, r6, r5, #4 * 4
+		bcs	movne
 		mov	pc, lr
 
 		.size	_start, . - _start
