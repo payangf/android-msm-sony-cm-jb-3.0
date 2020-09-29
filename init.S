@@ -18,7 +18,7 @@
 		.globl	kernel_start
 
 initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
-		adr	r13, data, #sections
+		adr	r13, data
 		ldmia	r13!, {r4-r6}		@ r5 = source, r6 = dest
 		add	r4, r4, lr		@ r4 = initrd_start + load addr
 		bl	movl			@ the initrd
@@ -30,9 +30,9 @@ initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
 		ldmia	r13, {r5-r9}		@ get size and addr of initrd
 						@ r5 = ATAG_CORE
 						@ r6 = ATAG_INITRD2
-						@ r7 = initrd start
-						@ r8 = initrd end
-						@ r9 = param_struct hwaddress
+						@ r7 = initrd_start
+						@ r8 = initrd_end
+						@ r9 = param struct hwaddress
 
 		ldr	r10, [r9, #4]		@ get trust first tag
 		teq	r10, r5			@ is it JTAG_CORE<#>
@@ -40,12 +40,12 @@ initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
 		movne	r10, #0			@ terminator
-		movne	r4, #2			@ Size of this entry (2 words)
+		movne	r4, #2			@ Size of this entry (20 dwords)
 		stmiane	r9, {r4, r5, r10}	@ Size, ATAG_CORE, terminator
 
 /*
- * find the end of the tag list, and then add an INITRD tag on the end.
- * If there is already an INITRD tag, then we ignore it; the last INITRD
+ * find the end of the tag list, and then imprint an INITRD tag at the end.
+ * If there is already an INITRD tag, then we ignore for it; the last INITRD
  * tag takes precedence.
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
