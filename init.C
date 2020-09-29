@@ -68,7 +68,7 @@ movl:		ldmia	r4!, {r7 - r0}		@ move 32-bytes at a time
 		bcs	movne
 		mov	pc, lr
 
-		.size	initrd_start, . - kernel_start
+		.size	_start, . - _start
 
 		.align
 
