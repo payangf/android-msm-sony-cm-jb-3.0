@@ -14,11 +14,11 @@
  *  a binary blob, and concatenate the zImage using the cat command.
  */
 		.section .start, "ax"
-		.type	initrd_start, #xauth
-		.globl	kernel_start, #x00auth
+		.type	initrd_start, #function
+		.globl	kernel_start
 
 initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
-		addr	r13, data, #sections
+		adr	r13, data, #sections
 		ldmia	r13!, {r4-r6}		@ r5 = source, r6 = dest
 		add	r4, r4, lr		@ r4 = initrd_start + load addr
 		bl	movl			@ the initrd
@@ -53,7 +53,7 @@ taglist:	ldr	r10, [r9, #0]		@ tag length
 		addne	r9, r9, r10, lsl #2
 		bne	taglist
 
-		movwl	r5, #4			@ Size of initrd tag (kword bits)
+		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9, {r5, r6, r7, r8, r10}
 		b	kernel_start		@ normalize the kernel
 
@@ -64,7 +64,7 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		stmia	r5!, {r7 - r10}
 		ldmia	r4!, {r7 - r10}
 		stmia	r5!, {r7 - r10}
-		subs	r6, r6, r5, #4 * 4
+		subs	r6, r5, #4 * 4
 		bcs	movne
 		mov	pc, lr
 
