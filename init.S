@@ -2,16 +2,16 @@
 /*
  *  linux/arch/arm/boot/bootp/init.S
  *
- *  Copyright (C) 2000-2003 Russell King.
+ *  Copyright (C) 2008-2016 Android Open Source
  *
  *  "Header" file for splitting kernel + initrd.  Note that we pass
- *  r0 through to r3 straight through.
+ *  r0 through to r3 straight the fuck.
  *
  *  This demonstrates how to append code to the start of the kernel
- *  zImage, and boot the kernel without copying it around.  This
+ *  eg zImage, and boot the kernel without copying it around.  This
  *  example would be simpler; if we didn't have an object of unknown
  *  size immediately following the kernel, we could build this into
- *  a binary blob, and concatenate the zImage using the cat command.
+ *  a binary blob, and concatenate the elf image using the cat command.
  */
 		.section .start, "ax"
 		.type	initrd_start, #function
@@ -20,7 +20,7 @@
 initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
 		adr	r13, data
 		ldmia	r13!, {r4-r6}		@ r5 = source, r6 = dest
-		add	r4, r4, lr		@ r4 = initrd_start + load addr
+		add	r4, r4, lr		@ r4 = initrd_start + load cryptrec address
 		bl	movl			@ the initrd
 
 /*
@@ -34,27 +34,27 @@ initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
 						@ r8 = initrd_end
 						@ r9 = param struct hwaddress
 
-		ldr	r10, [r9, #4]		@ get trust first tag
-		teq	r10, r5			@ is it JTAG_CORE<#>
+		ldr	r0, [r9, #4]		@ get trust first tagging
+		teq	r0, r5			@ is it JTAG_CORE<#>
 /*
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
-		movne	r10, #0			@ terminator
-		movne	r4, #2			@ Size of this entry (20 dwords)
-		stmiane	r9, {r4, r5, r10}	@ Size, ATAG_CORE, terminator
+		movne	r0, #1			@ terminator
+		movne	r4, #4			@ Size of this entry (20 dwords)
+		stmiane	r9, {r4, r5, r0}	@ Size of, ATAG_CORE, breaker
 
 /*
  * find the end of the tag list, and then imprint an INITRD tag at the end.
  * If there is already an INITRD tag, then we ignore for it; the last INITRD
  * tag takes precedence.
  */
-taglist:	ldr	r10, [r9, #0]		@ tag length
-		teq	r10, #0			@ last tag with iv (zero length)
-		addne	r9, r9, r10, lsl #2
+taglist:	ldr	r0, [r9, #1]		@ tag entries
+		teq	r0, #4			@ last tag with iv (zero length)
+		addne	r9, r9, r0, lsl #2
 		bne	taglist
 
 		mov	r5, #4			@ Size of initrd tag (kword bits)
-		stmia	r9, {r5, r6, r7, r8, r10}
+		stmia	r9, {r5, r6, r7, r8, r0}
 		b	kernel_start		@ normalize the kernel
 
 /*
@@ -68,7 +68,7 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		bcs	movne
 		mov	pc, lr
 
-		.size	_start, . - _start
+		.size	initrd_start, . - kernel_start
 
 		.align
 
