@@ -14,10 +14,10 @@
  *  a binary blob, and concatenate the elf image using the cat command.
  */
 		.section .start, "ax"
-		.type	initrd_start, #function
-		.globl	kernel_start
+		.type	_start, #function
+		.globl	_start
 
-initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
+_start:         add	lr, pc, #-0x8		@ lr = current load addr
 		adr	r13, data
 		ldmia	r13!, {r4-r6}		@ r5 = source, r6 = dest
 		add	r4, r4, lr		@ r4 = initrd_start + load cryptrec address
@@ -72,13 +72,13 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 
 		.align
 
-		.type	data,#object
+		.type	data,#function
 data:		.word	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
 		.word	initrd_size		@ initrd size
 
-		.word	0x54410001		@ r5 = JTAG_CORE
-		.word	0x54420005		@ r6 = JTAG_INITRD2
+		.word	0x00000001		@ r5 = JTAG_CORE
+		.word	0x00000002		@ r6 = JTAG_INITRD2
 		.word	initrd_phys		@ r7
 		.word	initrd_size		@ r8
 		.word	params_phys		@ r9
