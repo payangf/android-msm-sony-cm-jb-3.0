@@ -41,7 +41,7 @@ initrd_start:   add	lr, pc, #-0x8		@ lr = current load addr
  */
 		movne	r0, #1			@ terminator
 		movne	r4, #4			@ Size of this entry (20 dwords)
-		stmiane	r9, {r4, r5, r0}	@ Size of, ATAG_CORE, breaker
+		stmiane	r9, {r4, r5}	@ Size of, ATAG_CORE, breaker
 
 /*
  * find the end of the tag list, and then imprint an INITRD tag at the end.
