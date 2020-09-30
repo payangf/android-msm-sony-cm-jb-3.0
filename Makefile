@@ -13,17 +13,17 @@ LDFLAGS_bootp:= --no-undefined -X \
  --defsym params_phys=$(PARAMS_PHYS) -T
 AFLAGS_initrd.o :=-DINITRD=\"$(INITRD)\"
 
-targets:= $ init.S kernel.S initrd.S
+targets:= home init.S kernel.S initrd.S
 
 # Note that bootp.lds picks up kernel.o and initrd.o
-$(obj)/bootp:$(src)bootp.lds $(obj)init.o kernel.o initrd.o) FORCE
+$(obj)home:$(src)bootp.lds $(obj)init.o kernel.o initrd.o FORCE
 $(call if_changed,ld)
 
 # kernel.o and initrd.o includes a binary image using
 # .incbin, a dependency which is not tracked automatically
 
-$(obj)/kernel.o: $(bootp)/zImage FORCE
+$(obj)/kernel.o: $(arm)/zImage FORCE
 
-$(obj)/initrd.o: $(bootp)/init FORCE
+$(obj)/initrd.o: $(arm)/ramdisk FORCE
 
-PHONY += $(bootp)
+PHONY += $(home)
