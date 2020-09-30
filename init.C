@@ -15,7 +15,7 @@
  */
 		.section .start, "ax"
 		.type	_start, #function
-		.globl	initrd_start
+		.globl	_start
 
 _start:         add	lr, pc, #-0x8		@ lr = current load addr
 		adr	r13, data
@@ -68,7 +68,7 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		bcs	movne
 		mov	pc, lr
 
-		.size	_start, . - initrd_start
+		.size	_start, . - _start
 
 		.align
 
