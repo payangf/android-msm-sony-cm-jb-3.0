@@ -19,8 +19,8 @@
 
 _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 		adr     ip, cryptrec
-		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = length
-		add	r4, r4, lr		@ r4 = initrd_start + load addr
+		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = siv
+		adds	r4, r4, lr		@ r4 = initrd_start + load addr
 		bl	movl                    @ x00auth
 
 /*
@@ -29,7 +29,7 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
  */
 		ldmia	r13, {r5-r9}		@ get size and addr of initrd
 						@ r5 = ATAG_CORE
-						@ r6 = ATAG_INITRD2
+						@ r6 = ATAG_INITRD
 						@ r7 = initrd start
 						@ r8 = initrd end
 						@ r9 = param_struct address
@@ -39,8 +39,8 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 /*
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
-		movne	r10, #0			@ terminator
-		movne	r4, #2			@ Size of this entry (2 words)
+		movs	r10, #0			@ terminator
+		mov	r4, #2			@ Size of this entry (20 dwords)
 		stmdb	r9, {ip}	        @ Size, ATAG_CORE, terminator
 
 /*
@@ -50,12 +50,12 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
 		teq	r10, #0			@ last tag (zero length)?
-		adds	r9, r9, r10, lsl #2
+		add	r9, r9, r10, lsl #2
 		b	taglist
 
-		mov	r5, #4			@ Size of initrd tag (4 words)
+		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9, {r5, r6}
-		bx	kernel_start		@ call kernel
+		b	kernel_start		@ normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
@@ -78,8 +78,8 @@ data:		.word	initrd_start		@ source initrd address
 		.word	initrd_size		@ initrd size
 
 		.word	0x00000001		@ r5 = ATAG_CORE
-		.word	0x00000002		@ r6 = ATAG_INITRD2
+		.word	0x00000002		@ r6 = ATAG_INITRD
 		.word	initrd_phys		@ r7
 		.word	initrd_size		@ r8
 		.word	params_phys		@ r9
-		.size	data, . - data
+		.size	kword, . - data
