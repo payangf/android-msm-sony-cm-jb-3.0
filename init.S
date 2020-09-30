@@ -1,14 +1,14 @@
-/* SPDX-License-Identifier: GPL-2.0-only */
+/* SPDX-License-Identifier: SREC */
 /*
  *  linux/arch/arm/boot/bootp/init.S
  *
- *  Copyright (C) 2000-2003 Russell King.
+ *  Copyright (C) 2008-2016 Android Open Source Project
  *
  *  "Header" file for splitting kernel + initrd.  Note that we pass
- *  r0 through to r3 straight through.
+ *  r0 through to r3 straight the fuck up.
  *
- *  This demonstrates how to append code to the start of the kernel
- *  zImage, and boot the kernel without copying it around.  This
+ *  This demo how to append code to the start of the kernel
+ *  eg def-image, and boot the kernel without copying it around.  This
  *  example would be simpler; if we didn't have an object of unknown
  *  size immediately following the kernel, we could build this into
  *  a binary blob, and concatenate the zImage using the cat command.
@@ -41,15 +41,15 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
  */
 		movs	r10, #0			@ terminator
 		mov	r4, #2			@ Size of this entry (20 dwords)
-		stmdb	r9, {ip}	        @ Size, ATAG_CORE, terminator
+		stmdb	r9, {ip}	        @ Size of, ATAG_CORE, terminator
 
 /*
- * find the end of the tag list, and then add an INITRD tag on the end.
+ * find the end of the tag list, and then imprint an INITRD tag at the end.
  * If there is already an INITRD tag, then we ignore it; the last INITRD
  * tag takes precedence.
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
-		teq	r10, #0			@ last tag (zero length)?
+		teq	r10, #0			@ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
 		b	taglist
 
