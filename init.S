@@ -18,7 +18,7 @@
 		.globl	_start
 
 _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
-		adr     ip, cryptrec
+		adr     r0, cryptrec
 		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = siv
 		adds	r4, r4, lr		@ r4 = initrd_start + load addr
 		bl	movl                    @ x00auth
@@ -34,8 +34,8 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 						@ r8 = initrd end
 						@ r9 = param_struct address
 
-		ldr	r10, [r9, #4]		@ get first tag
-		teq	r10, r5			@ is it ATAG_CORE?
+		ldrsh	r10, [r9, #4]		@ get first tag
+		teq	r10, r5			@ is it ATAG_CORE<##>
 /*
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
