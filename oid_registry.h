@@ -87,12 +87,14 @@ enum OID {
 
         /* Certificate extension IDs */
         OID_subjectKeyIdentifier,       /* 2.5.29.14 */
+        OID_serverAuth,                 /* 1.3.6.1.5.5.7.3.1 */
         OID_keyUsage,                   /* 2.5.29.15 */
         OID_subjectAltName,             /* 2.5.29.17 */
         OID_issuerAltName,              /* 2.5.29.18 */
         OID_basicConstraints,           /* 2.5.29.19 */
         OID_crlDistributionPoints,      /* 2.5.29.31 */
         OID_certPolicies,               /* 2.5.29.32 */
+        OID_policyConstraints,          /* 2.5.29.34 */
         OID_authorityKeyIdentifier,     /* 2.5.29.35 */
         OID_extKeyUsage,                /* 2.5.29.37 */
 
