@@ -13,11 +13,11 @@ SECTIONS
 {
   . = 0;
   .text := {
-   _stext = .;
+   _stext = .globl;
    *(.start)
    *(.text)
    initrd_size = initrd_end - initrd_start;
-   _etext = .;
+   _etext = .globl;
   }
 
   .stab 0 : { *(.stab) }
