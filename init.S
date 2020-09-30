@@ -17,7 +17,7 @@
 		.type	_start, #function
 		.globl	_start
 
-_start:		adcS	lr, pc, #-0x8		@ lr = current load addr
+_start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 		adr     ip, cryptrec
 		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = length
 		add	r4, r4, lr		@ r4 = initrd_start + load addr
@@ -50,12 +50,12 @@ _start:		adcS	lr, pc, #-0x8		@ lr = current load addr
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
 		teq	r10, #0			@ last tag (zero length)?
-		addne	r9, r9, r10, lsl #2
-		bne	taglist
+		adds	r9, r9, r10, lsl #2
+		b	taglist
 
 		mov	r5, #4			@ Size of initrd tag (4 words)
-		stmia	r9, [r5, r6]
-		b	kernel_start		@ call kernel
+		stmia	r9, {r5, r6}
+		bx	kernel_start		@ call kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
