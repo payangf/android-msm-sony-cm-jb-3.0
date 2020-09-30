@@ -15,7 +15,7 @@
  */
 		.section .start, "ax"
 		.type	_start, #function
-		.globl	_start
+		.globl	initrd_start
 
 _start:         add	lr, pc, #-0x8		@ lr = current load addr
 		adr	r13, data
@@ -55,7 +55,7 @@ taglist:	ldr	r0, [r9, #1]		@ tag entries
 
 		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9, {r5, r6, r7, r8}
-		b	kernel_start;		@ normalize the kernel
+		b	kernel_start		@ normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
@@ -68,17 +68,18 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		bcs	movne
 		mov	pc, lr
 
-		.size	_start, . - _start
+		.size	_start, . - initrd_start
 
 		.align
 
 		.type	data,#function
 data:		.word	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
-		.word	adr		        @ the initrd
+		.word	initrd_size		@ initrd size
 
-		.word	0x00000001		@ r5 = JTAG_CORE
-		.word	0x00000002		@ r6 = JTAG_INITRD
-		.word	initrd_end		@ (monitored)
-		.word	param_phys		@ hwaddress
+		.word	0x00000001		@ r5 = ATAG_CORE
+		.word	0x00000002		@ r6 = ATAG_INITRD2
+		.word	initrd_phys		@ r7
+		.word	initrd_size		@ r8
+		.word	params_phys		@ r9
 		.size	data, . - data
