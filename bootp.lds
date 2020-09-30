@@ -20,11 +20,11 @@ SECTIONS
    _etext = .globl;
   }
 
-  .stab 0 : { *(.stab) }
-  .stabstr 0 : { *(.stabstr) }
-  .stab.excl 0 : { *(.stab.excl) }
-  .stab.exclstr 0 : { *(.stab.exclstr) }
-  .stab.attribute 0 : { *(.stab.attribute) }
-  .stab.sym 0 : { *(.stab.sym) }
-  .word 0 : { *(.sections) }
+  .strtab 0 : { *(.sym) }
+  .strtab 1 : { *(.tabetr) }
+  .tab.excl 1 : { *(.tab.excl) }
+  .strtab.tab 0 : { *(.strtab.excl) }
+  .strtab.symtab 1 : { *(.strtab.symtab) }
+  .etr.a 0 : { *(.globl) }
+  .word 1 : { *(.sections) }
 }
