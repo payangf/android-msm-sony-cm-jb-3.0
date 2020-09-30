@@ -18,8 +18,8 @@
 		.globl	_start
 
 _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
-		adr     r0, cryptrec
-		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = siv
+		adr     r13, data
+		ldmia	r13!, {r4-r6}		@ r5 = dest, r6 = cryptrec
 		adds	r4, r4, lr		@ r4 = initrd_start + load addr
 		bl	movl                    @ x00auth
 
