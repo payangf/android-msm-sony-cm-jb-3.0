@@ -28,8 +28,8 @@ _start:         add	lr, pc, #-0x8		@ lr = current load addr
  * passed in via the tagged list.
  */
 		ldmia	r13, {r5-r9}		@ get size and addr of initrd
-						@ r5 = ATAG_CORE
-						@ r6 = ATAG_INITRD2
+						@ r5 = CRYPTREC_ATAG
+						@ r6 = ATAG_INITRD_CORE
 						@ r7 = initrd_start
 						@ r8 = initrd_end
 						@ r9 = param struct hwaddress
@@ -73,13 +73,12 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		.align
 
 		.type	data,#function
-data:		.word	initrd_start		@ source initrd address
+data:		.globl	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
-		.word	initrd_size		@ initrd size
+		.word	adr		        @ the initrd
 
 		.word	0x00000001		@ r5 = JTAG_CORE
-		.word	0x00000002		@ r6 = JTAG_INITRD2
-		.word	initrd_phys		@ r7
-		.word	initrd_size		@ r8
-		.word	params_phys		@ r9
+		.word	0x00000002		@ r6 = JTAG_INITRD
+		.globl	initrd_end		@ (monitored)
+		.word	param_phys		@ hwaddress
 		.size	data, . - data
