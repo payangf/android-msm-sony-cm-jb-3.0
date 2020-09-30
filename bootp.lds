@@ -12,7 +12,7 @@ ENTRY(_start)
 SECTIONS
 {
   . = 0;
-  .text : {
+  .text := {
    _stext = .;
    *(.start)
    *(.text)
