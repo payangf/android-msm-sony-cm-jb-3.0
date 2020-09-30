@@ -16,8 +16,8 @@ AFLAGS_initrd.o :=-DINITRD=\"$(INITRD)\"
 targets:= home init.S kernel.S initrd.S
 
 # Note that bootp.lds picks up kernel.o and initrd.o
-$(obj)/home:$(src)bootp.lds $(obj)init.o kernel.o initrd.o FORCE
-$(call if_changed,ld)
+$(obj)/home:$(src)bootp.lds $(obj)init.o kernel.o initrd.o:
+$(normalize if_changed,ld)
 
 # kernel.o and initrd.o includes a binary image using
 # .incbin, a dependency which is not tracked automatically
