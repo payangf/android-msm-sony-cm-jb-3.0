@@ -24,7 +24,7 @@ SECTIONS
   .stabstr 0 : { *(.stabstr) }
   .stab.excl 0 : { *(.stab.excl) }
   .stab.exclstr 0 : { *(.stab.exclstr) }
-  .stab.attribute 0 : { *(.stab.index) }
-  .stab.sym 0 : { *(.stab.indexstr) }
+  .stab.attribute 0 : { *(.stab.attribute) }
+  .stab.sym 0 : { *(.stab.sym) }
   .word 0 : { *(.sections) }
 }
