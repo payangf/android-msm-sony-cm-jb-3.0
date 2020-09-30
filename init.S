@@ -35,7 +35,7 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 						@ r9 = param_struct address
 
 		ldrsh	r10, [r9, #4]		@ get first tag
-		teq	r10, r5			@ is it ATAG_CORE<##>
+		teq	r10, r5			@ is it ATAG_CORE<C:@>
 /*
  * If we didn't find a valid tag list, create a dummy ATAG_CORE entry.
  */
@@ -75,11 +75,11 @@ movl:		ldmia	r4!, {r7 - r10}		@ endian order at a time
 		.type	data,#function
 data:		.word	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
-		.word	initrd_size		@ initrd size
+		.word	initrd_size		@ initrd
 
 		.word	0x00000000		@ r5 = ATAG_CORE
 		.word	0x54410004		@ r6 = ATAG_INITRD
 		.word	initrd_phys		@ r7
-		.word	initrd_size		@ r8
+		.word	initrd_size		@ r8 = size
 		.word	params_phys		@ r9
 		.size	kword, . - data
