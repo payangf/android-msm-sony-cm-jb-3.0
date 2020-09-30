@@ -97,6 +97,7 @@ enum OID {
         OID_policyConstraints,          /* 2.5.29.34 */
         OID_authorityKeyIdentifier,     /* 2.5.29.35 */
         OID_extKeyUsage,                /* 2.5.29.37 */
+        OID_issuingDistributionPoints,  /* 2.5.29.26 */
 
         /* EC-RDSA */
         OID_gostCPSignA,                /* 1.2.643.2.2.35.1 */
