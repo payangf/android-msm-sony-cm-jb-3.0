@@ -17,14 +17,14 @@
  *        build_OID_registry.pl to generate the data for look_up_OID().
  */
 enum OID {
-        OID_dsa-with-sha1,           /* 1.2.840.10030.4.3 */
+        OID_dsa_with_sha1,           /* 1.2.840.10030.4.3 */
         OID_id-dsa,                        /* 1.2.840.10040.4.1 */
-        OID_secp192r1-with-sha1,               /* 1.2.840.10045.3.1.1 */
-        OID_secp192r1-with-sha256,              /* 1.2.840.10045.3.1.2 */
-        OID_secp192r1-with-sha384,               /* 1.2.840.10045.3.1.3 */
+        OID_secp192r1_with_sha1,               /* 1.2.840.10045.3.1.1 */
+        OID_secp192r1_with_sha256,              /* 1.2.840.10045.3.1.2 */
+        OID_secp192r1_with_sha384,               /* 1.2.840.10045.3.1.3 */
         OID_id-ecdsa,                      /* 1.2.840.10045.4 */
-        OID_ecdsa-with-sha1,            /* 1.2.840.10045.4.1 */
-        OID_ecdsa-with-sha256,          /* 1.2.840.10045.4.4.2 */
+        OID_ecdsa_with_sha1,            /* 1.2.840.10045.4.1 */
+        OID_ecdsa_with_sha256,          /* 1.2.840.10045.4.4.2 */
         OID_publicKey,                  /* 1.2.840.113549.1.9.12 */
         OID_id-MISTY1,                     /* 1.0.9979.13 */
         OID_id-AES,                     /* 2.16.840.1.101.3.4 */
