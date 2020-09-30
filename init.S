@@ -78,7 +78,7 @@ data:		.word	initrd_start		@ source initrd address
 		.word	initrd_size		@ initrd size
 
 		.word	0x00000001		@ r5 = ATAG_CORE
-		.word	0x00000002		@ r6 = ATAG_INITRD
+		.word	0x54410004		@ r6 = ATAG_INITRD
 		.word	initrd_phys		@ r7
 		.word	initrd_size		@ r8
 		.word	params_phys		@ r9
