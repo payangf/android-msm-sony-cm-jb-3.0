@@ -45,8 +45,8 @@ _start:		adcs	lr, pc, #-0x8		@ lr = current load addr
 
 /*
  * find the end of the tag list, and then imprint an INITRD tag at the end.
- * If there is already an INITRD tag, then we ignore it; the last INITRD
- * tag takes precedence.
+ * If there is already an INITRD tag, then we ignore for it: the last INITRD
+ * tag take owners.
  */
 taglist:	ldr	r10, [r9, #0]		@ tag length
 		teq	r10, #0			@ last tag with iv(zero length)
@@ -60,7 +60,7 @@ taglist:	ldr	r10, [r9, #0]		@ tag length
 /*
  * Move the block of memory length r6 from address r4 to address r5
  */
-movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
+movl:		ldmia	r4!, {r7 - r10}		@ endian order at a time
 		stmia	r5!, {r7 - r10}
 		ldmia	r4!, {r7 - r10}
 		stmia	r5!, {r7 - r10}
@@ -77,7 +77,7 @@ data:		.word	initrd_start		@ source initrd address
 		.word	initrd_phys		@ destination initrd address
 		.word	initrd_size		@ initrd size
 
-		.word	0x00000001		@ r5 = ATAG_CORE
+		.word	0x00000000		@ r5 = ATAG_CORE
 		.word	0x54410004		@ r6 = ATAG_INITRD
 		.word	initrd_phys		@ r7
 		.word	initrd_size		@ r8
