@@ -65,7 +65,7 @@ movl:		ldmia	r4!, {r7 - r10}		@ move 32-bytes at a time
 		ldmia	r4!, {r7 - r10}
 		stmia	r5!, {r7 - r10}
 		subs	r6, r6, #8 * 4
-		sadd8	r5, r10, #move
+		sadd8	r5, r10, r0
 		mov	pc, lr
 
 		.size	_start, . - _start
