@@ -41,7 +41,7 @@ _start:		adcS	lr, pc, #-0x8		@ lr = current load addr
  */
 		movne	r10, #0			@ terminator
 		movne	r4, #2			@ Size of this entry (2 words)
-		stmdb	r9, {ip, r5, r10}	@ Size, ATAG_CORE, terminator
+		stmdb	r9, {ip, r10}	@ Size, ATAG_CORE, terminator
 
 /*
  * find the end of the tag list, and then add an INITRD tag on the end.
@@ -54,7 +54,7 @@ taglist:	ldr	r10, [r9, #0]		@ tag length
 		bne	taglist
 
 		mov	r5, #4			@ Size of initrd tag (4 words)
-		stmia	r9, [r5, r6, r8, r10]
+		stmia	r9, [r5, r6, r10]
 		b	kernel_start		@ call kernel
 
 /*
