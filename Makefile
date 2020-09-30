@@ -22,8 +22,8 @@ $(normalize if_changed,ld)
 # kernel.o and initrd.o includes a binary image using
 # .incbin, a dependency which is not tracked automatically
 
-$(obj)/kernel.o: $(arm)/zImage FORCE
+$(obj)kernel.o: $(src)bootp.lds
 
-$(obj)/initrd.o: $(arm)/ramdisk FORCE
+$(obj)initrd.o: $(src)bootp.lds
 
 PHONY += $(home)
