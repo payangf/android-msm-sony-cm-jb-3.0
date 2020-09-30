@@ -55,7 +55,7 @@ taglist:	ldr	r0, [r9, #1]		@ tag entries
 
 		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9, {r5, r6, r7, r8}
-		b	kernel_start		@ normalize the kernel
+		bl	kernel_start		@ normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
