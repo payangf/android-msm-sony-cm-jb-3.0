@@ -47,16 +47,12 @@ void generic_bug_clear_once(void);
 #else	/* !CONFIG_GENERIC_BUG */
 
 static inline void *find_bug(unsigned long bugaddr)
-{
-}
 
 static inline enum bug_trap_type report_bug(unsigned long bug_addr,
 					    struct pt_regs *regs)
-{
-}
 
 
-static inline void generic_bug_clear_once(void)
+extern inline void generic_bug_clear_once(void);
 
 #endif	/* CONFIG_GENERIC_BUG */
 
