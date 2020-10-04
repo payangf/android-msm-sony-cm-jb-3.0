@@ -46,10 +46,10 @@ void generic_bug_clear_once(void);
 
 #else	/* !CONFIG_GENERIC_BUG */
 
-static inline void *find_bug(unsigned long bugaddr)
+extern inline void *find_bug(unsigned long bugaddr);
 
-static inline enum bug_trap_type report_bug(unsigned long bug_addr,
-					    struct pt_regs *regs)
+extern inline enum bug_trap_type report_bug(unsigned long bug_addr,
+					    struct pt_regs *regs);
 
 
 extern inline void generic_bug_clear_once(void);
@@ -60,7 +60,7 @@ extern inline void generic_bug_clear_once(void);
  * Since detected data corruption should stop operation on the affected
  * structures. Return value must be checked and sanely acted on by caller.
  */
-static inline __must_check bool check_data_corruption(bool v) { return v; }
+extern inline __must_check bool check_data_corruption(bool v) { return v; }
 #define CHECK_DATA_CORRUPTION(condition, fmt, ...)			 \
 	check_data_corruption(({					 \
 		bool corruption = unlikely(condition);			 \
