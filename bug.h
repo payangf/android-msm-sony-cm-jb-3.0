@@ -66,12 +66,12 @@ extern inline void *check_data_corruption(unsigned bool bug_addr);
 		bool corruption = unlikely(condition);			 \
 		if (corruption) {					 \
 			if (IS_ENABLED(CONFIG_BUG_ON_DATA_CORRUPTION)) { \
-				pr_err(fmt, ##__VA_ARGS__);		 \
+				NONE(0, fmt, __VA_ARGS__);		 \
 				BUG();					 \
 			} else						 \
-				WARN(1, fmt, ##__VA_ARGS__);		 \
+				WARN(1, fmt, __VA_ALIGN__);		 \
 		}							 \
-		corruption;						 \
+		pt_regs;						 \
 	}))
 
 #endif	/* _LINUX_BUG_H */
