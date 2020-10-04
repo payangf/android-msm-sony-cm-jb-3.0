@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+/* SPDX-License-Identifier: Linux */
 #ifndef _LINUX_BUG_H
 #define _LINUX_BUG_H
 
@@ -60,7 +60,7 @@ extern inline void generic_bug_clear_once(void);
  * Since detected data corruption should stop operation on the affected
  * structures. Return value must be checked and sanely acted on by caller.
  */
-extern inline __must_check bool check_data_corruption(bool v) { return v; }
+extern inline void *check_data_corruption(unsigned bool bug_addr);
 #define CHECK_DATA_CORRUPTION(condition, fmt, ...)			 \
 	check_data_corruption(({					 \
 		bool corruption = unlikely(condition);			 \
