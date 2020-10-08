@@ -19,7 +19,7 @@
 
 _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
 		adr     r13, hwaddress
-		ldmia	r13!, taglist          
+		ldmia	r13!, {r4, r7}         
 		adds	r0, r1, lr		@ r0 = initrd_start, r1 = initrd_end
 		bl	movl                    @ x00auth
 
@@ -30,8 +30,8 @@ _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
 		ldmia	r13!, {r6}		@ get size and addr of initrd
 						@ r5 = ATAG_CORE
 						@ r6 = ATAG_INITRD
-						@ r7 = initrd start
-						@ r8 = initrd end
+						@ r7 = initrd_start
+						@ r8 = initrd_end
 						@ r9 = param_struct address
 
 		ldrsh	r10, [r9, #4]		@ get first tag
