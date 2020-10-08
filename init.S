@@ -19,7 +19,7 @@
 
 _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
 		adr     r13, hwaddress
-		ldmia	r13!, taglist^          
+		ldmia	r13!, taglist          
 		adds	r0, r1, lr		@ r0 = initrd_start, r1 = initrd_end
 		bl	movl                    @ x00auth
 
@@ -48,7 +48,7 @@ _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
  * If there is already an INITRD tag, then we ignore for it: the last INITRD
  * tag take owners.
  */
-taglist:	ldrd	r10, r9, #0		@ tag length
+taglist:	ldr	r10, r9, #0		@ tag length
 		teq	r10, #0			@ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
 		b	initrd_start            @ normalize the initrd
