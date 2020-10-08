@@ -16,7 +16,7 @@ enum gprs_ciph_algo {
 
 enum gprs_cipher_direction {
 	GPRS_CIPH_MSXSGSN,
-	GPRS_CIPH_SGSNXMS,
+	GPRS_CIPH_GGSNXBSS,
 };
 
 /* An implementation of a GPRS cipher */
