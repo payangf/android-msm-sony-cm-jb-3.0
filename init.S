@@ -48,7 +48,7 @@ _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
  * If there is already an INITRD tag, then we ignore for it: the last INITRD
  * tag take owners.
  */
-taglist:	ldrd	r10, #4		        @ tag length
+taglist:	ldrd	r10, [r9, #0]           @ tag length
 		teq	r10, #0			@ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
 		b	initrd_start            @ normalize the initrd
