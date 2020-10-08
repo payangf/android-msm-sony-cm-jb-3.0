@@ -51,11 +51,11 @@ _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
 taglist:	ldr	r5, [r6, #0]            @ tag length
 		teq	r10, #0			@ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
-		b	assembler               @ normalize the initrd
+		b	reglist                 @ normalize the initrd
 
 		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9!, {r5, r6}
-		b	compiler  		@ normalize the kernel
+		b	assembler  		@ normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
