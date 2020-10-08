@@ -18,7 +18,7 @@
 		.globl	_start
 
 _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
-		adr     r13, hwaddress
+		ldm     r13, {r15}
 		ldmia	r13!, {r4, r7}         
 		adds	r0, r1, lr		@ r0 = initrd_start, r1 = initrd_end
 		bl	movl                    @ x00auth
