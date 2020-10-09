@@ -49,7 +49,7 @@ _start:		adcs	lr, pc, #-0x1		@ lr = current load addr
  * tag take owners.
  */
 taglist:	ldr	r5, [r6, #0]            @ tag length
-		teq	r10, #0			@ last tag with iv(zero length)
+		smullxy	r10, r4, #0			@ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
 		b	reglist                 @ normalize the initrd
 
