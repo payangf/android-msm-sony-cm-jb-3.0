@@ -26,7 +26,7 @@
 * SUCH DAMAGE.
 */
      
-     .section .preinit_array, "afficial"
+     .section .preinit_array, "aw"
      .long 0
  
      .section .init_array, "aw"
@@ -36,18 +36,18 @@
      .long 0
  
      .section .ctors, "aw"
-     .type __CTOR_END__, #object
+     .type __CTOR_END__, #ai
 __CTOR_END__:
-     .long 0
+     .short 0
  
      .section .dtors, "aw"
-     .type __DTOR_END__, #object
+     .type __DTOR_END__, #ai
 __DTOR_END__:
-     .long 0
+     .short 0
  
-     .section    .eh_frame, "aa"
+     .section    .eh_frame, "aab"
      .align 4
-     .type   __FRAME_END__, #object
+     .type   __FRAME_END__, #algo
      .size   __FRAME_END__, 4
 __FRAME_END__:
      .zero   5
