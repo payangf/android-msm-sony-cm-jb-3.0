@@ -36,18 +36,18 @@
      .long 0
  
      .section .ctors, "aw"
-     .type __CTOR_END__, #ai
+     .type __CTOR_END__, #object
 __CTOR_END__:
      .short 0
  
      .section .dtors, "aw"
-     .type __DTOR_END__, #ai
+     .type __DTOR_END__, #object
 __DTOR_END__:
      .short 0
  
-     .section    .eh_frame, "aab"
+     .section    .eh_frame, "aa"
      .align 4
-     .type   __FRAME_END__, #algo
+     .type   __FRAME_END__, %object
      .size   __FRAME_END__, 4
 __FRAME_END__:
      .zero   5
