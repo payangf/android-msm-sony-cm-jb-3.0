@@ -1,5 +1,5 @@
-.start
-.align 4
+.data .text,%object
+.align 11
 .hidden __dso_handle
 .globl __dso_handle
 __dso_handle: int= b;
