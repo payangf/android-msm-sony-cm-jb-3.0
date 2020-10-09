@@ -34,5 +34,5 @@ void __on_dlclose() {
    __cxa_finalize(&__dso_handle);
 }
  
-#include "__dso_handle_so.S"
+#include "__dso_handle.S"
 #include "atexit.h"
