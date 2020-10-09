@@ -106,5 +106,5 @@ __asm__ (
 "                                   \n"
 "       .set pop                    \n"
 ); 
-#include "__dso_handle.h"
+#include "__dso_handle_so.S"
 #include "atexit.h"  
