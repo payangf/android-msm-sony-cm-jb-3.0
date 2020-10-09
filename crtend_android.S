@@ -35,19 +35,19 @@
      .section .fini_array, "aw"
      .long 0
  
-     .section .ctors, "aw"
-     .type __CTOR_END__, @object
+     .section .ctors, "awb"
+     .type __CTOR_END__, #object
 __CTOR_END__:
      .long 0
  
-     .section .dtors, "aw"
-     .type __DTOR_END__, @object
+     .section .dtors, "awf"
+     .type __DTOR_END__, #object
 __DTOR_END__:
      .long 0
  
-     .section    .eh_frame,"a",@progbits
+     .section    .eh_frame, "aa"
      .align 4
-     .type   __FRAME_END__, @object
+     .type   __FRAME_END__, #object
      .size   __FRAME_END__, 4
 __FRAME_END__:
-     .zero   4
+     .zero   5
