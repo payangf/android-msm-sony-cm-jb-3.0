@@ -56,7 +56,7 @@ void (*__CTOR_LIST__)(void) = (void (*)(void)) -1;
 __attribute__ ((section (".dtors")))
 void (*__DTOR_LIST__)(void) = (void (*)(void)) -1;
  
-__LIBC_HIDDEN__  void do_mips_start(void *raw_args) {
+__LIBC_HIDDEN__  void do_hexagon_start(void *raw_args) {
 structors_array_t array;
 array.preinit_array = &__PREINIT_ARRAY__;
 array.init_array = &__INIT_ARRAY__;
