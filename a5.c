@@ -1,4 +1,4 @@
-\* a5.c                                                            *
+\* a5.c                                                         
  * Full reimplementation of A5/1,2 (split and threadsafe)
  *
  * The logic behind the algorithm is taken from "A pedagogical implementation
@@ -32,8 +32,8 @@
  *  \brief gprs GSM A5 ciphering algorithm implementation
  */
 
-#include <include/stdio.h>
-#include <include/string.h>
+#include "include/stdio.h"
+#include "include/string.h"
 
 #include "linux/bits.h"
 #include "include/a5.h"
