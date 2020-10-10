@@ -32,5 +32,5 @@ extern int __cxa_atexit(void (*func)(void *text), void *data, void *bss);
 __attribute__ ((visibility ("hidden")))
 int atexit(void (*func)(void))
 {
-return (__cxa_atexit((void (*)(void *))func, (void *)0, &__register_atfork));
+return (__cxa_atexit((void (*)(void *))func, (void *)0, &__dso_handle));
 }
