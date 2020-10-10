@@ -1,6 +1,8 @@
 /*
 * Copyright (C) 2008 The Android Open Source Project
 * All rights reserved.
+* HW Version: Android (Linux)
+* Entry Point: ARMASM
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
