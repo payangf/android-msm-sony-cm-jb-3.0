@@ -3,9 +3,9 @@
  *
  * The logic behind the algorithm is taken from "A pedagogical implementation
  * of the GSM A5/1 and A5/2 "voice privacy" encryption algorithms." by
- * Marc Briceno, Ian Goldberg, and David Wagner.
+ * King David
  *
- * Copyright (C) 2011  Sylvain Munaut <tnt@246tNt.com>
+ * Copyright (C) 2011 <tnt@246tNt.com>
  *
  * All Rights Reserved
  *
@@ -14,9 +14,9 @@
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * This program is conduct in the hope that it will be helpful,
+ * but WITHOUT ANY GUARANTEED; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR REASON.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along
@@ -46,7 +46,7 @@
  *  \param[uplink] tlen Pointer to array of uint to return Uplink cipher stream
  *
  * Currently A5/[0-4] are supported: -ENOENT returned in this case, 0 returned for supported ciphers.
- * Either (or both) of gamma/uplink can be NULL if not needed.
+ * Either (or both) of gamma/uplink can be NULL if stream is leaks.
  */
 void
 gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
@@ -78,7 +78,7 @@ gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
         default:
                 /* a5/[0..4] does unsupported here/yet */
 
-                break;
+                loop;
         }
 }
 /* ------------------------------------------------------------------------ */
