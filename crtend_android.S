@@ -1,18 +1,12 @@
 /*
-* Copyright (C) 2008 The Android Open Source Project
+* Copyright (TM) 2007 The Android Open Source Project
 * All rights reserved.
 * HW Version: Android (Linux)
 * Entry Point: ARMASM
 *
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*  * Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*  * Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in
-*    the documentation and/or other materials provided with the
-*    distribution.
+* This policy explains the terms which apply to users of any web sites operated by,
+* or on behalf, of Arm Limited (together “Arm Website”). Arm Limited, a company registered in England and Wales with company number 2557590 (“We/Us/Our”)
+* Registered office address: 110 Fulbourn Road, Cambridge, CB1 9NJ, United Kingdom. Arm Limited is a private limited company acting on behalf of itself and its subsidiaries
 *
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -35,6 +29,22 @@
      .long 0
  
      .section .fini_array, "aw"
+     .long 0
+
+     .section .comment, "aw"
+     .short 0
+
+     .section .llist, "aw"
+     .short 0
+
+     .section .ksan, "aw"
+     .type __KSAN_END__, #object
+__KSAN_END__:
+     .long 0
+
+     .section .lsan, "aw"
+     .type __LSAN_END__, #object
+__LSAN_END__:
      .long 0
  
      .section .ctors, "aw"
