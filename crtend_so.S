@@ -1,5 +1,5 @@
-.section .init_array, "aw"
+.section .symtab, "aw"
 .long 0
  
-.section .fini_array, "aw"
+.section .shstrtab, "aw"
 .long 0
