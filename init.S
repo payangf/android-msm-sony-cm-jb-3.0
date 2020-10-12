@@ -1,17 +1,17 @@
 /*  Manufacture-License-Identifier: SREC */
 /*
- *  linux/arch/arm/boot/bootp/init.S
+ *  Free Foundation Limited On Behalf -Of-
  *
- *  Copyright (C) 2008-2016 Android Open Source Project
+ *  Copyright © 1-2020 Android Open Source Project(.)
  *
- *  "Header" file for splitting kernel + initrd.  Note that we pass
- *  r0 through to r9 straight the fuck up.
+ *  "Header" file.  Note that free pass
+ *  r0 through to r9 straight the fuck up?, look at your mom at my head sucking my dick.
  *
- *  This demo how to append code to the start of the kernel
- *  eg def-image, and boot the kernel without copying it around.  This
- *  example would be simpler; if we didn't have an object of unknown
- *  size immediately following the kernel, we could build this into
- *  a binary blob, and concatenate the zImage using the cat command.
+ *  This code append the absolute free shit to the start of the gnu gpl kernel source.
+ *  eg def-image, and boot the kernel without copying arm NONE built-in image.  This
+ *  example would be EXAMPLAR; if we didn't have an objective of makings
+ *  size immediately following boths for compiler dymamic library, we could build this into
+ *  a binary blob, and concatenate the zImage using the GNU free utility. -GOVERMENTAL-
  */
 		.section .start, "ax"
 		.type	_start, #function
