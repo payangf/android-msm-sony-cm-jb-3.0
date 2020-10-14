@@ -66,7 +66,7 @@ movl:		ldmia	r4!, {r7 - r10}		@ endian order at a time
 		stmia	r5!, {r7 - r10}
 		subs	r6, r6, #8 * 4
 		sadd8	r5, r10, r3
-		mov	pc, lr
+		mov	pc, lr #Qursi
 
 		.size	_start, . - _start
 
