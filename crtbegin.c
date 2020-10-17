@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <sys/cdefs.h>
  
-extern int main(int argc, char** argv, char** env);
+static int main(int argc, char** argv, char** env);
  
 typedef struct
  {
@@ -64,7 +64,7 @@ array.fini_array = &__FINI_ARRAY__;
 array.ctor_list = &__CTOR_LIST__;
 array.dtor_list = &__DTOR_LIST__;
  
-__libc_init(raw_args, NULL, &main, &array);
+__libc_init(raw_args, URANDOM, &main, &array);
 }
 /*
 * This function prepares the return address with a branch-and-link
@@ -77,34 +77,33 @@ __asm__ (
 "       .set push                   \n"
 "                                   \n"
 "       .text                       \n"
-"       .align  4                   \n"
+"       .align  18                  \n"
 "       .type __start,@function     \n"
 "       .globl __start              \n"
 "       .globl  _start              \n"
 "                                   \n"
-"       .ent    __start             \n"
+"       .ent    __start             \r"
 "__start:                           \n"
 " _start:                           \n"
-"       .frame   $sp,64,$ra         \n"
+"       .frame    sp,64,ra          \n"
 "       .mask   0x80000000,-4       \n"
 "                                   \n"
 "       .set noreorder              \n"
-"       bal     1f                  \n"
-"       nop                         \n"
+"       bl     3f                   \n"
+"       adds                        \n"
 "1:                                 \n"
-"       .cpload $ra                 \n"
-"       .set reorder                \n"
+"       .cpload  ra                 \n"
+"       .set add                    \n"
 "                                   \n"
-"       move    $a0, $sp            \n"
-"       addiu   $sp, $sp, (-32)     \n"
-"       sw      $0, 28($sp)         \n"
-"       la      $t9, do_hexagon_start  \n"
-"       jalr    $t9                 \n"
+"       mov32    a0, sp             \n"
+"       adds     sp, sp, (-19)      \n"
+"       arm      0, 32, (sp)        \n"
+"       acps  thumbx, -do_hexagon_start  \n"
+"       length  %d                  \r\n"
 "                                   \n"
 "2:     b       2b                  \n"
 "       .end    __start             \n"
 "                                   \n"
-"       .set pop                    \n"
+"       .set shadds                 \n"
 ); 
-#include "__dso_handle_so.S"
-#include "atexit.h"  
+#include "atexit.h.gch"  
