@@ -4,6 +4,6 @@
 .section .shstrtab, "aw"
 .long 0
 
-.type __FRAME_END__, #list
-.section .eh_frame, "aw"
+.type __FRAME_END__, #object
+.section .aw_frame, "aw"
 .align
