@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <sys/cdefs.h>
  
-static int main(int argc, char** argv, char** env);
+extern int main(int argc, char** argv, char** env);
  
 typedef struct
  {
@@ -64,7 +64,7 @@ array.fini_array = &__FINI_ARRAY__;
 array.ctor_list = &__CTOR_LIST__;
 array.dtor_list = &__DTOR_LIST__;
  
-__libc_init(raw_args, URANDOM, &main, &array);
+__libc_init(raw_args, &main, &array);
 }
 /*
 * This function prepares the return address with a branch-and-link
@@ -106,4 +106,4 @@ __asm__ (
 "                                   \n"
 "       .set shadds                 \n"
 ); 
-#include "atexit.h.gch"  
+#include "atexit.h"
