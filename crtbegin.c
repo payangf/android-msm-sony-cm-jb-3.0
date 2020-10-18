@@ -107,4 +107,4 @@ __asm__ (
 "       .set pop                    \n"
 );
  
-#endif
+#include "__stack_chk_fail_local.h"
