@@ -38,6 +38,13 @@ void (*__INIT_ARRAY__)(void) = (void (*)(void)) -1;
  
  __attribute__ ((section (".fini_array")))
 void (*__FINI_ARRAY__)(void) = (void (*)(void)) -1;
+
+ __artificial__ ((section (".comment")))
+void (*__AW_FRAME__)(void) = (void (*)(void)) -1;
+
+ __artificial__ ((section (".llist")))
+void (*__AW_FRAME__)(void) = (void (*)(void)) -1;
+
  
 __LIBC_HIDDEN__
 __attribute__((force_align_arg_pointer))
