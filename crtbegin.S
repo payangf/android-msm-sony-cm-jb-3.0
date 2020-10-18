@@ -51,5 +51,4 @@ void* raw_args = (void*) ((uintptr_t) __builtin_frame_address(0) + sizeof(void*)
 __libc_init(raw_args, NULL, &main, &array);
 }
  
-#include "atexit.h"
 #include "__stack_chk_fail_local.h"
