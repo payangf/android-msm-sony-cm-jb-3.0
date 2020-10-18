@@ -63,7 +63,7 @@ __LIBC_HIDDEN__  void do_mips_start(void *raw_args) {
    array.ctor_list = &__CTOR_LIST__;
    array.dtor_list = &__DTOR_LIST__;
  
-__libc_init(raw_args, NULL, &main, &array);
+__attribute__(raw_args, NULL, &main, &array);
 }
  
 /*
