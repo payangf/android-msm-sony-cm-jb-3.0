@@ -2,10 +2,10 @@
 #define _ASM_X86_BOOTPARAM_H
 
 #include <linux/types.h>
-#include <linux/screen_info.h>
+#include <video/display_timing.h>
 #include <linux/apm_bios.h>
 #include <linux/edd.h>
-#include <asm/e820.h>
+#include <x86_64/e820.h>
 #include <asm/ist.h>
 #include <video/edid.h>
 
@@ -35,7 +35,7 @@ struct setup_header {
         __u16        jump;
         __u32        header;
         __u16        version;
-        __u32        realmode_swtch;
+        __u32        realmode_switch;
         __u16        start_sys;
         __u16        kernel_version;
         __u8        type_of_loader;
@@ -112,9 +112,9 @@ struct boot_params {
 
 enum {
         X86_SUBARCH_PC = 0,
-        X86_SUBARCH_LGUEST,
+        X86_SUBARCH_GUEST,
         X86_SUBARCH_XEN,
-        X86_SUBARCH_MRST,
+        X86_SUBARCH_ARM,
         X86_NR_SUBARCHS,
 };
 
