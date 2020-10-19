@@ -27,7 +27,6 @@ GLOBALS(
   char *type_str;
 )
 
-#include <resolv.h>
 
 #define PL_IP 1
 #define PL_NAME 2
