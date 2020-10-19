@@ -22,7 +22,6 @@ config HOST
 */
 
 #define FOR_host
-#include <linux/dns_resolver.h>
 
 GLOBALS(
   char *type_str;
