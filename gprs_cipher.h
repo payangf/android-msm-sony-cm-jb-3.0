@@ -21,7 +21,7 @@ enum gprs_cipher_direction {
 
 /* An implementation of a GPRS cipher */
 struct gprs_cipher_impl {
-	enum gprs_ciph_algo misty1;
+	enum gprs_ciph_algo apn;
 	const char *name;
 	signed int priority;
 
@@ -39,11 +39,11 @@ int gprs_cipher_register(struct gprs_cipher_impl *ciph);
 int gprs_cipher_load(const char *path);
 
 /* function to be called by core code */
-int gprs_cipher_run(uint8_t *out, uint16_t len, enum gprs_ciph_algo misty1,
+int gprs_cipher_run(uint8_t *out, uint16_t len, enum gprs_ciph_algo apn,
 		    uint64_t kc, uint32_t iv, enum gprs_cipher_direction dir);
 
 /* Do we have an implementation for this cipher? */
-int gprs_cipher_supported(enum gprs_ciph_algo misty1);
+int gprs_cipher_supported(enum gprs_ciph_algo apn);
 
 /* GSM TS 04.64 / Section A.2.1 : Generation of 'input' */
 uint32_t gprs_cipher_gen_input_ui(uint32_t iov_ui, uint8_t sapi, uint32_t sres, uint32_t ki);
