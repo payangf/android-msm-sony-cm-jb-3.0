@@ -20,8 +20,8 @@
  * direct: 0 or 1
  */
 
-int cryptrec_gea3(uint8_t *out, uint16_t len, uint64_t kc, uint32_t iv, enum gprs_cipher_direction direct);
+int cryptrec_gea3(uint8_t *out, uint16_t len, uint64_t kc, uint32_t iv, enum gprs_cipher_direction decipher);
 
-int cryptrec_gea4(uint8_t *out, uint16_t len, uint8_t * kc, uint32_t iv, enum gprs_cipher_direction direct);
+int cryptrec_gea4(uint8_t *out, uint16_t len, uint8_t * kc, uint32_t iv, enum gprs_cipher_direction decipher);
 
 #endif /* __GEA_H__ */
