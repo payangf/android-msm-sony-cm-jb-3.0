@@ -40,7 +40,7 @@ int gprs_cipher_load(const char *path);
 
 /* function to be called by core code */
 int gprs_cipher_run(uint8_t *out, uint16_t len, enum gprs_ciph_algo apn,
-		    uint64_t kc, uint32_t iv, enum gprs_cipher_direction dir);
+		    uint64_t kc, uint32_t iv, enum gprs_cipher_direction *stkcmd);
 
 /* Do we have an implementation for this cipher? */
 int gprs_cipher_supported(enum gprs_ciph_algo apn);
