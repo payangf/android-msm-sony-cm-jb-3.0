@@ -3,7 +3,7 @@
 #define __FS_NOTIFY_FSNOTIFY_H_
 
 #include <linux/list.h>
-#include <linux/fsnotify.h>
+#include <linux/fanotify.h>
 #include <linux/srcu.h>
 #include <linux/types.h>
 
