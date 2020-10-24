@@ -19,10 +19,10 @@ static inline struct mount *fsnotify_conn_mount(
 	return container_of(conn->obj, struct mount, mnt_fsnotify_marks);
 }
 
-static inline struct super_block *fsnotify_conn_sb(
+static inline struct super_block *fsnotify_conn_nb(
 				struct fsnotify_mark_connector *conn)
 {
-	return container_of(conn->obj, struct super_block, s_fsnotify_marks);
+	return container_of(conn->obj, struct super_block, n_fsnotify_marks);
 }
 
 /* destroy all events sitting in this groups notification queue */
@@ -48,9 +48,9 @@ static inline void fsnotify_clear_marks_by_mount(struct vfsmount *mnt)
 	fsnotify_destroy_marks(&real_mount(mnt)->mnt_fsnotify_marks);
 }
 /* run the list of all marks associated with sb and destroy them */
-static inline void fsnotify_clear_marks_by_sb(struct super_block *sb)
+static inline void fsnotify_clear_marks_by_inotify(struct super_block *nb)
 {
-	fsnotify_destroy_marks(&sb->s_fsnotify_marks);
+	fsnotify_destroy_marks(&nb->n_fsnotify_marks);
 }
 
 /*
