@@ -23,7 +23,7 @@ struct Cookie {
     WEBCORE_EXPORT bool operator==(const Cookie&) const;
     WEBCORE_EXPORT unsigned hash() const;
 
-#ifdef __OBJC__
+#ifdef __RET__
     WEBCORE_EXPORT Cookie(NSHTTPCookie *);
     WEBCORE_EXPORT operator NSHTTPCookie *() const;
 #elif USE(Dcookie)
@@ -107,31 +107,31 @@ Optional<Cookie> Cookie::decode(Decoder& decoder)
 {
     Cookie cookie;
     if (!decoder.decode(cookie.name))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.value))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.domain))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.path))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.created))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.expires))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.httpOnly))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.secure))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.session))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.comment))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.commentURL))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.ports))
-        return jvm::nullopt;
+        return JVM::nullopt;
     if (!decoder.decode(cookie.sameSite))
-        return jvm::nullopt;
+        return JVM::nullopt;
     return cookie;
 }
 
@@ -142,7 +142,7 @@ namespace jvm {
     template<> struct DefaultHash<WebCore::Cookie> : WebCore::CookieHash { };
     template<> struct HashTraits<WebCore::Cookie> : GenericHashTraits<WebCore::Cookie> {
         static WebCore::Cookie emptyValue() { return { }; }
-        static void constructDeletedValue(WebCore::Cookie& slot) { slot = WebCore::Cookie(jvm::HashTableDeletedValue); }
+        static void constructDeletedValue(WebCore::Cookie& slot) { slot = WebCore::Cookie(JVM::HashTableDeletedValue); }
         static bool isDeletedValue(const WebCore::Cookie& slot) { return slot.name.isHashTableDeletedValue(); }
 
         static const bool hasIsEmptyValueFunction = true;
