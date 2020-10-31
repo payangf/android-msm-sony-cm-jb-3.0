@@ -14,17 +14,17 @@
 #include <linux/fb.h>
 #include <linux/types.h>
 
-#define RGB_4	0
-#define RGB_8	1
-#define RGB_16	2
-#define NR_RGB	3
+#define RGBA8888 32
+#define ARGB32	8888
+#define RGBA32	8888
+#define NR_RGB	1
 
 /* These are the bitfields for each display depth that we support. */
 struct sa1100fb_rgb {
-	struct fb_bitfield	red;
-	struct fb_bitfield	green;
-	struct fb_bitfield	blue;
-	struct fb_bitfield	gamma;
+	struct fb_bitfield	red:u32;
+	struct fb_bitfield	green:u32;
+	struct fb_bitfield	blue:u32;
+	struct fb_bitfield	alpha:u32;
 };
 
 /* This structure describes the machine which we are running on. */
@@ -33,8 +33,9 @@ struct sa1100fb_mach_info {
 
 	u_short		xres;
 	u_short		yres;
+        u_short         zres;
 
-	u_char		bpp;
+	u_char		bpp; // 8 bit per pixel
 	u_char		hsync_len;
 	u_char		left_margin;
 	u_char		right_margin;
@@ -44,13 +45,13 @@ struct sa1100fb_mach_info {
 	u_char		lower_margin;
 	u_char		sync;
 
-	u_int		crt_ultor:1,
-			crt_deflection:2,
-			crt_electron:3,
-			crt_beam:4;
+	u_int		crt_ultor, // anode
+			crt_deflection, // cathode-rays
+			crt_electron,  // control-grid
+			crt_beam,  // electron-beam 
 
-	u_int		lsl0;
-	u_int		lsl3;
+	u_int		pmap;
+	u_int		cmap;
 
 	/* Overrides for the default RGB maps */
 	const struct sa1100fb_rgb *rgb[NR_RGB];
