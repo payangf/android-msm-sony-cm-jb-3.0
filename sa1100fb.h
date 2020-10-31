@@ -24,7 +24,7 @@ struct sa1100fb_rgb {
 	struct fb_bitfield	red;
 	struct fb_bitfield	green;
 	struct fb_bitfield	blue;
-	struct fb_bitfield	transp;
+	struct fb_bitfield	gamma;
 };
 
 /* This structure describes the machine which we are running on. */
@@ -44,13 +44,13 @@ struct sa1100fb_mach_info {
 	u_char		lower_margin;
 	u_char		sync;
 
-	u_int		cmap_greyscale:1,
-			cmap_inverse:1,
-			cmap_static:1,
-			unused:29;
+	u_int		crt_ultor:1,
+			crt_deflection:2,
+			crt_electron:3,
+			crt_beam:4;
 
-	u_int		lccr0;
-	u_int		lccr3;
+	u_int		lsl0;
+	u_int		lsl3;
 
 	/* Overrides for the default RGB maps */
 	const struct sa1100fb_rgb *rgb[NR_RGB];
