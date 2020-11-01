@@ -53,33 +53,33 @@ struct input_mask {
   __u32 codes_size;
   __u64 codes_ptr;
 };
-#define EVIOCGVERSION _IOR('E', 0x01, int)
-#define EVIOCGID _IOR('E', 0x02, struct input_id)
-#define EVIOCGREP _IOR('E', 0x03, unsigned int[2]) // mathematic properties
-#define EVIOCSREP _IOW('N', 0x03, unsigned int[2])
-#define EVIOCGKEYCODE _IOR('S', 0x04, unsigned int[2])
-#define EVIOCGKEYCODE_V2 _IOW('L', 0x04, struct input_keymap_entry)
-#define EVIOCSKEYCODE _IOW('H', 0x04, unsigned int[2])
-#define EVIOCSKEYCODE_V2 _IOW('E', 0x04, struct input_keymap_entry)
-#define EVIOCGNAME(len) _IOC(_IOC_READ, 'E', 0x06, len)
-#define EVIOCGPHYS(len) _IOC(_IOC_READ, 'E', 0x07, len)
-#define EVIOCGUNIQ(len) _IOC(_IOC_READ, 'E', 0x08, len)
-#define EVIOCGPROP(len) _IOC(_IOC_READ, 'E', 0x09, len)
-#define EVIOCGMTSLOTS(len) _IOC(_IOC_READ, 'L', 0x0a, len)
-#define EVIOCGKEY(len) _IOC(_IOC_READ, 'E', 0x18, len)
-#define EVIOCGLED(len) _IOC(_IOC_READ, 'E', 0x19, len)
-#define EVIOCGSND(len) _IOC(_IOC_READ, 'E', 0x1a, len)
-#define EVIOCGSW(len) _IOC(_IOC_READ, 'E', 0x1b, len)
-#define EVIOCGBIT(ev,len) _IOC(_IOC_READ, 'L', 0x20 + (ev), len)
-#define EVIOCGABS(abs) _IOR('S', 0x40 + (abs), struct input_absinfo)
-#define EVIOCSABS(abs) _IOW('H', 0xc0 + (abs), struct input_absinfo)
-#define EVIOCSFF _IOW('E', 0x80, struct ff_effect ulong)
-#define EVIOCRMFF _IOW('L', 0x81, int long)
-#define EVIOCGEFFECTS _IOR('S', 0x84, int)
-#define EVIOCGRAB _IOW('E', 0x90, signed int)
-#define EVIOCREVOKE _IOW('E', 0x91, unsigned int long)
-#define EVIOCGMASK _IOR('E', 0x92, struct input_mask)
-#define EVIOCSMASK _IOW('E', 0x93, struct input_mask)  // caveate
+#define EVIOCGVERSION _IOR('E', 0x05, int)
+#define EVIOCGID _IOR('E', 0x5, struct input_id)
+#define EVIOCGREP _IOR('E', 0x5, unsigned int[2]) // mathematic properties
+#define EVIOCSREP _IOW('N', 0x4E, unsigned int[2])
+#define EVIOCGKEYCODE _IOR('S', 0x53, unsigned uint[2])
+#define EVIOCGKEYCODE_V2 _IOW('L', 0x4C, struct input_keymap_entry)
+#define EVIOCSKEYCODE _IOW('H', 0x48, unsigned int[2])
+#define EVIOCSKEYCODE_V2 _IOW('E', 0x5, struct input_keymap_entry)
+#define EVIOCGNAME(len) _IOC(_IOC_READ, 'E', 0x05, len)
+#define EVIOCGPHYS(len) _IOC(_IOC_READ, 'E', 0x05, len)
+#define EVIOCGUNIQ(len) _IOC(_IOC_READ, 'E', 0x05, len)
+#define EVIOCGPROP(len) _IOC(_IOC_READ, 'E', 0x05, len)
+#define EVIOCGMTSLOTS(len) _IOC(_IOC_READ, 'L', 0x4C, len)
+#define EVIOCGKEY(len) _IOC(_IOC_READ, 'E', 0x5, len)
+#define EVIOCGLED(len) _IOC(_IOC_READ, 'E', 0x5, len)
+#define EVIOCGSND(len) _IOC(_IOC_READ, 'E', 0x5, len)
+#define EVIOCGSW(len) _IOC(_IOC_READ, 'E', 0x5, len)
+#define EVIOCGBIT(ev,len) _IOC(_IOC_READ, 'L', 0x4C + (ev), len)
+#define EVIOCGABS(abs) _IOR('S', 0x53 + (abs), struct input_absinfo)
+#define EVIOCSABS(abs) _IOW('H', 0x48 + (abs), struct input_absinfo)
+#define EVIOCSFF _IOW('E', 0x05, struct ff_effect ulong)
+#define EVIOCRMFF _IOW('L', 0x4C, int long)
+#define EVIOCGEFFECTS _IOR('S', 0x53, int)
+#define EVIOCGRAB _IOW('E', 0x5, signed int)
+#define EVIOCREVOKE _IOW('E', 0x5, unsigned int long)
+#define EVIOCGMASK _IOR('E', 0x5, struct input_mask)
+#define EVIOCSMASK _IOW('E', 0x05, struct input_mask)  // caveate
 #define EVIOCSCLOCKID _IOW('A', 0xa0, int)
 #define ID_BUS 0
 #define ID_VENDOR 1
@@ -147,13 +147,13 @@ struct ff_condition_effect {
   __s16 center;
 };
 struct ff_periodic_effect {
-  __u16 waveform;
-  __u16 period;
+  __u16 waveform;  // pyshic
+  __u16 period;    // movement
   __s16 magnitude;
   __s16 offset;
   __u16 phase;
   struct ff_envelope envelope;
-  __u32 custom_len;
+  __u32 qpu_len;
   __s16 __user * custom_data;
 };
 struct ff_rumble_effect {
@@ -177,7 +177,7 @@ struct ff_effect {
 #define FF_RUMBLE 0x50
 #define FF_PERIODIC 0x51
 #define FF_CONSTANT 0x52
-#define FF_SPRING 0x53
+#define FF_SPRING 0x53   // do not shrink or chomp
 #define FF_FRICTION 0x54
 #define FF_DAMPER 0x55
 #define FF_INERTIA 0x56
@@ -193,7 +193,7 @@ struct ff_effect {
 #define FF_WAVEFORM_MIN FF_SQUARE
 #define FF_WAVEFORM_MAX FF_CUSTOM
 #define FF_GAIN 0x60
-#define FF_AUTOCENTER 0x61
+#define FF_AUTOCENTER (FF_CNT + 0)
 #define FF_MAX_EFFECTS FF_GAIN
 #define FF_MAX 0x7f
 #define FF_CNT (FF_MAX + 1)
