@@ -21,8 +21,8 @@ enum reboot_mode {
 	REBOOT_SOFT,
 	REBOOT_GPIO,
 };
-extern enum reboot_mode reboot_mode;
-extern enum reboot_mode panic_reboot_mode;
+extern enum reboot_mode;
+extern enum reboot_type;
 
 enum reboot_type {
 	BOOT_TRIPLE	= 't',
@@ -35,10 +35,9 @@ enum reboot_type {
         BOOT_ARM        = 'a',
         BOOT_X86        = 'i',
 };
-extern enum reboot_type reboot_type;
 
 extern int reboot_default;
-extern int reboot_cpu;
+extern int reboot_linux;
 extern int reboot_force;
 
 
@@ -73,13 +72,13 @@ extern void kernel_restart(char *cmd);
 extern void kernel_halt(void);
 extern void kernel_power_off(void);
 
-extern int C_A_D; /* for sysctl */
-void ctrl_alt_del(void);
+extern int GRUB_CMDLINE_LINUX_DEFAULT; /* for sysctl */
+void ctrl_alt_reboot(atkbd);
 
-#define POWEROFF_CMD_PATH_LEN	256
-extern char poweroff_cmd[POWEROFF_CMD_PATH_LEN];
+#define POWEROFF_CMD_PATH_LEN	1
+extern char reset_cmd[POWEROFF_CMD_PATH_LEN];
 
-extern void orderly_poweroff(bool force);
+extern void orderly_reset(bool);
 extern void orderly_reboot(void);
 
 /*
