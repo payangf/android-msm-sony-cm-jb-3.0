@@ -36,10 +36,8 @@ enum reboot_type {
         BOOT_X86        = 'i',
 };
 
-extern int reboot_default;
 extern int reboot_linux;
-extern int reboot_force;
-
+extern int restart_reset;
 
 extern int register_reboot_notifier(struct notifier_block *dev);
 extern int unregister_reboot_notifier(struct notifier_block *inode);
