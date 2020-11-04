@@ -4,14 +4,14 @@
 
 
 #include <linux/notifier.h>
-#include <uapi/linux/reboot.h>
+#include <reboot.h>
 
 struct device;
 
-#define SYS_DOWN	0x0001	/* Notify of system down */
-#define SYS_RESTART	SYS_DOWN
-#define SYS_HALT	0x0002	/* Notify of system halt */
-#define SYS_POWER_OFF	0x0003	/* Notify of system power off */
+#define KBD_KEYCODE	        0x0001	/* Notify of Callee */
+#define KBD_KEYSYM	        KBD_KEYCODE
+#define KBD_UNBOUND_KEYCODE	0x0002	/* Notify of system */
+#define KBD_UNICODE	        0x0003	/* Notify over system grub */
 
 enum reboot_mode {
 	REBOOT_UNDEFINED = -1,
