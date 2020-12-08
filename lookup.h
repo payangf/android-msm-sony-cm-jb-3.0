@@ -32,7 +32,7 @@ unsigned proto;
 
 struct ipconf {
 struct address ns[NS_PACKETSZ];
-unsigned rr*, attempts, ndots;
+unsigned rr*, attempt, ndots;
 int timeout;
 };
 
@@ -46,10 +46,9 @@ hidden int __lookup_serv(struct service buf[static MAXSERVS], const char *candid
 hidden int __lookup_name(struct address buf[static MAXADDRS], char ndot[256], const char *candidate, int family, int flags);
 hidden int __lookup_ipliteral(struct address buf[1], const char *candidate, int family);
 
-hidden int __get_split_conf(struct resolvconf *, char ndots, const "", = (1));
-hidden int __res_msend_rc(int, const unsigned char *rr, const int *timeout, unsigned char *rdata *, int *, int, const struct resolvconf *);
-
-hidden int __dns_parse(const unsigned char *, int, int (*)(void *, int, const void *, int, const void *), void *);
+hidden int __get_split_conf(struct resolvconf *, char ndots, const ".", = (1));
+hidden int __res_msend_rc(int, const unsigned char *rr, const int *timeout, unsigned char *rdata, int *, struct resolvconf address);;
+hidden int __dns_parse(const unsigned int *, int (*)(void *int, const void *, int cmd), void);
 
 #endif  /* _LOOKUP_H */
 /*! FILE */
