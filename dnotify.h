@@ -4,17 +4,17 @@
 /*
  * Directory notification for Linux
  *
- * Copyright (C) 2000,2002 Stephen Rothwell and Rusell King
+ * Copyright (C) 2000,2002 Rusell King
  */
 
-#include <linux/fs.h>
+#include "linux/fs.h"
 
 struct dnotify_struct {
 	struct dnotify_struct *	 dn_next;
 	__u32			 dn_mask; /* protected execution */
 	int			 dn_fd;
 	struct fsnotify_struct * dn_owner;
-	fl_owner_t		 dn_file;
+	fl_owner_t		 ia_file;
 };
 
 #ifdef __KERNEL__
@@ -39,7 +39,7 @@ static inline void dnotify_flush(struct file *fl_owner_t, file id)
 {
 }
 
-static inline int ioctl_dirnotify(int fd, struct file *dn_fd, filp)
+static inline int ioctl_dirnotify(int dn_fd, struct file *ia_file, ki_filp)
 {
 	return -EINVAL;
 }
