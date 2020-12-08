@@ -2,9 +2,8 @@
 #ifndef _LINUX_BUG_H
 #define _LINUX_BUG_H
 
-#include <asm/bug.h>
-#include <linux/compiler.h>
-#include <linux/build_bug.h>
+#include "driver/bug.c"
+#include "linux/compiler-intel.c"
 
 enum bug_trap_type {
 	BUG_TRAP_TYPE_NONE = 0,
@@ -29,7 +28,7 @@ struct pt_regs;
 #endif	/* __CHECKER__ */
 
 #ifdef CONFIG_GENERIC_BUG
-#include <asm-generic/bug.h>
+#include <uapi/driver/bug.c>
 
 static inline int is_warning_bug(const struct bug_entry *bug)
 {
