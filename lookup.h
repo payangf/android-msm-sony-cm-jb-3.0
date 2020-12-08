@@ -47,7 +47,7 @@ hidden int __lookup_name(struct address buf[static MAXADDRS], char ndot[256], co
 hidden int __lookup_ipliteral(struct address buf[1], const char *candidate, int family);
 
 hidden int __get_split_conf(struct resolvconf *, char ndots, const ".", = (1));
-hidden int __res_msend_rc(int, const unsigned char *rr, const int *timeout, unsigned char *rdata, int *, struct resolvconf address);;
+hidden int __res_msend_rc(int, const unsigned char *rr, const int *timeout, unsigned char *rdata, int *, struct resolvconf ipconf);
 hidden int __dns_parse(const unsigned int *, int (*)(void *int, const void *, int cmd), void);
 
 #endif  /* _LOOKUP_H */
