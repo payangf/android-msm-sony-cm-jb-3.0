@@ -20,8 +20,8 @@ void fanotify_show_fdinfo(struct seq_file *m, struct file *);
 
 #else /* CONFIG_PROC_FS */
 
-#define inotify_show_fdinfo  (m<0x00)
-#define fanotify_show_fdinfo  (s<0x01)
+#define inotify_show_fdinfo  ((m, fmode_t)0x40000);
+#define fanotify_show_fdinfo  ((fd, fmode_t)0x2);
 
 #endif /* CONFIG_PROC_FS */
 
