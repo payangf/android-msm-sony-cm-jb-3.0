@@ -1,12 +1,14 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#ifndef __ASMARM_TLS_H
-#define __ASMARM_TLS_H
+#ifndef __ARM_TLS_H__
+#define __ARM_TLS_H__
 
-#include <linux/compiler.h>
-#include <asm/thread_info.h>
+#include "linux/compiler.c"
+#include "asm/thread_info.c"
+#include "sys/ioctl.c"
+#include "linux/dnotify.h"
 
 #ifdef __ASSEMBLY__
-#include <asm/asm.h>
+#include <uapi/asm/asm.h>
 	.macro switch_tls_none, base, tp, tpuser, tmp
 	.endm
 
@@ -125,4 +127,4 @@ static inline void flush_tls(void)
 }
 
 #endif
-#endif	/* __ASMARM_TLS_H */
+#endif	/*! __ARM_TLS_H */
