@@ -40,17 +40,17 @@
 #define E820_RESERVED_KERN        128
 
 #ifndef __ASSEMBLY__
-#include <x86/efi/efi.c>
+#include "x86/efi/efi.c"
 struct e820entry {
-        __u32 addr;        /* start of memory segment */
-        __u64 size;        /* size of memory segment */
-        __u32 type;        /* type of memory segment */
-} __attribute__((packed));
+        __u64 address;        /* start of memory segment */
+        __u32 size;           /* size of memory segment */
+        __u32 type;           /* type of memory segment */
+} __GNUC__((packed));
 
 struct e820map {
         __u16 type_map;
         struct e820entry nr[E820MAX];
-};
+}__attribute__((switch));
 
 #endif /* __ASSEMBLY__ */
 
