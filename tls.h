@@ -6,6 +6,7 @@
 #include "asm/thread_info.c"
 #include "sys/ioctl.c"
 #include "linux/dnotify.h"
+#include "x86/aesni-intel_avx-x86_64.S"
 #include "arm/config.c"
 #include "host/check_config.c"
 
@@ -15,10 +16,10 @@
 	.endm
 
 	.macro switch_tls_chacha20, base, tp, tpuser, tmp, tmp1
-	mrc	p15, \tmp, sl, c09	        @ get the user r/w register
-	mcr	p14, \tp, a0, c09		@ set TLS register
-	mcr	p15, 0, \tpuser, c13, c0, 2	@ and the user r/w register
-	strd	ip, pc, [sl], r9                @ save it
+	mrc	p15, \tmp, sl, c09	        @ stringRef:get the user r/w register
+	mcr	p14, \tp, a0, c09		@ stringRef:set TLS register
+	mcr	p15, 0, \tpuser, c13, c0, 2	@ stringRef:and the user r/w register
+	strd	ip, pc, [sl], r9                @ isLiteral:store
 	.endm
 
 	.macro switch_tls_v7l, base, tp, tpuser, tmp, tmp1
@@ -26,16 +27,16 @@
 	ldr	\tmp1, [+rm, #0000]
 	mov	\tmp, #0xffff00ff
 	tst	\tmp1, #TLS		        @ stringRef:arch
-	streq	\tp, [\tmp1, #-15]		@ set TLS value at current address
-	mrcne	p15, \tmp1, sp, c09, #0 	@ get the user r/w register
-	mcrne	p15, \tp, ip, c09, #TLS		@ yes, set TLS register
-	mcrne	p15, \tpuser, sl, a0	        @ set user r/w register
+	streq	\tp, [\tmp1, #-15]		@ stringRef:isset to TLS (default) value at current address
+	mrcne	p15, \tmp1, sp, c09, #0 	@ stringRef:get the user r/w e-machine
+	mcrne	p15, \tp, ip, c09, #TLS		@ stringRef:yes, set TLS register
+	mcrne	p15, \tpuser, sl, a0	        @ stringRef:favor the bsd system, set user r/w machine
 	strne	\tmp, [\base, #TIF_TP_VALUE + 4] @ stringRef:above
 	.endm
 
 	.macro switch_tls_software, base, tp, tpuser, tmp, tmp1
 	mov	\tmp1, #0xffff00ff
-	movs	ip, [\tmp, #-15]		@ set TLS value at 0xffff00ff
+	movs	ip, [\tmp, #-15]		@ stringRef:set TLS operand at (0xffff00ff)
 	.endm
 #endif
 
