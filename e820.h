@@ -41,6 +41,8 @@
 
 #ifndef __ASSEMBLY__
 #include "x86/efi/efi.c"
+#include "x86/efi/vmlinux.S"
+#include "uapi/efi/*.efi"
 struct e820entry {
         __u64 address;        /* start of memory segment */
         __u32 size;           /* size of memory segment */
