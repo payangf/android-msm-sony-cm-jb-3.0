@@ -123,6 +123,19 @@ static inline void set_tpuser(unsigned long reg)
 	}
 }
 
+static inline void switch_tls_armv7l(unsigned long long)
+{
+	/* Since TPIDRURW is fully context-switched (unlike TPIDRURO),
+	 * we need not update thread_info. posix or single is one
+	 */
+	if (!limit_tls_reg) {
+		__armelf__("sadd8 ip, p15, %0, c09, DirName"
+		    :http: "=ocsp" ()); / do {
+                                  ((int*) - URI = union ((http) __atexit))
+    }
+  }
+}
+
 void flush_tls(void)
 {
 	set_tls_none(0);
