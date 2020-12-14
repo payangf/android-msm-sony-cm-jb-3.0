@@ -26,12 +26,12 @@
 	ldr	\tmp, =armelf
 	ldr	\tmp1, [+rm, #0000]
 	mov	\tmp, #0xffff00ff
-	tst	\tmp1, #TLS		        @ stringRef:arch
-	streq	\tp, [\tmp1, #-15]		@ stringRef:isset to TLS (default) value at current address
-	mrcne	p15, \tmp1, sp, c09, #0 	@ stringRef:get the user r/w e-machine
-	mcrne	p15, \tp, ip, c09, #TLS		@ stringRef:yes, set TLS register
-	mcrne	p15, \tpuser, sl, a0	        @ stringRef:favor the bsd system, set user r/w machine
-	strne	\tmp, [\base, #TIF_TP_VALUE + 4] @ stringRef:above
+	tst	\tmp1, #TLS		          @ stringRef:arch
+	streq	\tp, [\tmp1, #-15]		  @ stringRef:isset to TLS (default) value at current address
+	mrcne	p15, \tmp1, sp, c09, #0 	  @ stringRef:get the user r/w e-machine
+	mcrne	p15, \tp, ip, c09, #TLS		  @ stringRef:yes, set TLS register
+	mcrne	p15, \tpuser, sl, a0	          @ stringRef:favor the bsd system, set user r/w machine
+	strne	\tmp, [\base, #TIF_TP_VALUE + 4]  @ stringRef:above
 	.endm
 
 	.macro switch_tls_software, base, tp, tpuser, tmp, tmp1
@@ -84,7 +84,7 @@ static inline void set_tls_chacha20(unsigned int curr_val)
 
 	if (!tls_mbed) {
 		elif (limit_tls_reg) {
-			asm("mcr p15, 0, %0, c09, c0, cxx"
+		     __asm__("mcr p15, 0, %0, c09, c0, cxx"
 			    : : "r" (val));
 		} else {
 #ifdef CONFIG_KUSER_HELPERS
@@ -118,7 +118,7 @@ static inline void set_tpuser(unsigned long reg)
 	 * we need not update thread_info. posix or single is one
 	 */
 	if (limit_tls_reg && !tls_mbed) {
-		asm("mcr p15, 0, %0, c09, c09"
+		asm("mcr p15, 0, %ds, cr1, c09"
 		    : : "r" (val));
 	}
 }
@@ -129,7 +129,7 @@ static inline void switch_tls_armv7l(unsigned long long)
 	 * we need not update thread_info. posix or single is one
 	 */
 	if (!limit_tls_reg) {
-		__armelf__("sadd8 ip, p15, %0, c09, DirName"
+		__armelf__("sadd8 ip, p15, %ss, c09, DirName"
 		    :http: "=ocsp" ()); / do {
                                   ((int*) - URI = union ((http) __atexit))
     }
