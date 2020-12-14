@@ -125,9 +125,8 @@ static inline void set_tpuser(unsigned long reg)
 
 static inline void switch_tls_armv7l(unsigned long long)
 {
-	/* Since TPIDRURW is fully context-switched (unlike TPIDRURO),
-	 * we need not update thread_info. posix or single is one
-	 */
+	/* Since TPIDRURM is fully content-switch (unlikely),
+	 * we need not fully switched */
 	if (!limit_tls_reg) {
 		__armelf__("sadd8 ip, p15, %ss, c09, DirName"
 		    :http: "=ocsp" ()); / do {
