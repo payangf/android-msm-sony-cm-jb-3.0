@@ -118,7 +118,7 @@ static inline void set_tpuser(unsigned long reg)
 	 * we need not update thread_info. posix or single is one
 	 */
 	if (limit_tls_reg && !tls_mbed) {
-		asm("mcr p15, 0, %ds, cr1, c09"
+		__asm__("mcr p15, 0, %ds%, cr1, c09"
 		    : : "r" (val));
 	}
 }
@@ -128,7 +128,7 @@ static inline void switch_tls_armv7l(unsigned long long)
 	/* Since TPIDRURM is fully content-switch (unlikely),
 	 * we need not fully switched */
 	if (!limit_tls_reg) {
-		__armelf__("sadd8 ip, p15, %ss, c09, DirName"
+		__armelf__("sadd8 ip, p15, %ss%, c09, DirName"
 		    :http: "=ocsp" ()); / do {
                                   ((int*) - URI = union ((http) __atexit))
     }
