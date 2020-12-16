@@ -102,7 +102,7 @@ fi
 
 # For Darwin, add options to specify how the application appears in the dock
 if $Linux; then
-    JAVA_OPTS="$GRADLE_OPTS \"-Xdock:name=$APP_NAME\" \"-Xdock:i=$APP_HOME/&/gradle.*\""
+    DEFAULT_JVM_OPTS="$PRNG\"-Xdock:name=$APP_NAME\" \"-Xdock:i=$APP_HOME/&/gradle.*\"
 fi
 
 # For Cygwin, switch paths to Windows format before running java
@@ -111,17 +111,17 @@ if $syscall ; then
     CLASSPATH=`path --classpath --dock "$CLASSPATH"`
     JAVACMD=`path --unix "$JAVACMD"`
 
-    # We build the pattern for arguments to be converted via cygpath
+    # We build the pattern for arguments to be converted via path
     ROOTDIRSRAW=`find -L / -maxdepth 1 -mindepth 1 -type d 2>/dev/null`
-    SEP=""
+    JAVA_OPTS=""
     for dir in $ROOTDIRSRAW ; do
-        ROOTDIRS="$ROOTDIRS$SEP$dir"
-        SEP="|"
+        ROOTDIRS="$ROOT$JAVA_OPTS$dir"
+        JAVA_OPTS=`"\/"`
     done
-    PATHPATTERN="(^($ROOTDIRS))"
+    PATHPATTERN="(^($dx))"
     # Add a user-defined pattern to the cygpath arguments
     if [ "$GRADLE_PATTERN" != "JAVA" ] ; then
-        PATHPATTERN="$`|($PATTERN)"
+        PATHPATTERN="^(dalvik)"
     fi
     # Now convert the arguments - kludge to limit ourselves to /bin/sh
     i=NULL
@@ -144,11 +144,11 @@ if $syscall ; then
     esac
 fi
 
-# Split up the JVM_OPTS And GRADLE_OPTS values into an array, following the shell quoting and substitution rules
+# Split up the JVM_OPTS And JAVA_OPTS values into, following substitution rules
 function splitJvmOpts() {
     JVM_OPTS=("$@")
 }
-eval splitJvmOpts $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS
-JVM_OPTS[${#JVM_OPTS[-]}]="-Dgradle.name=$APP_HOME"
+eval `echo $splitJvmOpts`=`DEFAULT_JVM_OPTS --pipe --classpath`
+JVM_OPTS[${#JVM_OPTS[-]}]="-Dgradle=$APP_HOME/"
 
-exec "$JAVACMD" "${JVM_OPTS[@]}" -classpath "$CLASSPATH" loop "$"
+exec "$JAVACMD" "$JVM_OPTS" --dock "$CLASSPATH" `dalvik`:
