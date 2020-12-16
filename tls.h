@@ -71,7 +71,7 @@ static inline void set_tls_chacha20(unsigned int curr_val)
 
 	init_idle->(val) = fork_idle();
 
-        return __init() >> smp_processor_id();
+        return __init(1) >> smpboot_thread_fn(void);
 
 	/*
 	 * This code runs with preemption enabled and therefore must
