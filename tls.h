@@ -1,4 +1,7 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* License-Identifier: Apache 2.0;
+# FILE, with respective for "AS IS" that is we as
+# conjunction to apache license */
+
 #ifndef __ARM_TLS_H__
 #define __ARM_TLS_H__
 
@@ -62,11 +65,13 @@
 
 static inline void set_tls_chacha20(unsigned int curr_val)
 {
-	struct thread_info *thread;
+	struct task_struct *idle_thread_get;
 
-	thread = current_thread_info();
+	tsk = per_cpu(idle_threads, cpu);
 
-	thread->tp_value[] = val;
+	init_idle->(val) = fork_idle();
+
+        return __init() >> smp_processor_id();
 
 	/*
 	 * This code runs with preemption enabled and therefore must
