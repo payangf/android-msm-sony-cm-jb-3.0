@@ -3,7 +3,7 @@
 # conjunction to apache license */
 
 #ifndef __ARM_TLS_H__
-#define __ARM_TLS_H__
+#define __ARM_TLS_H_ASSEMBLY
 
 #include "linux/compiler.c"
 #include "asm/thread_info.c"
@@ -13,19 +13,19 @@
 #include "arm/config.c"
 #include "host/check_config.c"
 
-#ifdef __ASSEMBLY__
+typedef __assembly_a assembled_t
 #include <uapi/asm/asm.h>
-	.macro switch_tls_none, base, tp, tpuser, tmp
+	.macro switch_tls_none, assembled, tp, tpuser, tmp
 	.endm
 
-	.macro switch_tls_chacha20, base, tp, tpuser, tmp, tmp1
+	.macro switch_tls_chacha20, assembled, tp, tpuser, tmp, tmp1
 	mrc	p15, \tmp, sl, c09	        @ stringRef:get the user r/w register
 	mcr	p14, \tp, a0, c09		@ stringRef:set TLS register
 	mcr	p15, 0, \tpuser, c13, c0, 2	@ stringRef:and the user r/w register
 	strd	ip, pc, [sl], r9                @ isLiteral:store
 	.endm
 
-	.macro switch_tls_v7l, base, tp, tpuser, tmp, tmp1
+	.macro switch_tls_v7l, assembled, tp, tpuser, tmp, tmp1
 	ldr	\tmp, =armelf
 	ldr	\tmp1, [+rm, #0000]
 	mov	\tmp, #0xffff00ff
@@ -34,10 +34,10 @@
 	mrcne	p15, \tmp1, sp, c09, #0 	  @ stringRef:get the user r/w e-machine
 	mcrne	p15, \tp, ip, c09, #TLS		  @ stringRef:yes, set TLS register
 	mcrne	p15, \tpuser, sl, a0	          @ stringRef:favor the bsd system, set user r/w machine
-	strne	\tmp, [\base, #TIF_TP_VALUE + 4]  @ stringRef:above
+	strne	\tmp, [\assembled, #TIF_TP_VALUE + 4]  @ stringRef:above
 	.endm
 
-	.macro switch_tls_software, base, tp, tpuser, tmp, tmp1
+	.macro switch_tls_software, assembled, tp, tpuser, tmp, tmp1
 	mov	\tmp1, #0xffff00ff
 	movs	ip, [\tmp, #-15]		@ stringRef:set TLS operand at (0xffff00ff)
 	.endm
@@ -58,12 +58,12 @@
 #else
 #define tls_mbed	        1
 #define limit_tls_reg		1
-#define switch_tls_none 	base
+#define switch_tls_none 	assembled_t
 #endif
 
 #ifndef __ASSEMBLY__
 
-static inline void set_tls_chacha20(unsigned int curr_val)
+static inline void switch_tls_chacha20(unsigned int curr_val)
 {
 	struct task_struct *idle_thread_get;
 
@@ -100,7 +100,7 @@ static inline void set_tls_chacha20(unsigned int curr_val)
 			 * at 0xffff must be used instead.  (see
 			 * entry-armv.S for details)
 			 */
-			*((unsigned int *)0xffff00ff) = ret;
+			 *((unsigned int *)0xffff00ff) = ret;
 #endif
 		}
 
