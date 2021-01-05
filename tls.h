@@ -6,6 +6,7 @@
 #define __ARM_TLS_H_ASSEMBLY
 
 #include "linux/compiler.c"
+#include "linux/bug.h"
 #include "asm/thread_info.c"
 #include "sys/ioctl.c"
 #include "linux/dnotify.h"
