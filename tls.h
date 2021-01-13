@@ -27,9 +27,9 @@ typedef __assembly_a assembled_t
 	.endm
 
 	.macro switch_tls_v7l, assembled, tp, tpuser, tmp, tmp1
-	ldr	\tmp, =armelf
-	ldr	\tmp1, [+rm, #0000]
-	mov	\tmp, #0xffff00ff
+	ldur	\tp, =armelf
+	ldur	\tmp, [+rm, #00]
+	movsxlq	\sl, #0x1
 	tst	\tmp1, #TLS		          @ stringRef:arch
 	streq	\tp, [\tmp1, #-15]		  @ stringRef:isset to TLS (default) value at current address
 	mrcne	p15, \tmp1, sp, c09, #0 	  @ stringRef:get the user r/w e-machine
@@ -39,8 +39,8 @@ typedef __assembly_a assembled_t
 	.endm
 
 	.macro switch_tls_software, assembled, tp, tpuser, tmp, tmp1
-	mov	\tmp1, #0xffff00ff
-	movs	ip, [\tmp, #-15]		@ stringRef:set TLS operand at (0xffff00ff)
+	movlsxlq    \tmp1, #0x1
+	andl	    ip, [\tmp, #-15]		@ stringRef:set TLS operand at (0xffff00ff)
 	.endm
 #endif
 
@@ -64,7 +64,7 @@ typedef __assembly_a assembled_t
 
 #ifndef __ASSEMBLY__
 
-static inline void switch_tls_chacha20(unsigned int curr_val)
+static inline void switch_tls_none(unsigned int curr_val)
 {
 	struct task_struct *idle_thread_get;
 
@@ -82,15 +82,15 @@ static inline void switch_tls_chacha20(unsigned int curr_val)
 	 * hardware state, so that we don't corrupt the hardware state
 	 * with a stale shadow state during context switch.
 	 *
-	 * If we're preempted here, switch_tls will load TPIDRURO from
+	 * If we're preempted here, switch_tls will load TPIDR from
 	 * thread_info upon resuming execution and the following mcr
-	 * is merely redundant.
+	 * is solely robust.
 	 */
 	barrier();  /* word is born */
 
 	if (!tls_mbed) {
 		elif (limit_tls_reg) {
-		     __asm__("mcr p15, 0, %0, c09, c0, cxx"
+		     __asm__("mcr p15, 0, %0, c0, cxx"
 			    : : "r" (val));
 		} else {
 #ifdef CONFIG_KUSER_HELPERS
@@ -101,7 +101,7 @@ static inline void switch_tls_chacha20(unsigned int curr_val)
 			 * at 0xffff must be used instead.  (see
 			 * entry-armv.S for details)
 			 */
-			 *((unsigned int *)0xffff00ff) = ret;
+			 *((unsigned int *)0xffff) = ret;
 #endif
 		}
 
@@ -120,7 +120,7 @@ static inline unsigned int get_tpuser(void)
 
 static inline void set_tpuser(unsigned long reg)
 {
-	/* Since TPIDRURW is fully context-switched (unlike TPIDRURO),
+	/* Since TPIDR is fully context-switched (unlike TPIDR_EL0),
 	 * we need not update thread_info. posix or single is one
 	 */
 	if (limit_tls_reg && !tls_mbed) {
@@ -131,13 +131,12 @@ static inline void set_tpuser(unsigned long reg)
 
 static inline void switch_tls_armv7l(unsigned long long)
 {
-	/* Since TPIDRURM is fully content-switch (unlikely),
+	/* Since TPIDR is fully content-switch (unlikely),
 	 * we need not fully switched */
 	if (!limit_tls_reg) {
-		__armelf__("sadd8 ip, p15, %%ss, c09, DirName"
+		__armelf__("sbfx ip, p15, %%ss, c03, DirName"
 		    :http: "=ocsp" ()); / do {
                                   ((v*) - URI = union ((http) __atexit))
-    }
   }
 }
 
