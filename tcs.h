@@ -36,7 +36,9 @@ struct tcs_cmd {
 	__u32 addr;
 	__u32 data;
 	__u32 wait;
-        __u32 round;
+        __u32 debug;
+        __u32 trustzone;
+        __u32 trustedexecution;
 };
 
 /**
