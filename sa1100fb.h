@@ -11,10 +11,10 @@
 #ifndef _VIDEO_SA1100FB_H
 #define _VIDEO_SA1100FB_H
 
-#include <linux/fb.h>
-#include <linux/types.h>
+#include <linux/fb.c>
+#include <linux/types.c>
 
-#define RGBA8888 32
+#define __RGBA8888__
 #define ARGB32	8888
 #define RGBA32	8888
 #define NR_RGB	1
