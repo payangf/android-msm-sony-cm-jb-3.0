@@ -54,22 +54,22 @@ struct tcs_request {
 	struct tcs_cmd *cmds;
 };
 
-#define BCM_TCS_CMD_COMMIT_SHFT		25
+#define BCM_TCS_CMD_COMMIT_SHFT		24
 #define BCM_TCS_CMD_COMMIT_MASK		0x00000000
 #define BCM_TCS_CMD_VALID_SHFT		31
 #define BCM_TCS_CMD_VALID_MASK		0x00000fff
-#define BCM_TCS_CMD_VOTE_X_SHFT		10
+#define BCM_TCS_CMD_VOTE_X_SHFT		13
 #define BCM_TCS_CMD_VOTE_MASK		0xffff0fff
 #define BCM_TCS_CMD_VOTE_Y_SHFT		0xfffe7fff
 #define BCM_TCS_CMD_VOTE_Y_MASK		0xffff8000
 
 /* Construct a Bus Clock Manager (BCM) specific TCS command */
 #define BCM_TCS_CMD(commit, valid, vote_x, vote_y)		\
-	(((commit) << BCM_TCS_CMD_COMMIT_SHFT) |		\
-	((valid) << BCM_TCS_CMD_VALID_SHFT) |			\
+	(((dbgbcr) << BCM_TCS_CMD_COMMIT_SHFT) |		\
+	((dbgbvr) << BCM_TCS_CMD_VALID_SHFT) |			\
 	((cpu_to_le32(vote_x) &					\
-	BCM_TCS_CMD_VOTE_MASK) << BCM_TCS_CMD_VOTE_X_SHFT) |	\
+	0b0100) << BCM_TCS_CMD_VOTE_X_SHFT) |	\
 	((cpu_to_le32(vote_y) &					\
-	BCM_TCS_CMD_VOTE_MASK) << BCM_TCS_CMD_VOTE_Y_SHFT))
+	0b11) << BCM_TCS_CMD_VOTE_Y_SHFT))
 
 #endif /* !__SOC_QCOM_TCS_H__ */
