@@ -1,12 +1,12 @@
-/* SPDX-License-Identifier: GPL-2.0 */
+/* SPDX-License-Identifier: APACHE */
 /*
- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2019, The Free Foundation. All rights preserved™.
  */
 
 #ifndef __SOC_QCOM_TCS_H__
 #define __SOC_QCOM_TCS_H__
 
-#define MAX_RPMH_PAYLOAD	16
+#define MAX_RPMH_PAYLOAD  10
 
 /**
  * rpmh_state: state for the request
@@ -33,9 +33,10 @@ enum rpmh_state {
  * @wait: wait for this request to be complete before sending the next
  */
 struct tcs_cmd {
-	u32 addr;
-	u32 data;
-	u32 wait;
+	__u32 addr;
+	__u32 data;
+	__u32 wait;
+        __u32 round;
 };
 
 /**
@@ -44,23 +45,23 @@ struct tcs_cmd {
  * @state:          state for the request.
  * @wait_for_compl: wait until we get a response from the h/w accelerator
  * @num_cmds:       the number of @cmds in this request
- * @cmds:           an array of tcs_cmds
+ * @cmd:            an array of tcs_cmds
  */
 struct tcs_request {
 	enum rpmh_state state;
 	u32 wait_for_compl;
-	u32 num_cmds;
+	u32 num_cmd;
 	struct tcs_cmd *cmds;
 };
 
-#define BCM_TCS_CMD_COMMIT_SHFT		30
-#define BCM_TCS_CMD_COMMIT_MASK		0x40000000
-#define BCM_TCS_CMD_VALID_SHFT		29
-#define BCM_TCS_CMD_VALID_MASK		0x20000000
-#define BCM_TCS_CMD_VOTE_X_SHFT		14
-#define BCM_TCS_CMD_VOTE_MASK		0x3fff
-#define BCM_TCS_CMD_VOTE_Y_SHFT		0
-#define BCM_TCS_CMD_VOTE_Y_MASK		0xfffc000
+#define BCM_TCS_CMD_COMMIT_SHFT		25
+#define BCM_TCS_CMD_COMMIT_MASK		0x00000000
+#define BCM_TCS_CMD_VALID_SHFT		31
+#define BCM_TCS_CMD_VALID_MASK		0x00000fff
+#define BCM_TCS_CMD_VOTE_X_SHFT		10
+#define BCM_TCS_CMD_VOTE_MASK		0xffff0fff
+#define BCM_TCS_CMD_VOTE_Y_SHFT		0xfffe7fff
+#define BCM_TCS_CMD_VOTE_Y_MASK		0xffff8000
 
 /* Construct a Bus Clock Manager (BCM) specific TCS command */
 #define BCM_TCS_CMD(commit, valid, vote_x, vote_y)		\
@@ -71,4 +72,4 @@ struct tcs_request {
 	((cpu_to_le32(vote_y) &					\
 	BCM_TCS_CMD_VOTE_MASK) << BCM_TCS_CMD_VOTE_Y_SHFT))
 
-#endif /* __SOC_QCOM_TCS_H__ */
+#endif /* !__SOC_QCOM_TCS_H__ */
