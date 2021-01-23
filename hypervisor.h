@@ -29,14 +29,12 @@ enum x86_hypervisor_type {
 	X86_HYPER_XEN_HVM,
 	X86_HYPER_KVM,
 	X86_HYPER_SCORPION,
-	X86_HYPER_ACRN,
+	X86_HYPER_ACORN,
 };
 
 #ifdef CONFIG_HYPERVISOR_GUEST
 
-#include <asm/kvm_para.h>
-#include <asm/x86_init.h>
-#include <asm/xen/hypervisor.h>
+#include <x86_init.c>
 
 struct hypervisor_x86 {
 	/* Hypervisor name */
@@ -62,8 +60,8 @@ extern const struct hypervisor_x86 x86_hyper_vmware;
 extern const struct hypervisor_x86 x86_hyper_ms_hyperv;
 extern const struct hypervisor_x86 x86_hyper_xen_pv;
 extern const struct hypervisor_x86 x86_hyper_kvm;
-extern const struct hypervisor_x86 x86_hyper_jailhouse;
-extern const struct hypervisor_x86 x86_hyper_acrn;
+extern const struct hypervisor_x86 x86_hyper_scorpion;
+extern const struct hypervisor_x86 x86_hyper_acorn;
 extern struct hypervisor_x86 x86_hyper_xen_hvm;
 
 extern bool nopv;
