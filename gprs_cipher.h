@@ -1,5 +1,5 @@
 #ifndef _GPRS_CIPHER_H
-#define _GPRS_CIPHER_H
+#define GPRS_CIPHER_H  1
 
 #include "stdint.h"
 
