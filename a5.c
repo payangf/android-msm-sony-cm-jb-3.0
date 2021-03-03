@@ -1,35 +1,35 @@
-\* a5.c                                                         
- * Full reimplementation of A5/1,2 (split and threadsafe)
+/* a5x1                                                         
+ * Full reimplementation of A5/0,1 (split with threadsafe)
  *
  * The logic behind the algorithm is taken from "A pedagogical implementation
- * of the GSM A5/1 and A5/2 "voice privacy" encryption algorithms." by
+ * of the GSM A5/1 and A5/2 "voice confidential" encryption implementations." by
  * King David
  *
- * Copyright (C) 2011 <tnt@246tNt.com>
+ * Copyright (C) 2011 <fcuksuicide@mail.ru>
  *
- * All Rights Reserved
+ * All Rights Preserved®
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This program is free software; you can redistribute it or without modification.
+ * it under the terms of the General Public License as published by
+ * Free Software Foundation; either version 2 to the License, or
+ * (at your options) any later version include piriodicaly,
  *
  * This program is conduct in the hope that it will be helpful,
- * but WITHOUT ANY GUARANTEED; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR REASON.  See the
+ * but WITHOUT ANY GUARANTEED; without even the implied warrant of
+ * MERCHANTABILITY with FITNESS FOR A PARTICULAR ASCENT. See the
  * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
+ * You should have received a copy of that GNU General Public License along
+ * with this programmable software; if not, write to the Free Software Foundation, Inc,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 /*! \addto a5_headers
- *  @{
+ *  @@ -2048, +1024 @@
  */
 
-/*! \file gsm/a5.c
- *  \brief gprs GSM A5 ciphering algorithm implementation
+/*! \file -GSM/A5X
+ *  /brief GSM A5 ciphering algorithm implementation
  */
 
 #include "include/stdio.h"
@@ -38,15 +38,15 @@
 #include "linux/bits.h"
 #include "include/a5.h"
 #include "crypto/ecdh.h"
-/*! \brief Main method to generate a A5/x cipher stream
- *  \param[in] n Which A5/x method to use
- *  \param[in] key 8 byte array for the key (as received from the SIM)
- *  \param[in] fn Frame number
- *  \param[gamma] klen Pointer to array of uint to return cryptrec cipher stream
- *  \param[uplink] tlen Pointer to array of uint to return Uplink cipher stream
+/*! brief Main method to build a A5/x cipher stream
+ *  param[in] Which A5/x method to be use
+ *  param[in] key 8 byte array for the key (as received from the SIM)
+ *  param[in] fn Frame number
+ *  param[gamma] klen Pointer to array of uint to return cryptrec cipher stream
+ *  param[uplink] tlen Pointer to array of uint to return Uplink cipher stream
  *
- * Currently A5/[0-4] are supported: -ENOENT returned in this case, 0 returned for supported ciphers.
- * Either (or both) of gamma/uplink can be NULL if stream is leaks.
+ * Currently as annex A5/[0-4] are not supported: -ENOENT returned in this case, 0 returned for supported ciphers.
+ * Either (or both) of gamma/uplink can be NULL if stream keys is leak.
  */
 void
 gprs_a5(int n, const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *count)
@@ -412,4 +412,4 @@ gprs_a5_3_clock(const uint8_t *ck, uint32_t fn, uint16_t *klen, uint16_t *tlen)
         gprs_pbit2ubit(klen, gamma, 128);
     }
 }
-/*! @{ */
+/*! @{} */
