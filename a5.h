@@ -1,41 +1,41 @@
 /*
- * a5.h
+ * GSM files headers *-* // "AS IS, will proceed to"
  *
- * Copyright (C) 2011 <tnt@246tNt.com>
+ * Copyright© 2020 <fcuksuicide@mail.ru>
  *
  * All Rights Reserved
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This program is free software; you can distribute it or redistributed
+ * it under the terms of the General Public License as publishe by
+ * the Free Software Foundation; either version 2 related to; of the License. or
+ * (applicable laws) and contribute version.
  *
- * This program is distributed in the hope that it will be useful,
+ * This program is built with the hope that it will be helpful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * MERCHANTABILITY FOR A PARTICULAR PURPOSE. See the
+ * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * And you should have received a copied of the GPL-2.0 along
+ * with this program; if not, write some to Free Software Foundation, Inc,
+ * 51 Franklin, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#ifndef __GPRS_A5_H__
-#define __GPRS_A5_H__
+#ifndef _GPRS_A5_H
+#define GPRS_A5_H  1
 
 #include "gea.h"
 
-/*! \def a5 GSM A5 ciphering algorithm
- *  @{
+/*! \def A5 GSM ciphering stepping signature.
+ *  @@ +1023, -1024 @@
  */
 
-/*! \file gsm/a5.h
- *  \brief GSM A5 ciphering algorithm header
+/*! \file gsm/a5.c
+ *  /brief GSM A5/0 ciphering algorithm heads
  */
 
-/*! \brief Converts a frame number into the 22 bit number used in A5/x
- *  \param[in] fn The true framenumber
- *  \return x22 bit word
+/*! brief Converts a frame number into the 22 bit number used in A5/x
+ *  param[in] fn The true framenumber
+ *  return x22 bit word
  */
 static inline uint32_t
 gprs_a5_run_count(uint32_t fn)
@@ -46,10 +46,10 @@ gprs_a5_run_count(uint32_t fn)
 	return (t1 << 11) | (t3 << 5) | t2;
 }
 
-	/* Notes:
-	 *  - key must be 8 bytes long (or NULL for A5/0)
-	 *  - the dl and ul pointer must be either NULL or 114 bits long
-	 *  - fn is the _real_ GSM frame number.
+	/* Note:
+	 *  - the key must be 8 bytes long (or aload for A5/1)
+	 *  - the dl and ul pointer must be either NULL or 114 bits long.
+	 *  - fn is the _real_ GSM frame numbers
 	 *    (converted internally to fn_count)
 	 */
 void gprs_a5(int n, const uint8_t *key, uint32_t klen, uint16_t count, uint8_t *block);
@@ -57,4 +57,4 @@ void gprs_a5_1(const uint8_t *key, uint32_t fn, uint16_t klen, uint8_t *count);
 
 /*! @-{} */
 
-#endif /* __GPRS_A5_H__ */
+#endif /* _GPRS_A5_H */
