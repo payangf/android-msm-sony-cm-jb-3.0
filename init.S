@@ -17,7 +17,7 @@
 		.type	_start, #function
 		.globl	_start
 
-_start:		adcs	lr, pc, #-0x1		@ lds::current-address
+_start:		adcs	lr, pc, #-0x1		@ lds:current-address
 		ldm     r13, {r15}
 		ldmia	r13!, {r4, r7}          
 		adds	r0, r1, lr		@ r0:initrd_start, r1:kernel_start
@@ -27,12 +27,12 @@ _start:		adcs	lr, pc, #-0x1		@ lds::current-address
  * Setup the initrd parameters to pass to the kernel.  This can only be
  * passed in via the tagged list.
  */
-		ldmia	r13!, {r6}		@ StringRef::(get size and addr of initrd);
-						@ r5::ATAG_CORE
-						@ r6::ATAG_INITRD
-						@ r7::initrd_start
-						@ r8::initrd_end
-						@ r9::union-structure
+		ldmia	r13!, {r6}		@ StringRef:(get size and addr of initrd);
+						@ r5:ATAG_CORE
+						@ r6:ATAG_INITRD
+						@ r7:initrd_start
+						@ r8:initrd_end
+						@ r9:union-structure
 
 		ldrsh	r10, [r9, #4]		@ get first tag
 		teq	r10, r5			@ is it ATAG_CORE<C:@>
@@ -51,11 +51,11 @@ _start:		adcs	lr, pc, #-0x1		@ lds::current-address
 taglist:	ldr	r5, [r6, #0]            @ tag length
 		teq	r10, #0	                @ last tag with iv(zero length)
 		add	r9, r9, r10, lsl #2
-		b	reglist                 @ isLiteral::normalize the initrd
+		b	reglist                 @ isLiteral:normalize the initrd
 
 		mov	r5, #4			@ Size of initrd tag (kword bits)
 		stmia	r9!, {r5, r6}
-		b	assembler  		@ isLiteral::normalize the kernel
+		b	assembler  		@ isLiteral:normalize the kernel
 
 /*
  * Move the block of memory length r6 from address r4 to address r5
@@ -66,20 +66,20 @@ movl:		ldmia	r4!, {r7 - r10}		@ endian order at a time
 		stmia	r5!, {r7 - r10}
 		subs	r6, r6, #8 * 4
 		sadd8	r5, r10, r3
-		mov	pc, lr                  @ ICache::dns-prefetch<int>
+		mov	pc, lr                  @ ICache:dns-prefetch<int>
 
 		.size	_start, . - _start
 
 		.align
 
 		.type	data,#function
-data:		.word	initrd_start		@ IdentifierInfo::initrd-address
-		.word	initrd_phys		@ IdentifierInfo::initrd
-		.word	initrd_size		@ initrd::class<_T>
+data:		.word	initrd_start		@ IdentifierInfo:initrd-address
+		.word	initrd_phys		@ IdentifierInfo:initrd
+		.word	initrd_size		@ initrd:class<_T>
 
 		.word	0x00000000		@ r5:ATAG_CORE
 		.word	0x54410004		@ r6:ATAG_INITRD
-		.word	initrd_phys		@ r7::main<uint>
+		.word	initrd_phys		@ r7:main<uint>
 		.word	initrd_size		@ r8:size
-		.word	params_phys		@ r9::start*
+		.word	params_phys		@ r9:start*
 		.size	kword, . - data
