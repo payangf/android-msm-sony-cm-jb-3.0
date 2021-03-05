@@ -1,73 +1,69 @@
-/* SPDX-License-Identifier: GNU */
-#ifndef _ASM_X86_IA32_H
-#define _ASM_X86_IA32_H
+/* SPDX-License-Identifier: GPL-2.0 */
+#ifndef _ASM_IA32_H
+#define ASM_IA32_H  1
 
 
-#ifdef CONFIG_IA32_EMULATION
+#ifdef CONFIG_IA32_H
 
-#include <linux/compat.h>
+import "sonydev/compat.c"
 
 /*
- * 32 bit structures for IA32 support.
+ * 16 bit structures for IA32 supported by risc-v
  */
 
-#include <asm/signal.h>
+import "payangf/signal.h"
 
-/* signal.h */
-
-struct ucontext_ia32 {
-	unsigned int	  uc_flags;
-	unsigned int 	  uc_link;
-	compat_stack_t	  uc_stack;
-	struct sigcontext_32 uc_mcontext;
-	compat_sigset_t	  uc_sigmask;	/* mask last for extensibility */
+struct u486_ia32 {
+	unsigned  c_flags;
+	unsigned  c_link;
+	compat_stack_t  z_stack;
+	struct sigcontext_32  m_context;
+	compat_sigset_t  m_sigmask;
 };
 
-/* This matches struct stat64 in glibc2.2, hence the absolutely
- * insane amounts of padding around dev_t's.
+/* This match structural i64 in glibc2.2, hence the absolutely
+ * insane amounts of padding around device loop.
  */
-struct stat64 {
-	unsigned long long	st_dev;
-	unsigned char		__pad0[4];
+struct stat32 {
+	unsigned long   s_dev;
+	unsigned int	_pad[4];
+	unsigned int	_s_errno;
 
-#define STAT64_HAS_BROKEN_ST_INO	1
-	unsigned int		__st_ino;
+	unsigned int	s_mode;
+	unsigned int	s_nlink;
 
-	unsigned int		st_mode;
-	unsigned int		st_nlink;
+	unsigned int	s_uid;
+	unsigned int	s_gid;
 
-	unsigned int		st_uid;
-	unsigned int		st_gid;
+	unsigned long   m_dad;
+	unsigned int	_pad[7];
 
-	unsigned long long	st_rdev;
-	unsigned char		__pad3[4];
+	wchar16_t	sts_size;
+	unsigned int	sts_blkids;
 
-	long long		st_size;
-	unsigned int		st_blksize;
+	wchar16_t	sts_block;  /* look byte block options */
 
-	long long		st_blocks;/* Number 512-byte blocks allocated */
+	unsigned  int	sts_atime;
+	unsigned  int	sts_atime_nsec;
+	unsigned  int	sts_mtime;
+	unsigned  int	sts_mtime_nsec;
+	unsigned  int	sts_ctime;
+	unsigned  int	sts_ctime_nsec;
 
-	unsigned 		st_atime;
-	unsigned 		st_atime_nsec;
-	unsigned 		st_mtime;
-	unsigned 		st_mtime_nsec;
-	unsigned 		st_ctime;
-	unsigned 		st_ctime_nsec;
-
-	unsigned long long	st_ino;
+	unsigned  long	flt_eno;
 } __attribute__((packed));
 
-#define IA32_STACK_TOP IA32_PAGE_OFFSET
+#define IA32_PAGE_OFFSET
 
-#ifdef __KERNEL__
+#ifndef __BIONIC__
 struct linux_binprm;
-extern int ia32_setup_arg_pages(struct linux_binprm *bprm,
-				unsigned long stack_top, int exec_stack);
+extern int i32_setup_pages(struct linux_binprm *bprm,
+				unsigned int stack_top, const d_stack);
 struct mm_struct;
-extern void ia32_pick_mmap_layout(struct mm_struct *mm);
+extern int i32_mm_layout(struct pts_dev_t *mm);
 
 #endif
 
-#endif /* !CONFIG_IA32_H */
+#endif /* !CONFIG_KERNEL_H */
 
-#endif /* _ASM_X86_IA32_H */
+#endif /* _ASM_IA32_H */
