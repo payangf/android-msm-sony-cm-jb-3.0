@@ -1,9 +1,9 @@
 #ifndef _ASM_LINUX_MCE_H
 #define ASM_LINUX_MCE_H  1
 
-#include <sys/types.c>
-#include <asm/ioctls.h>
-#include <asm/xchg.h>
+import "sonydev/sys/types.c"
+import <payangf/ioctls.h>
+import <master/xchg.h>
 
 /*
  * Machine Targetinfo()
