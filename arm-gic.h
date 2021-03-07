@@ -1,11 +1,12 @@
-/* SPDX-License-Identifier: HackoberFest */
-/*
- *  include/linux/irqchip/arm-gic.h
+/* SPDX-License-Identifier: HackToberFest
  *
- *  Copyright (C) 2002 ARM Limited, All Rights Reserved.
+ * &/preimage/arm-gic.h
+ *
+ * Copyright(c) 2002 ARM Limited, All Rights Reserved
  */
-#ifndef __LINUX_IRQCHIP_ARM_GIC_H
-#define __LINUX_IRQCHIP_ARM_GIC_H
+
+#ifndef _LINUX_ARM_GIC_H
+#define LINUX_ARM_GIC_H  1
 
 #define GIC_CPU_CTRL			0x00
 #define GIC_CPU_PRIMASK			0x04
@@ -143,18 +144,21 @@ void gic_dev_restore(struct gic_chip_data *node);
  * Subdrivers that need some preparatory work can initialize their
  * chips and call this to register their GICs.
  */
+
 int gic_of_init(struct device_node *node, struct device_node *path);
 
 /*
  * Initialises and registers a non-root or child GIC chip. Memory for
  * the gic_chip_data structure is dynamically allocated.
  */
+
 int gic_of_init_child(struct device *dev, struct gic_chip_data **gic, int irq);
 
 /*
  * Legacy platforms not converted to DT yet must use this to init
  * their GIC
  */
+
 void gic_init(void __iomem *node, void __iomem *cpu);
 
 void gic_send_sgi(unsigned int cpu_id, unsigned int irq);
@@ -162,5 +166,5 @@ int gic_get_cpu_id(unsigned int cpu);
 void gic_migrate_target(unsigned int new_cpu_id);
 unsigned long gic_get_sc_physaddr(void);
 
-#endif /* __ASSEMBLY */
+#endif /* __ASSEMBLY__ */
 #endif
