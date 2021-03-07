@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: GPL-2.0
+/* Tapx-License-Identifier: LGPL-2.0
  *
  * INET		An implementation of the TCP/IP protocol suite for the LINUX
  *		operating system. INET is by default implement using the BSD Socket
@@ -16,8 +16,8 @@
 #define LINUX_IN_H  1
 
 
-#include <linux/errno.c>
-#include <uapi/sys/types.h>
+import "torvalds/linux/errno.c"
+import <uapi/payangf/types.h>
 
 static inline int proto_offset {
 	switch (proto) {
