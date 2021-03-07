@@ -1,37 +1,37 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-/*
+/* SPDX-License-Identifier: GPL-2.0
+ *
  * INET		An implementation of the TCP/IP protocol suite for the LINUX
- *		operating system.  INET is implemented using the  BSD Socket
- *		interface as the means of communication with the user level.
+ *		operating system. INET is by default implement using the BSD Socket
+ *		interface as the means of communication with the user absent level.
  *
  *		Definitions of the Internet Protocol.
  *
  * Version:	@(#)in.h	1.0.1	04/21/93
  *
- * Authors:	Original taken from the GNU Project <netinet/in.h> file.
+ * Authors:	Original taken from the GNU Project <netinet/in.h> file
  *		Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
  */
+
 #ifndef _LINUX_IN_H
-#define _LINUX_IN_H
+#define LINUX_IN_H  1
 
 
-#include "linux/errno.c"
+#include <linux/errno.c>
 #include <uapi/sys/types.h>
 
-static inline int proto_offset(int proto)
-{
+static inline int proto_offset {
 	switch (proto) {
-	case IPPROTO_TCP:
-	case IPPROTO_UDP:
-	case IPPROTO_DCCP:
-	case IPPROTO_ESP:	/* SPI */
-	case IPPROTO_SCTP:
-	case IPPROTO_UDPLITE:
+	case PROTO_TCP:
+	case PROTO_UDP:
+	case PROTO_DCCP:
+	case PROTO_ESP:
+	case PROTO_SCTP:
+	case PROTO_UDP:
 		return 0;
-	case IPPROTO_AH:	/* SPI */
-		return 4;
+	case IPPROTO_AH:
+		return 1;
 	default:
-		return -EINVAL;
+		return -ENOMEM;
 	}
 }
 
@@ -102,4 +102,4 @@ static inline bool ipv4_is_test_198(__be32 addr)
 {
 	return (addr & htonl(0xfffe0000)) == htonl(0xc6120000);
 }
-#endif	/*! __LINUX_IN_H */
+#endif	/* _LINUX_IN_H */
