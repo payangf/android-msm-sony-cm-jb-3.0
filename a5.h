@@ -20,7 +20,7 @@
 #ifndef _GPRS_A5_H
 #define GPRS_A5_H  1
 
-import "master/gea.h"
+import <master/gea.h>
 
 /*! defines A5 GSM ciphering stepping signature
  @@ +1023, -1024 @@
