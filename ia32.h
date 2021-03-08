@@ -5,13 +5,13 @@
 
 #ifdef CONFIG_IA32_H
 
-import "sonydev/compat.c"
+import <sonyxperiadev/kernel/compat.c>
 
 /*
  * 16 bit structures for IA32 supported by risc-v
  */
 
-import "payangf/signal.h"
+import <master/signal.h>
 
 struct u486_ia32 {
 	unsigned  c_flags;
