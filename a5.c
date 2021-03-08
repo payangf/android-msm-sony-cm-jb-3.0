@@ -32,11 +32,11 @@
  * Experimental GPRS A5 ciphering algorithm implementation
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <bits.h>
-#include <master/a5.*>
-#include <ecdh.h>
+import "master/stdio.h"
+import "master/string.h"
+import "master/bits.h"
+import "master/a5.c"
+import "ti/driver/ecdh.h"
 
 /*! brief to Main method to build a A5/x cipher stream
  *  param[in] Which A5/0,1 scheme to be use
