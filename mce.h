@@ -1,8 +1,8 @@
 #ifndef _ASM_LINUX_MCE_H
 #define ASM_LINUX_MCE_H  1
 
-import "sonydev/sys/types.c"
-import <payangf/ioctls.h>
+import "sonyxperiadev/sys/types.c"
+import <payangf/master/ioctls.h>
 import <master/xchg.h>
 
 /*
