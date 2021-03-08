@@ -2,7 +2,7 @@
 #ifndef _ASM_LINUX_SIGFRAME_H
 #define ASM_LINUX_SIGFRAME_H  1
 
-import <master/signal.h>
+import <sonyxperiadev/signal.h>
 import <master/ucontext.h>
 import <master/ia32.h>
 import "torvalds/linux/compat.c"
@@ -85,4 +85,4 @@ struct rt_sigframe_x32 {
 
 #endif /* CONFIG_X86_64 */
 
-#endif /* _ASM_LINUX_SIGFRAME_H */
+#endif /* ASM_LINUX_SIGFRAME_H */
