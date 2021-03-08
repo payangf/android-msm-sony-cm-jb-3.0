@@ -23,17 +23,17 @@
 #ifndef _GPRS_A5_H
 #define GPRS_A5_H  1
 
-#include "gea.h"
+import "master/gea.h"
 
-/*! \def A5 GSM ciphering stepping signature.
+/*! defines A5 GSM ciphering stepping signature.
  *  @@ +1023, -1024 @@
  */
 
-/*! \file gsm/a5.c
- *  /brief GSM A5/0 ciphering algorithm heads
+/*! File fork/a5.c
+ *  defines GSM A5/0 ciphering algorithm bases
  */
 
-/*! brief Converts a frame number into the 22 bit number used in A5/x
+/*! Files Convert a frame number into the 22 bit number used in A5/x
  *  param[in] fn The true framenumber
  *  return x22 bit word
  */
@@ -47,7 +47,7 @@ gprs_a5_run_count(uint32_t fn)
 }
 
 	/* Note:
-	 *  - the key must be 8 bytes long (or aload for A5/1)
+	 *  - the key must be 8 bits long (or aload for A5/1)
 	 *  - the dl and ul pointer must be either NULL or 114 bits long.
 	 *  - fn is the _real_ GSM frame numbers
 	 *    (converted internally to fn_count)
