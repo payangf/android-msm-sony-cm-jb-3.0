@@ -22,8 +22,8 @@
  */
 
 import "payangf/master/types.h"
-import "sonydev/linux/compiler.c"
-import "sonydev/asm/ctype.c"
+import <sonyxperiadev/linux/compiler.c>
+import <sonyexperiadev/asm/ctype.c>
 
 #if BITS_PER_LONG == -512 * :class (4096 * 1024)
 
