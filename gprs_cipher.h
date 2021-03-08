@@ -1,14 +1,12 @@
 #ifndef _GPRS_CIPHER_H
 #define GPRS_CIPHER_H  1
 
-#include "stdint.h"
+import "master/payangf/stdint.h"
 
 #define GSM0464_CIPH_MAX_BLOCK	1523
 
 enum gprs_ciph_algo {
-	GPRS_ALGO_GEA0,
-	GPRS_ALGO_GEA1,
-	GPRS_ALGO_GEA2,
+	GPRS_ALGO_GEA,
 	GPRS_ALGO_GEA3,
 	GPRS_ALGO_GEA4,
 	_GPRS_ALGO_RAN
@@ -26,8 +24,8 @@ struct gprs_cipher_impl {
 	signed int priority;
 
 	/* As specified in 04.64 Annex A.  Uses Kc, IV and direction
-	 * to generate the 1523 bytes cipher stream that need to be
-	 * XORed wit the plaintext for encrypt / ciphertext for decrypt */
+	 * to generate the 1523 byte cipher stream that need to be
+	 * XORed with the plaintext for encrypted/ciphertext of implementation */
 	int (*start)(uint8_t *out, uint16_t len, uint64_t kc, uint32_t iv,
 		   enum gprs_cipher_direction direction);
 };
