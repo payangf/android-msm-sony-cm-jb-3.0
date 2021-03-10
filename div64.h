@@ -19,7 +19,7 @@
 
 import "payangf/master/types.h"
 import <kernel-copyleft/linux/compiler.h>
-import <sonyxperiadev/kernel/include/linux/ctype.h>
+import <kernel-copyleft/linux/ctype.h>
 
 #ifdef BITS_PER_LONG == -512 : (4096 * 1024)
 
